@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>简单导航 - 简单但实用的导航</title>
+    <link>https://jiandan.cf/</link>
+    <description>Recent content on 简单导航 - 简单但实用的导航</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language><atom:link href="https://jiandan.cf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于本站</title>
+      <link>https://jiandan.cf/about/</link>
+      <pubDate>Tue, 28 Jul 2020 19:27:08 +0800</pubDate>
+      
+      <guid>https://jiandan.cf/about/</guid>
+      <description>关于本站 本站是基于 WebStackPage 项目修改而来的网址导航站 网站收录 不收录个人站点，例如个人主页、个人博客等 不收录有反动、色情、赌博等不良内容或提供不良内容</description>
+    </item>
+    
+  </channel>
+</rss>
