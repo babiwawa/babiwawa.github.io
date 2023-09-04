@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><search><entry><title>react高阶组件概念与简单使用</title><url>/post/react.html</url><categories><category>前端</category></categories><tags><tag>前端</tag><tag>react</tag></tags><content type="html"><![CDATA[  react 高阶组件概念与简单使用react 高阶组件是什么高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。
+具体而言，高阶组件是参数为组件，返回值为新组件的函数。
+上面这段话是来自react 官网的介绍，下面是个人消化后的理解：
+它是一个函数，接收一个参数，这个参数是组件，然后再返回一个新组件（返回的这个组件里会含有处理过的 state 值）；
+归其缘由，它是一种设计思想，它将多个组件中公共的逻辑部分抽离出来封装成了一个函数，这个函数接收那多个组件中的一个组件作为参数，然后再返回这个组件，从而实现多个组件中那个组件的最终效果。
+react 高阶组件作用精简代码，封装复用逻辑 ​ &hellip;
+简单实现 react 高阶组件/** * 需求简述： * 实现两个组件文本框， * 一个组件为外边框为1px绿色、里面显示内容为当前浏览器的高宽； * 另一个组件为外边框2px红色、里面内容为当前浏览器的高宽。 */ import React, { useState, useEffect } from &#39;react&#39; const WithShowBodySize = (Component) =&gt; { const [xPos, setXPos] = useState(&#39;&#39;); const [yPos, setYPos] = useState(&#39;&#39;); const getPos = () =&gt; { setXPos(document.body.offsetWidth); setYPos(document.body.offsetHeight); } useEffect(() =&gt; { console.log(&#39;WithShowBodySize&#39;); getPos() window.addEventListener(&#39;resize&#39;, getPos); return () =&gt; { window.removeEventListener(&#39;resize&#39;, () =&gt; { console.log(&#39;resize监听事件已移除&#39;); }) } }, []); return ( &lt;&gt; &lt;Component xPos={xPos} yPos={yPos}&gt;&lt;/Component&gt; &lt;/&gt; ) } const ShowBodySizeA = (props) =&gt; { return &lt;div style={{ border: &#39;1px solid yellowGreen&#39; }}&gt;{props?.xPos}-{props?.yPos}&lt;/div&gt; } const ShowBodySizeB = (props) =&gt; { return &lt;div style={{ border: &#39;3px solid red&#39; }}&gt;{props?.xPos}-{props?.yPos}&lt;/div&gt; } const HOCDemo = (props) =&gt; { const A = WithShowBodySize(ShowBodySizeA); const B = WithShowBodySize(ShowBodySizeB); useEffect(() =&gt; { console.log(&#39;HOCDemo&#39;); }, []) return ( &lt;&gt; 高阶组件思想运用 &lt;br&gt;&lt;/br&gt; &lt;br&gt;&lt;/br&gt; {A} &lt;br&gt;&lt;/br&gt; {B} &lt;/&gt; ) }; export default HOCDemo; 对应本文视频讲解react 高阶组件实例讲解 ​ https://www.bilibili.com/video/BV1D44y1S7op/?vd_source=e248443ed146cfdb38797f0fa5dca3da插个眼：这边看到了篇博客，关于 HOC 讲的很详细，没全明白，等以后再看，看看能不能有更多收获：
+「react 进阶」一文吃透 React 高阶组件(HOC)：
+https://juejin.cn/post/6940422320427106335#heading-0还有个小疑问也记录一下：
+参考文章说“render 中不要声明 HOC”，那以上方代码为例，我用的函数式组件，我不在函数里面引用 HOC 在哪里引用呢？在外面引用的话会报错呀。
+还有当我引用两次抽离出来的那个高阶组件 useEffect 会执行两次，引用 n 次高阶组件 useEffect 就会执行 n 次，这种属于高阶组件的正确运用吗，有没有引用 n 次 useEffect 只会执行一次的那种。
+  ]]></content></entry><entry><title>WebApi</title><url>/post/webapi.html</url><categories/><tags/><content type="html"><![CDATA[  WebApi这个只作为一个了解就可以了
+Canvas API概述&amp;lt;canvas&amp;gt;元素用于生成图像。它本身就像一个画布，JavaScript 通过操作它的 API，在上面生成图像。它的底层是一个个像素，基本上&amp;lt;canvas&amp;gt;是一个可以用 JavaScript 操作的位图（bitmap）。
+它与 SVG 图像的区别在于，&amp;lt;canvas&amp;gt;是脚本调用各种方法生成图像，SVG 则是一个 XML 文件，通过各种子元素生成图像。
+使用 Canvas API 之前，需要在网页里面新建一个&amp;lt;canvas&amp;gt;元素。
+&amp;lt;canvas id=&amp;#34;myCanvas&amp;#34; width=&amp;#34;400&amp;#34; height=&amp;#34;250&amp;#34;&amp;gt; 您的浏览器不支持 Canvas &amp;lt;/canvas&amp;gt; 如果浏览器不支持这个 API，就会显示&amp;lt;canvas&amp;gt;标签中间的文字：“您的浏览器不支持 Canvas”。
+每个&amp;lt;canvas&amp;gt;元素都有一个对应的CanvasRenderingContext2D对象（上下文对象）。Canvas API 就定义在这个对象上面。
+var canvas = document.getElementById(&amp;#39;myCanvas&amp;#39;); var ctx = canvas.getContext(&amp;#39;2d&amp;#39;); 上面代码中，&amp;lt;canvas&amp;gt;元素节点对象的getContext()方法，返回的就是CanvasRenderingContext2D对象。
+注意，Canvas API 需要getContext方法指定参数2d，表示该&amp;lt;canvas&amp;gt;节点生成 2D 的平面图像。如果参数是webgl，就表示用于生成 3D 的立体图案，这部分属于 WebGL API。
+按照用途，Canvas API 分成两大部分：绘制图形和图像处理。
+Canvas API：绘制图形Canvas 画布提供了一个作图的平面空间，该空间的每个点都有自己的坐标。原点(0, 0)位于图像左上角，x轴的正向是原点向右，y轴的正向是原点向下。
+路径以下方法和属性用来绘制路径。
+CanvasRenderingContext2D.beginPath()：开始绘 …  ]]></content></entry><entry><title>Markdown语法收藏</title><url>/post/Markdown.html</url><categories><category>示例</category></categories><tags><tag>Markdown</tag></tags><content type="html"> 主要内容
+Markdown是什么？
+谁创造了它？
+为什么要使用它？
+怎么使用？
+谁在用？
+尝试一下
+正文
+Markdown是什么？
+Markdown是一种轻量级标记语言，它以纯文本形式(易读、易写、易更改)编写文档，并最终以HTML格式发布。 Markdown也可以理解为将以MARKDOWN语法编写的语言转换成HTML内容的工具。
+谁创造了它？
+它由
+Aaron Swartz
+和John Gruber共同设计，Aaron Swartz就是那位于去年（2013年1月11日）自杀,有着开挂一般人生经历的程序员。维基百科对他的
+介绍
+是：软件工程师、作家、政治组织者、互联网活动家、维基百科人。
+他有着足以让你跪拜的人生经历：
+14岁参与RSS 1.0规格标准的制订。 2004年入读斯坦福，之后退学。 2005年创建
+Infogami
+，之后与
+Reddit
+合并成为其合伙人。 2010年创立求进会（Demand Progress），积极参与禁止网络盗版法案（SOPA）活动，最终该提案被撤回。 2011年7月19日，因被控从MIT和JSTOR下载480万篇学术论文并以免费形式上传于网络被捕。 2013年1月自杀身亡。 天才都有早逝的归途。
+为什么要使用它？
+它是易读（看起来舒服）、易写（语法简单）、易更改纯文本。处处体现着极简主义的影子。 兼容HTML，可以转换为HTML格式发布。 跨平台使用。 越来越多的网站支持Markdown。 更方便清晰地组织你的电子邮件。（Markdown-here, Airmail） 摆脱Word（我不是认真的）。 怎么使用？
+如果不算扩展，Markdown的语法绝对简单到让你爱不释手。
+Markdown语法主要分为如下几大部分： 标题，段落，区块引用，代码区块，强调，列表，分割线，链接，图片，反斜杠 \，符号&amp;amp;rsquo;`&amp;amp;rsquo;。
+标题
+两种形式：
+使用=和-标记一级和二级标题。
+一级标题
+=========
+二级标题 ---------
+效果：
+一级标题
+二级标题
+使用#，可表示1-6级标题。
+# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题
+效果： 段落
+段落的前后要有空行，所谓的空行是指没有文字内容。若想在段内强制换行的方式是使用两个以上空格加上回车（引用中换行省略 …</content></entry><entry><title>一文搞懂TypeScript</title><url>/post/TypeScript.html</url><categories><category>前端</category><category>TypeScript</category></categories><tags><tag>前端</tag><tag>TypeScript</tag></tags><content type="html"> TypeScript学习第一章:TypeScript初识
+1.1 TypeScript学习初见
+TypeScript(TS)是由微软Microsoft由2012年推出的自由和开源的编程语言, 目前主流的三大框架React 、Vue 和 Angular这三大主流框架再加上最新的鸿蒙3.0都可以用TS进行开发.
+可以说 TS 是 JS 的超集, 是建立在JavaScript上的语言. TypeScript把其他语言的一些精妙的语法, 带入到JavaScript中, 让JS达到了一个新的高度。
+可以在TS中使用JS以外的扩展语法, 同时可以结局TS对面向对象和静态类型的良好支持, 可以让我们编写更健壮、更可维护的大型项目。
+1.2 TypeScript介绍
+因为TypeScript是JavaScript的超集, 所以要介绍TS, 不得不提一下JS, JS从在引入编程社区20多年以来, 已经成了有史以来应用最广泛的跨平台语言之一了, 从一开始为网页中添加一些微不足道的、交互性的小型的脚本语言发展到现在各种规模的前端和后端应用程序的首选语言了.
+虽然我们用JS语言编写程序的大小、范围和复杂性呈指数级的增长, 但是JS语言表达不同代码单元之间的关系和能力却很弱, 使得JS成了一项难以大规模管理的任务, 而且也很难解决程序员经常出现的错误: 类型错误.
+而TS语言可以很好的解决这个错误, 他的目标是成为JS程序的静态类型检查器, 可以在代码运行之前进行检查, 也就是静态编译, 并且呢, 可以确保我们程序的类型正确(即进行类型检查).
+TS添加了可选的静态类型和基于类的面向对象编程等等, 是JS的语言扩展, 不是JS的替代品, 会让JS前进的步伐更坚实、更遥远.
+1.3 JS 、TS 和 ES之间的关系
+ES6又称为ECMAScript 2015, TypeScript 是 JS 的超集, 他包含Javascript的所有元素, 能运行Javascript代码, 并扩展了JS语法, 并添加了静态类型 类 模块 接口 类型注解等等方面的功能, 更加易于大项目的开发.
+这张图表示TS不仅包含了JS和ES的最新内容, 还扩展了新的功能.
+总的来说, ECMAScript是JS的标准, TS是JS的超集.
+1.4 TS的竞争者有哪些?
+1. ESLint
+2. TSlint
+1 和 2 都 …</content></entry><entry><title>HTML</title><url>/post/html/</url><categories><category>前端</category><category>HTML</category></categories><tags><tag>前端</tag><tag>HTML</tag></tags><content type="html"><![CDATA[  HTML 语言简介概述HTML 是网页使用的语言，定义了网页的结构和内容。浏览器访问网站，其实就是从服务器下载 HTML 代码，然后渲染出网页。
+HTML 的全名是“超文本标记语言”（HyperText Markup Language），上个世纪90年代由欧洲核子研究中心的物理学家蒂姆·伯纳斯-李（Tim Berners-Lee）发明。它的最大特点就是支持超链接，点击链接就可以跳转到其他网页，从而构成了整个互联网。
+1999年，HTML 4.01 版发布，成为广泛接受的 HTML 标准。2014年，HTML 5 发布，这是目前正在使用的版本。
+浏览器的网页开发，涉及三种技术：HTML、CSS 和 JavaScript。HTML 语言定义网页的结构和内容，CSS 样式表定义网页的样式，JavaScript 语言定义网页与用户的互动行为。HTML 语言是网页开发的基础，CSS 和 JavaScript 都是基于 HTML 才能生效，即使没有这两者，HTML 本身也能使用，可以完成基本的内容展示。本教程只介绍 HTML 语言。
+下面就是一个简单网页的 HTML 源码。
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html lang=&amp;#34;zh-CN&amp;#34;&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta charset=&amp;#34;utf-8&amp;#34;&amp;gt; &amp;lt;title&amp;gt;网页标题&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;p&amp;gt;Hello World&amp;lt;/p&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 上面这段代码，可以保存成文件hello.html。浏览器打开这个本地文件，就能看到文字“Hello World”。
+浏览器右键菜单的“查看页面源码”（View page source），可以展示当前网页的 HTML 源码。
+网页的基本概念标签网页的 HTML 代码由许许多多不同的标签（tag）构成。学习 HTML 语言，就是学习各种标签的用法。
+下面就是标签的一个例子。
+&amp;lt;title&amp;gt;网页标题&amp;lt;/title&amp;gt; 上面代码中，&amp;lt;title&amp;gt;和&amp;lt;/title&amp;gt;就是一对标签。
+标签用来告诉浏览器，如何处理这段代码。标签的 …  ]]></content></entry><entry><title>关于微信备份到pc端(ios)</title><url>/post/WeChat-backup.html</url><categories/><tags/><content type="html"> 微信作为高频率日常应用在国内是许多用户社交网络中最重要的一环，几乎大家全部的人际关系、工作人脉均在其中，它的重要性与安全性不言而喻，尤其是日常的聊天记录可说是重中之重。
+微信官方的做法，是将其全部保存在用户本机设备中，云端仅同步一部分，一方面随着日常使用微信的聊天数据占据大量本地存储空间，另一方面如果因为手机遗失、被盗或者各种意外状况导致设备无法正常使用，则意味着数据全部丢失。
+因此日常使用中，微信聊天记录的备份尤为重要。而微信本身自带了聊天记录备份与恢复功能，可通过PC客户端将全部聊天记录备份至本地，方便你一键迁移和恢复。
+具体而言：
+1，登录PC端微信，备份与恢复 2，备份聊天记录至手机（可选全部或部分好友记录） 客观的说，综合安全与实用性两方面，微信官方的备份与恢复功能相当好用，既能备份聊天记录又可以恢复或迁移至其他设备，如果非要说不足之处，大概就是数据全部加密，所有记录必须在微信 APP 并登录帐号才能查看，其实有时大家备份数据，可能只是方便日后随时随地查阅，怎么方便怎么来。于是乎，下面的这两款工具就派上用场了。
+WX Backup/WechatExporter，微信聊天记录备份导出与查看工具
+WX Backup和WechatExporter是免费的微信聊天记录备份导出工具，它们通过读取Itune备份的数据，解析出微信账号中全部的聊天记录，包括文字、图片、语音和视频记录，并且一键导出成html网页，方便你在电脑端随时查阅。
+（图片来自官网）
+他们目前支持Windows+MAC客户端，使用也相当简单~阿刚来通过WX Backup简单的说下使用过程：
+1，使用iTunes备份你的手机
+首先如前面所述，微信自身导出的聊天记录文件是全部加密的，目前第三方工具只能通过苹果iTune备份的手机数据中提取微信数据，因此要使用WX Backup导出记录，首先你的微信聊天数据必须存储在iphone设备中，如果你是安卓用户，则必须找一台苹果设备，通过微信自带的聊天记录迁移功能，在两台机器接入同一WiFi下进行记录迁移。
+迁移完成后，电脑端安装iTunes软件备份iPhone设备至本地电脑，注意备份时切记勿加密备份，否则导致程序无法读取微信数据。
+2，使用WX Backup导出微信备份
+苹果iTunes备份数据默认保存在C盘中，默认的具体路径
+C:\Users\你电脑用户 …</content></entry><entry><title>个人电脑上搭建网站</title><url>/post/Building-website-personal-computer.html</url><categories><category>博客</category></categories><tags><tag>Hugo</tag><tag>开始</tag></tags><content type="html"> 一直以来想将自己浅显的工作经验和学习心得记录下来，温故而知新，网站目前托管于Netlify，无论在哪里都可以查看，同时也方便分享给需要的朋友。
+在个人电脑上搭建网站的流程如下：
+第一步，安装web服务器运行环境：web服务器的搭建有两种方法。
+方法一：直接安装windows系统自带的IIS相关组件
+如果您的网站是以ASP、ASP.NET等程序启动，则建议直接安装windows系统自带的IIS相关组件（安装及设置步骤可搜索百度如何安装IIS：依次点击电脑“控制面板+程序和功能+启用或关闭windows功能+Internet information services”，然后建立个人站点，设置网站根目录及相关配置）
+IIS.png
+方法二：建议下载安装PHPstudy软件
+如果您的网站是以PHP程序启动，则建议下载安装PHPstudy软件，该软件为服务器环境免费提供最优配置的解决方案，支持Web端管理，一键创建网站、FTP、数据库、SSL；安全管理，计划任务，文件管理，PHP多版本共存及切换；自带LNMP与LAMP等功能，操作简单。该软件操作简单，开机启动后，创建网站，配置路径即可。软件下载地址：
+https://www.xp.cn/
+方法一和方法二，选择其中一种就可以了，这样网站的运行环境就建立好了，此时局域网内的任何电脑可以通过内网IP地址就可以轻松访地访问您个人电脑里的个人网站了，但此时外网用户是无法访问的；
+本网站就是以个人闲置电脑windows10专业版作为web服务器，安装PHPstudy软件运行的。（后将网站迁移至群晖NAS上进行管理，群晖NAS自带web station套件）
+第二步，选择合适的个人网站主程序
+可以自己编写网站页面，也可以网上下载源码程序。个人网站主程序网上有很多源码下载即可用，例如博客程序就有Zblog、Wordpress、Typecho、hexo等数十种选择，Zblog和Wordpress是目前国内众多个人博客站长首选的博客系统，当然也有很多人选择Typecho；论坛主程序有Discuz；相册主程序有Piwigo、MeiuPic美优相册等。
+本网站采用Typecho提供的免费博客主程序，选择hamesome主题及插件，轻量高效、先进稳定、简洁友好，唯一可惜的是程序更新缓慢。
+第三步，外网用户访问机制：选择域名解析服务
+如果希望外网的人也 …</content></entry><entry><title>价值观</title><url>/post/sm.html</url><categories><category>人生</category></categories><tags><tag>价值观</tag><tag>人生</tag></tags><content type="html"> 这世界就像一个大型传销集团，你刚一进来就要先给你彻底洗个脑。告诉你这个东西叫做钱，那个东西叫做豪车，这个玩意是别墅，那个东西叫美女帅哥。你拥有这些东西你就是快乐的，你没有这些东西，你就是个失败者，就得痛苦。然后呢，那你就拼命赚钱去吧，把我们这个传销集团做大做强。
+其实你如果是个原始森林的猴子。每天在树上爬几圈，饿了吃点树上的水果累了就睡觉，你没有美女帅哥，豪车别墅，没有钱，你未必就不开心快乐。
+你压根就不需要这些东西吗？为什么现在穷就会让你痛苦呢？其实并不是所谓的穷让你痛苦，而是这个传销集团要让你因为所谓的穷，而觉得痛苦，要让你觉得，你非常需要美女帅哥豪车别墅，你们都在他的控制之下，他才能正常的运作。
+记住，除了生老病死以外，你所感受到的痛苦，都是你的价值观造成的，都只不过是精神内耗，而非真实存在。</content></entry><entry><title>Waline国内用户设置方法</title><url>/post/Waline.html</url><categories><category>博客</category></categories><tags><tag>Hugo</tag><tag>开始</tag></tags><content type="html"><![CDATA[  基本说明该文章为国际版设置教程。
+准备Walinehttps://waline.js.org/guide/get-started/欢迎使用 Waline，只需几个步骤，你就可以在你的网站中启用 Waline 提供评论与浏览量服务。
+LeanCloud 设置 (数据库)1）、 登录 或 注册 LeanCloud 国际版 并进入 控制台
+2）、点击左上角 创建应用 并起一个你喜欢的名字 (请选择免费的开发版):
+3）、进入应用，选择左下角的 设置 &amp;gt; 应用 Key。你可以看到你的 APP ID,APP Key 和 Master Key。请记录它们，以便后续使用。
+国内版需要完成备案接入如果你正在使用 Leancloud 国内版 (leancloud.cn)，我们推荐你切换到国际版 (leancloud.app)。否则，你需要为应用额外绑定已备案的域名，同时购买独立 IP 并完成备案接入:
+登录国内版并进入需要使用的应用 选择 设置 &amp;gt; 域名绑定 &amp;gt; API 访问域名 &amp;gt; 绑定新域名 &amp;gt; 输入域名 &amp;gt; 确定。 按照页面上的提示按要求在 DNS 上完成 CNAME 解析。 购买独立 IP 并提交工单完成备案接入。(独立 IP 目前价格为 ￥ 50/个/月)
+Vercel 部署 (服务端)登录 Vercel ，跳转至 Vercel 进行 Server 端部署。
+1）、如果你未登录的话，Vercel 会让你注册或登录，请使用 GitHub 账户进行快捷登录。
+2）、输入一个你喜欢的 Vercel 项目名称并点击 Create 继续:
+3）、此时 Vercel 会基于 Waline 模板帮助你新建并初始化仓库，仓库名为你之前输入的项目名。几分钟后，满屏的烟花会庆祝你部署成功。此时点击 Go to Dashboard 可以跳转到应用的控制台。
+4）、点击顶部的 Settings - Environment Variables 进入环境变量配置页，并配置三个环境变量 LEAN_ID, LEAN_KEY 和 LEAN_MASTER_KEY 。它们的值分别对应上一步在 LeanCloud 中获得的 APP ID, APP KEY, Master Key，Environment下的Production、Preview、Development全 …  ]]></content></entry><entry><title>创建属于你自己的org永久域名</title><url>/post/create-your-forever-org-domain.html</url><categories><category>博客</category></categories><tags><tag>Hugo</tag><tag>开始</tag></tags><content type="html"> 或许你也曾想拥有一个属于自己的域名，但又苦于囊中羞涩无力购买，亦或是在国内域名生效前都要实名备案。那么今天就给你带来一个好消息，你可以申请注册一个属于自己的 org 域名，而且不需要花费任何的费用，也不用进行备案就能使用（仅限国外服务器），就问你心动了有没有 😆
+注意： 这里注册的并不是一级域名，而是属于二级域名，要是介意不用往下细看了。
+方案
+本篇接下来要介绍的方案是通过 eu.org + 腾讯云DSNPod 组合方案来打造属于你自己的个性域名，虽然注册的是个二级域名，但是其主域名长度比较短，且初看上去有点像是 edu 域名，所以不仅好记也有点像高等学府的味道。
+eu.org 是欧盟组织下面的域名，EU代表欧盟，Paul Mockapetris在1996年创建了此域名的DNS服务器，计划是专门给无力承担费用的一些组织使用的。所以它对个人和组织是免费注册的，目前已经被谷歌，cf等一些大公司认可为顶级域名。 当然重点还是免费注册，大部分个人或组织都可以开心的白P，不过也担心 eu.org 的DNS能否负载的过来哟！ 😆
+注册用户
+填写信息
+点击 https://nic.eu.org/arf/en/contact/create/
+链接地址进入到注册环节，个人信息填写部分除电子邮箱是要真实的以外，其他信息可通过 地址生成器 模拟出来并填写，参考如下：
+Regist Account
+Name：全名（注意中间用空格隔开，不然检测会失败） E-mail：自己真实的邮箱（比如QQ邮箱），用于收取验证链接之类的 “I have read and I accept the domain policy”需要勾选起来 “Password”填写的是你的登录密码； “Confirm Password”是确认密码，这个等下就会用到的，请务必记下来
+验证注册
+提交好注册信息后，大约等个3~5分钟左右，你的邮箱就会收到一封如下图所示的验证链接邮件，若是没有收到邮件提醒，那么可以检查下是否在垃圾邮箱，或者直接搜索下邮件标题中包含 new EU.org contact 的邮件。
+Validate Link
+如邮件内容提示的那样，需要访问其中的激活链接才能正式使用。 不过比较遗憾的是，该激活链接并不能直接点击，需要手动拷贝到浏览器的地址栏或是选中后使用鼠标右键跳转。
+在打开页面中， …</content></entry><entry><title>没有H1-6标题头和评论的文章</title><url>/post/no-header-title.html</url><categories><category>示例</category></categories><tags><tag>toc</tag><tag>标题</tag></tags><content type="html"> 刘慈欣2018克拉克奖获奖感言（部分内容节选）。
+用于测试在没有H1-6标题头时，文章的目录导航是否会直接关闭，并关闭评论功能。
+先生们、女士们，晚上好，
+很荣幸获得Clarke Award for Imagination in Service to Society Award。
+这个奖项是对想象力的奖励，而想象力是人类所拥有的一种似乎只应属于神的能力，它存在的意义也远超出我们的想象。有历史学家说过，人类之所以能够超越地球上的其它物种建立文明，主要是因为他们能够在自己的大脑中创造出现实中不存在的东西。在未来，当人工智能拥有超过人类的智力时，想象力也许是我们对于它们所拥有的惟一优势。
+科幻小说是基于想象力的文学，而最早给我留下深刻印象的是Arthur . Clarke的作品。除了Jules Verne和George Wells外，Clarke的作品是最早进入中国的西方现代科幻小说。在上世纪八十年代初，中国出版了他的《2001:A Space Odyssey》和《Rendezvous With Rama》。当时文革刚刚结束，旧的生活和信仰已经崩塌，新的还没有建立起来，我和其他年轻人一样，心中一片迷茫。这两本书第一次激活了我想象力，思想豁然开阔许多，有小溪流进大海的感觉。读完《2001:A Space Odyssey》的那天深夜，我走出家门仰望星空，那时的中国的天空还没有太多的污染，能够看到银河，在我的眼中，星空与过去完全不一样了，我第一次对宇宙的宏大与神秘产生了敬畏感，这是一种宗教般的感觉。而后来读到的《Rendezvous With Rama》，也让我惊叹如何可以用想象力构造一个栩栩如生的想象世界。正是Clarke带给我的这些感受，让我后来成为一名科幻作家。
+现在，三十多年过去了，我渐渐发现，我们这一代在上世纪六十年代出生于中国的人，很可能是人类历史上最幸运的人，因为之前没有任何一代人，像我们这样目睹周围的世界发生了如此巨大的变化，我们现在生活的世界，与我们童年的世界已经完全是两个不同的世界，而这种变化还在加速发生着。中国是一个充满着未来感的国度，中国的未来可能充满着挑战和危机，但从来没有像现在这样具有吸引力，这就给科幻小说提供了肥沃的土壤，使其在中国受到了空前的关注，作为一个在六十年代出生在中国的科幻小说家，则是幸运中的幸运。
+我期待有那么一天，像那些曾经描写过信息 …</content></entry><entry><title>Mermaid支持流程图</title><url>/post/mermaid-charts.html</url><categories><category>示例</category></categories><tags><tag>流程图</tag><tag>时序图</tag></tags><content type="html"><![CDATA[  本主题已支持 Mermaid 实现以纯文本的方式绘制流程图、序列图、甘特图、状态图、关系图行等等，随着 Mermaid 也在逐步发展，后续还会有各种各样的图被引入进来，更多的类型及使用方式可关注其官方网站：https://mermaid-js.github.io/。
+使用说明通过 hugo new 命令创建一篇新的文章 在文章头部配置 mermaid: true 使用短代码书写各种类型的图，自带2个参数： align（对齐） 和 bc（背景色），可参考如下使用示例 流程图{{&lt; mermaid align=&#34;left&#34; &gt;}} graph TD; A--&gt;B; A--&gt;C; B--&gt;D; C--&gt;D; {{&lt; /mermaid &gt;}} graph TD;A-->B;A-->C;B-->D;C-->D;时序图{{&lt; mermaid bc=&#34;#eee&#34; &gt;}} sequenceDiagram participant Alice participant Bob Alice-&gt;&gt;John: Hello John, how are you? loop Healthcheck John-&gt;&gt;John: Fight against hypochondria end Note right of John: Rational thoughts &lt;br/&gt;prevail! John--&gt;&gt;Alice: Great! John-&gt;&gt;Bob: How about you? Bob--&gt;&gt;John: Jolly good! {{&lt; /mermaid &gt;}} sequenceDiagramparticipant Aliceparticipant BobAlice->>John: Hello John, how are you?loop HealthcheckJohn->>John: Fight against hypochondriaendNote right of John: Rational thoughts prevail!John-->>Alice: Great!John->>Bob: How about you?Bob-->>John: Jolly good!类图{{&lt; mermaid &gt;}} classDiagram Class01 &lt;|-- AveryLongClass : Cool Class03 *-- Class04 Class05 o-- Class06 Class07 .. Class08 Class09 --&gt; C2 : Where am i? Class09 --* C3 Class09 --|&gt; Class07 Class07 : equals() Class07 : Object[] elementData Class01 : size() Class01 : int chimp Class01 : int gorilla Class08 &lt;--&gt; C2: Cool label {{&lt; /mermaid &gt;}} classDiagramClass01 <|-- AveryLongClass : CoolClass03 *-- Class04Class05 o-- Class06Class07 .. Class08Class09 --> C2 : Where am i?Class09 --* C3Class09 --|> Class07Class07 : equals()Class07 : Object[] elementDataClass01 : size()Class01 : int chimpClass01 : int gorillaClass08 <--> C2: Cool label甘特图{{&lt; mermaid &gt;}} gantt dateFormat YYYY-MM-DD title Adding GANTT diagram to mermaid excludes weekdays 2014-01-10 section A section Completed task :done, des1, 2014-01-06,2014-01-08 Active task :active, des2, 2014-01-09, 3d Future task : des3, after des2, 5d Future task2 : des4, after des3, 5d {{&lt; /mermaid &gt;}} ganttdateFormat YYYY-MM-DDtitle Adding GANTT diagram to mermaidexcludes weekdays 2014-01-10section A sectionCompleted task :done, des1, 2014-01-06,2014-01-08Active task :active, des2, 2014-01-09, 3dFuture task : des3, after des2, 5dFuture task2 : des4, after des3, 5d实体关系图{{&lt; mermaid &gt;}} erDiagram CUSTOMER ||--o{ ORDER : places ORDER ||--|{ LINE-ITEM : contains CUSTOMER }|..|{ DELIVERY-ADDRESS : uses {{&lt; /mermaid &gt;}} erDiagramCUSTOMER ||--o{ ORDER : placesORDER ||--|{ LINE-ITEM : containsCUSTOMER }|..|{ DELIVERY-ADDRESS : uses用户旅程{{&lt; mermaid &gt;}} journey title My working day section Go to work Make tea: 5: Me Go upstairs: 3: Me Do work: 1: Me, Cat section Go home Go downstairs: 5: Me Sit down: 5: Me {{&lt; /mermaid &gt;}} journeytitle My working daysection Go to workMake tea: 5: MeGo upstairs: 3: MeDo work: 1: Me, Catsection Go homeGo downstairs: 5: MeSit down: 5: Me  ]]></content></entry><entry><title>数学公式渲染</title><url>/post/math-formula.html</url><categories><category>示例</category></categories><tags><tag>数学公式</tag><tag>mathjax</tag><tag>katex</tag></tags><content type="html"><![CDATA[  本主题支持 mathjax 和 katex 两种不的方案支持数学公式的渲染，可根据自已的需求进行选择。
+接下的示例中，将使用 MathJax方案来展示渲染效果。
+使用 hugo new 命令创建一篇新的文章 可以全局启用数据公式渲染，请在项目配置参数 math: katex 或 math: mathjax 或是将该参数配置到需要显示数学公式的页面头部（减少不必要的加载消耗） 注意： 使用支持的TeX功能的联机参考资料。
+例子重复的分数$$ \frac{1}{\Bigl(\sqrt{\phi \sqrt{5}}-\phi\Bigr) e^{\frac25 \pi}} \equiv 1+\frac{e^{-2\pi}} {1+\frac{e^{-4\pi}} {1+\frac{e^{-6\pi}} {1+\frac{e^{-8\pi}} {1+\cdots} } } } $$
+总和记号$$ \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right) $$
+几何级数之和我把接下来的两个例子分成了几行，这样它在手机上表现得更好。这就是为什么它们包含 \displaystyle。
+$$ \displaystyle\sum_{i=1}^{k+1}i $$
+$$ \displaystyle= \left(\sum_{i=1}^{k}i\right) +(k+1) $$
+$$ \displaystyle= \frac{k(k+1)}{2}+k+1 $$
+$$ \displaystyle= \frac{k(k+1)+2(k+1)}{2} $$
+$$ \displaystyle= \frac{(k+1)(k+2)}{2} $$
+$$ \displaystyle= \frac{(k+1)((k+1)+1)}{2} $$
+乘记号$$ \displaystyle 1 + \frac{q^2}{(1-q)}+\frac{q^6}{(1-q)(1-q^2)}+\cdots = \displaystyle \prod_{j=0}^{\infty}\frac{1}{(1-q^{5j+2})(1-q^{5j+3})}, \displaystyle\text{ for }\lvert q\rvert &lt; 1. $$
+随文数式这是一些线性数学: $$ k_{n+1} = n^2 + k_n^2 - k_{n-1} $$ ， 然后是更多的文本。
+希腊字母$$ \Gamma\ \Delta\ \Theta\ \Lambda\ \Xi\ \Pi\ \Sigma\ \Upsilon\ \Phi\ \Psi\ \Omega \alpha\ \beta\ \gamma\ \delta\ \epsilon\ \zeta\ \eta\ \theta\ \iota\ \kappa\ \lambda\ \mu\ \nu\ \xi \ \omicron\ \pi\ \rho\ \sigma\ \tau\ \upsilon\ \phi\ \chi\ \psi\ \omega\ \varepsilon\ \vartheta\ \varpi\ \varrho\ \varsigma\ \varphi $$
+箭头$$ \gets\ \to\ \leftarrow\ \rightarrow\ \uparrow\ \Uparrow\ \downarrow\ \Downarrow\ \updownarrow\ \Updownarrow $$
+$$ \Leftarrow\ \Rightarrow\ \leftrightarrow\ \Leftrightarrow\ \mapsto\ \hookleftarrow \leftharpoonup\ \leftharpoondown\ \rightleftharpoons\ \longleftarrow\ \Longleftarrow\ \longrightarrow $$
+$$ \Longrightarrow\ \longleftrightarrow\ \Longleftrightarrow\ \longmapsto\ \hookrightarrow\ \rightharpoonup $$
+$$ \rightharpoondown\ \leadsto\ \nearrow\ \searrow\ \swarrow\ \nwarrow $$
+符号$$ \surd\ \barwedge\ \veebar\ \odot\ \oplus\ \otimes\ \oslash\ \circledcirc\ \boxdot\ \bigtriangleup $$
+$$ \bigtriangledown\ \dagger\ \diamond\ \star\ \triangleleft\ \triangleright\ \angle\ \infty\ \prime\ \triangle $$
+微积分学$$ \int u \frac{dv}{dx},dx=uv-\int \frac{du}{dx}v,dx $$
+$$ f(x) = \int_{-\infty}^\infty \hat f(\xi),e^{2 \pi i \xi x} $$
+$$ \oint \vec{F} \cdot d\vec{s}=0 $$
+洛伦茨方程$$ \begin{aligned} \dot{x} &amp; = \sigma(y-x) \\ \dot{y} &amp; = \rho x - y - xz \\ \dot{z} &amp; = -\beta z + xy \end{aligned} $$
+交叉乘积这在KaTeX中是可行的，但在这种环境中馏分的分离不是很好。
+$$ \mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\ \frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \\ \frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \end{vmatrix} $$
+这里有一个解决方案:使用“mfrac”类(在MathJax情况下没有区别)的额外类使分数更小:
+$$ \mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} &amp; \mathbf{j} &amp; \mathbf{k} \\ \frac{\partial X}{\partial u} &amp; \frac{\partial Y}{\partial u} &amp; 0 \\ \frac{\partial X}{\partial v} &amp; \frac{\partial Y}{\partial v} &amp; 0 \end{vmatrix} $$
+强调$$ \hat{x}\ \vec{x}\ \ddot{x} $$
+有弹性的括号$$ \left(\frac{x^2}{y^3}\right) $$
+评估范围$$ \left.\frac{x^3}{3}\right|_0^1 $$
+诊断标准$$ f(n) = \begin{cases} \frac{n}{2}, &amp; \text{if } n\text{ is even} \\ 3n+1, &amp; \text{if } n\text{ is odd} \end{cases} $$
+麦克斯韦方程组$$ \begin{aligned} \nabla \times \vec{\mathbf{B}} -, \frac1c, \frac{\partial\vec{\mathbf{E}}}{\partial t} &amp; = \frac{4\pi}{c}\vec{\mathbf{j}} \\ \nabla \cdot \vec{\mathbf{E}} &amp; = 4 \pi \rho \\ \nabla \times \vec{\mathbf{E}}, +, \frac1c, \frac{\partial\vec{\mathbf{B}}}{\partial t} &amp; = \vec{\mathbf{0}} \\ \nabla \cdot \vec{\mathbf{B}} &amp; = 0 \end{aligned} $$
+统计学固定词组：
+$$ \frac{n!}{k!(n-k)!} = {^n}C_k {n \choose k} $$
+分数在分数$$ \frac{\frac{1}{x}+\frac{1}{y}}{y-z} $$
+ｎ次方根$$ \sqrt[n]{1+x+x^2+x^3+\ldots} $$
+矩阵$$ \begin{pmatrix} a_{11} &amp; a_{12} &amp; a_{13}\\ a_{21} &amp; a_{22} &amp; a_{23}\\ a_{31} &amp; a_{32} &amp; a_{33} \end{pmatrix} \begin{bmatrix} 0 &amp; \cdots &amp; 0 \\ \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; \cdots &amp; 0 \end{bmatrix} $$
+标点符号$$ f(x) = \sqrt{1+x} \quad (x \ge -1) f(x) \sim x^2 \quad (x\to\infty) $$
+现在用标点符号:
+$$ f(x) = \sqrt{1+x}, \quad x \ge -1 f(x) \sim x^2, \quad x\to\infty $$
+  ]]></content></entry><entry><title>支持用户自定义设计</title><url>/post/custom-files.html</url><categories><category>示例</category></categories><tags><tag>自定义</tag><tag>个性化</tag><tag>布局</tag></tags><content type="html"><![CDATA[  对于熟悉前端开发的用户来说，可以通过自定义文件配置，实现对站点的样式和布局进行个性化的调整。其中布局方面主要是支持左侧边栏的站点概览部分，以及站点底部2个位置，但样式的重置可以是整个站点的任意位置。
+打开配置参数首先要明确在配置文件的 params 区域中有配置如下参数：
+customFilePath: sidebar: custom_sidebar.html footer: custom_footer.html style: /css/custom_style.css 注意： sidebar 和 footer 的文件命名不可以与它们的参数名称相同，不然会影响系统默认的布局设计，切记！！！ 😄然后在站点的根目录下创建 layouts/partials 2个目录，用于存放自定布局设计文件，另外在站点根目录下创建 statics/css 2个目录，用于存放自定义 CSS 样式文件。一切就绪后，就可以参考如下的步骤，完成自己的设计想法。
+侧边栏设计在前面创建 partials 目录中新一个后缀名为 html 的文件，可以在里面书写你所想表达的设计或内容，比如引入一些第三方组件内容。示例如下：
+&lt;div class=&#34;mydefined animated&#34; itemprop=&#34;custom&#34;&gt; &lt;span&gt;支持自定义CSS和Sidebar布局啦💄💄💄&lt;/span&gt; &lt;/div&gt; 再把该文件的路径配置到相应的参数中，效果请查看左侧边栏底部的效果。
+底部设计在前面创建 partials 目录中新一个后缀名为 html 的文件，可以在里面书写你所想表达的设计或内容，比如引入一些第三方组件内容。示例如下：
+&lt;div class=&#34;custom-footer&#34;&gt; Website source code &lt;a href=&#34;https://github.com/hugo-next/hugo-theme-next/tree/develop/exampleSite/layouts/partials/custom-footer.html&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt; &lt;/div&gt; 再把该文件的路径配置到相应的参数中，效果请查看站点底部的效果。
+自定义样式在前面创建 css 目录中新一个后缀名为 css 的文件，然后可以在里面把站点的样式进行重定义，或是增加一些自己定义的样式设计，在写文章时进行引用，示例如下：
+.custom-head5 { font-size: 1.2em; color: #ed6c24; font-weight: bold; } 再把该文件的路径配置到相应的参数中，效果参考如下：
+我是自定义的标题样式效果!!!
+  ]]></content></entry><entry><title>自定义短语示例</title><url>/post/shortcodes.html</url><categories><category>示例</category></categories><tags><tag>短代码</tag><tag>语法</tag></tags><content type="html"><![CDATA[  虽然 Markdown 语法已经非常丰富能够满足我们写文章的绝大部分需求，但是为更好的对文章内容进行更友好的排版，为引设计一套自定义的短语，便于在使用时能够快速引用。
+块引用在引用一些经典名言名句时，可以采用此短语，语法参考如下：
+{{&lt; quote &gt;}} ### block quote 写下你想表达的话语！ {{&lt; /quote &gt;}} 实际效果：
+希望是无所谓有，无所谓无的，这正如地上的路。
+其实地上本没有路，走的人多了，也便成了路。
+鲁迅
+信息块支持 default，info，success，warning，danger 等五种不同效果的展示，语法参考如下：
+{{&lt; note [class] [no-icon] &gt;}} 书写表达的信息 支持 Markdown 语法 {{&lt; /note &gt;}} 实际效果：
+Default Header without iconWelcome to Hugo NexT!Default HeaderWelcome to Hugo NexT!Info HeaderWelcome to Hugo NexT!Success HeaderWelcome to Hugo NexT!Warning HeaderWelcome to Hugo NexT!Danger HeaderWelcome to Hugo NexT!  ]]></content></entry><entry><title>Emoji 表情</title><url>/post/emoji.html</url><categories><category>示例</category></categories><tags><tag>表情</tag><tag>emoji</tag></tags><content type="html"> Emoji表情
+将对应emoji表情的符号码复制后输入你的markdown文本即可显示emoji表情。 如😊，显示为😊
+人物
+syntax preview syntax preview syntax preview :bowtie: :bowtie: 😄 😄 😆 😆 😊 😊 😃 😃 ☺️ ☺️ 😏 😏 😍 😍 😘 😘 😚 😚 😳 😳 😌 😌 😆 😆 😁 😁 😉 😉 😜 😜 😝 😝 😀 😀 😗 😗 😙 😙 😛 😛 😴 😴 😟 😟 😦 😦 😧 😧 😮 😮 😬 😬 😕 😕 😯 😯 😑 😑 😒 😒 😅 😅 😓 😓 😥 😥 😩 😩 😔 😔 😞 😞 😖 😖 😨 😨 😰 😰 😣 😣 😢 😢 😭 😭 😂 😂 😲 😲 😱 😱 :neckbeard: :neckbeard: 😫 😫 😠 😠 😡 😡 😤 😤 😪 😪 😋 😋 😷 😷 😎 😎 😵 😵 👿 👿 😈 😈 😐 😐 😶 😶 😇 😇 👽 👽 💛 💛 💙 💙 💜 💜 ❤️ ❤️ 💚 💚 💔 💔 💓 💓 💗 💗 💕 💕 💞 💞 💘 💘 💖 💖 ✨ ✨ ⭐ ⭐ 🌟 🌟 💫 💫 💥 💥 💥 💥 💢 💢 ❗ ❗ ❓ ❓ ❕ ❕ ❔ ❔ 💤 💤 💨 💨 💦 💦 🎶 🎶 🎵 🎵 🔥 🔥 💩 💩 💩 💩 :: 💩 👍 👍 👍 👍 👎 👎 👎 👎 👌 👌 👊 👊 👊 👊 ✊ ✊ ✌️ ✌️ 👋 👋 ✋ ✋ ✋ ✋ 👐 👐 ☝️ ☝️ 👇 👇 👈 👈 👉 👉 🙌 🙌 🙏 🙏 👆 👆 👏 👏 💪 💪 🤘 🤘 🖕 🖕 🚶‍♂️ 🚶‍♂️ 🏃‍♂️ 🏃‍♂️ 🏃 🏃 👫 👫 👨‍👩‍👦 👨‍👩‍👦 👬 👬 👭 👭 💃 💃 👯‍♀️ 👯‍♀️ 🙆‍♀️ 🙆‍♀️ 🙅‍♀️ 🙅‍♀️ 💁‍♀️ 💁‍♀️ 🙋‍♀️ 🙋‍♀️ 👰 👰 🙎‍♀️ 🙎‍♀️ 🙍‍♀️ 🙍‍♀️ 🙇 🙇 💏 💏 💑 💑 💆‍♀️ 💆‍♀️ 💇‍♀️ 💇‍♀️ 💅 💅 👦 👦 👧 👧 👩 👩 👨 👨 👶 👶 👵 👵 👴 👴 👱‍♂️ 👱‍♂️ 👲 👲 👳‍♂️ 👳‍♂️ 👷‍♂️ 👷‍♂️ 👮‍♂️ 👮‍♂️ 👼 👼 👸 👸 😺 😺 😸 😸 😻 😻 😽 😽 😼 😼 🙀 🙀 😿 😿 😹 😹 😾 😾 👹 👹 👺 👺 🙈 🙈 🙉 🙉 🙊 🙊 💂‍♂️ 💂‍♂️ 💀 💀 🐾 🐾 👄 👄 💋 💋 💧 💧 👂 👂 👀 👀 👃 👃 👅 👅 💌 💌 👤 👤 👥 👥 💬 💬 💭 💭 :feelsgood: …</content></entry><entry><title>关于本站</title><url>/about.html</url><categories/><tags/><content type="html">
+这里是？
+一个没有什么存在感的地方。
+一个没有什么存在感的人偶尔写各种废文的地方( ॑꒳ ॑ )
+更新可能会很少（我也不知道我会不会坚持下去），而且写的也有可能是没有人看得懂的东西甚至根本就没有人会看到吧(´ﾟωﾟ｀) 虽然这里可能只是一个很难被注意到的小角落，但是如果还是被注意到了的话……那就太好啦！
+这也是一个个人博客网站，非信息化专业，会一些简单的HTML网页语言和制作工具（菜鸟级），只因为喜欢网页制作和展示，所以就有了这个博客空间，欢迎您的光临和鼓励，深表感谢！
+关于自己
+本质是宅，不怎么出去玩，大概是不喜欢一个人出去玩。 大概是有一丢丢社交恐惧症。 非常不想用微信，众所周知张小龙根本不会做产品。 向往开放和自由的互联网精神，反感信息壁垒和言论审查 (=’_‘=) 讨厌集体主义、形式主义、官僚主义，自我感动。 Windows 忠实用户，为了折腾服务器也用过 Ubuntu。 Android 忠实用户。 EDGE 忠实用户。 Visual Studio Code 忠实用户。 蒟蒻，没有特别擅长的东西，是一条咸鱼了…… 关于本站
+本站目前使用 Hugo 框架生成页面文件，通过 GitHubDesktop 上传到 GitHub仓库，再使用
+vercel
+&amp;amp;amp;
+Netlify
+部署呈现，主题为 hugo-theme-next
+。
+本站励志与大家一起共创开源环境，文章很多并非原创，只是觉得不错所以拉取下来，或者是在学习过程中参考的文档。均标明原作者，如有侵权请联系本人处理。
+本站可能会拒绝任何对已发表内容的编辑或删除请求。在确实需要编辑或删除的情况下，本站可能会通过镜像、快照等方式保证编辑或删除的内容可以被恢复。
+本站的评论服务由 Waline
+提供，对评论的回复频率不会低于一个月一次。目前在本站发表评论不需要进行实名认证（用于第三方登录的账号可能仍然需要实名认证，但与本站无关），也不会显示 IP 归属地信息，我不会主动开启此类功能。
+“为什么不选择开一个公众号？” 因为在公众号上没办法随心所欲地编辑文章内容，比如插入视频、修改页面样式什么的……甚至连添加超链接都做不到！(╯‵□′)╯︵┻━┻
+万维网的开放主要就体现在一点：任何万维网上的文章之间都可以通过网址随意互相链接。你或许觉得这是废话，但在微信公众号的文章里你做不到。微信的产品设计者希望微信公众号的读者只 …</content></entry><entry><title>文章目录导航</title><url>/post/table-of-content.html</url><categories><category>示例</category></categories><tags><tag>目录</tag><tag>导航</tag><tag>博客</tag></tags><content type="html"> 巴顿将军说过：“衡量一个人是否成功，不是看他站到顶峰，而是从顶峰跌落之后的反弹力”，褚时健的人生便是如此，中年发家致富，名利双收，之后又跌落到谷底，等到74岁再创业，10年后带着褚橙归来，东山再起收获亿万财富，他的发展轨迹就是反弹的过程。
+早年的故事
+起始
+2014年的春天，在云南省华宁县和宜良县的交界处，一座名叫矣则的小山村里，一处已经有上百年历史的古旧四合院宅子被拆掉。村委会正带领村民们进行“美丽乡村”的建设，一年以后，旧有村居将再也看不到，代之而起的是钢筋混凝土的新式民居。就像10年、20年前中国大小城市的改造一样，这个群山围绕的小村子也开始陷入“工地模式”。
+童年浪花
+在江河边长大的孩子几乎都有一个当仁不让的特长：善水。褚时健也不例外，他不仅从小就在南盘江和花鱼塘里扑腾出了上佳的游泳技术，五六岁已经可以一个猛子扎出老远，而且从七八岁就可以在南盘江和河滩上的鱼塘里捉鱼了。
+少年故事
+褚时健在乡村自由自在生活的十多年，其实正是中国社会风雨飘摇的十多年。特别是1937年卢沟桥事变后，日本人发动全面侵华战争，短短两三年间，中国的大部分国土相继沦陷
+激情的青春十年
+当上了游击队员
+1948年夏天，褚时健回乡，在禄丰车站小学做了一名老师，同时也和褚时仁、褚时杰一起继续保持与共产党组织的联系，做一些传递情报的工作
+战火纷飞
+因为战斗力相较悬殊，所以游击队只能是靠打一枪换一个地方的办法，专找敌人薄弱的地方攻击，但更多时候，都是在防御和转移阵地。
+迎来解放
+1949年12月，国民党云南省主席卢汉在昆明宣布起义，云南正式拉开解放的序幕。1950年2月20日，陈赓、宋任穷、周保中率解放军第二野战军第四兵团进入昆明，24日，陈赓宣布云南全境解放。
+生活的断层
+跌入生活底层
+“反右”运动中被打倒的人在“右派”身份确定后，只有一条路可走：下放到农场。农场名副其实，就是干农活儿的地方，必须过和农民一样的生活。
+尾声
+岁月像一条河
+2015年，是褚时健和马静芬结婚60周年，被称为“钻石婚”的纪念年份。这简直是一份人生的奖赏,在中国离婚率愈益升高的当下，60年的婚姻，几乎就像一个前世之梦。一个甲子的相伴相随，褚时健和马静芬共同经历了国家和个人的各种风浪，共同面对过生死。他们两人已经不仅是夫妻，更是一对战友。尽管马静芬偶尔会对褚时健年轻时候的粗心抱怨上两句，但说到最后，她会说一句：“没有我就没 …</content></entry><entry><title>Hugo 内置的 Chroma 语法高亮</title><url>/post/syntax-highlighting.html</url><categories><category>示例</category></categories><tags><tag>语法</tag><tag>高亮</tag><tag>Chroma</tag></tags><content type="html"><![CDATA[  Hugo 通过 Chroma 提供非常快速的语法高亮显示，现 Hugo 中使用 Chroma 作为代码块高亮支持，它内置在 Go 语言当中，速度是真的非常、非常快，而且最为重要的是它也兼容之前我们使用的 Pygments 方式。
+以下通过 Hugo 内置短代码 highlight 和 Markdown 代码块方式分别验证不同语言的代码块渲染效果并能正确高亮显示，有关优化语法突出显示的更多信息，请参阅 Hugo 文档。
+编程语言GO199 200 201 202 203 204 205 206 207 208 func GetTitleFunc(style string) func(s string) string { switch strings.ToLower(style) { case &#34;go&#34;: return strings.Title case &#34;chicago&#34;: return transform.NewTitleConverter(transform.ChicagoStyle) default: return transform.NewTitleConverter(transform.APStyle) } } Javaimport javax.swing.JFrame; //Importing class JFrame import javax.swing.JLabel; //Importing class JLabel public class HelloWorld { public static void main(String[] args) { JFrame frame = new JFrame(); //Creating frame frame.setTitle(&#34;Hi!&#34;); //Setting title frame frame.add(new JLabel(&#34;Hello, world!&#34;));//Adding text to frame frame.pack(); //Setting size to smallest frame.setLocationRelativeTo(null); //Centering frame frame.setVisible(true); //Showing frame } } Pythonprint &#34;Hello, world!&#34; Git 对比1*** /path/to/original &#39;&#39;timestamp&#39;&#39; 2--- /path/to/new &#39;&#39;timestamp&#39;&#39; 3*************** 4*** 1 **** 5! This is a line. 6--- 1 --- 7! This is a replacement line. 8It is important to spell 9-removed line 10+new line *** /path/to/original &#39;&#39;timestamp&#39;&#39; --- /path/to/new &#39;&#39;timestamp&#39;&#39; *************** *** 1 **** ! This is a line. --- 1 --- ! This is a replacement line. It is important to spell -removed line +new line 文件Make 文件CC=gcc CFLAGS=-I. hellomake: hellomake.o hellofunc.o $(CC) -o hellomake hellomake.o hellofunc.o -I. Markdown 文档**bold** *italics* [link](www.example.com) 数据内容JSON 数据{&#34;employees&#34;:[ {&#34;firstName&#34;:&#34;John&#34;, &#34;lastName&#34;:&#34;Doe&#34;}, ]} XML 内容&lt;employees&gt; &lt;employee&gt; &lt;firstName&gt;John&lt;/firstName&gt; &lt;lastName&gt;Doe&lt;/lastName&gt; &lt;/employee&gt; &lt;/employees&gt; SQL 查询SELECT column_name,column_name FROM Table WHERE column_name = &#34;condition&#34; 除以上列举的代码高亮显示外，还支持诸如：C 语言、C++、HTML、CSS、Shell脚本等各主流的代码语言高亮显示，可自行测试效果。
+  ]]></content></entry><entry><title>支持 Emoji 表情</title><url>/post/emoji-support.html</url><categories><category>示例</category></categories><tags><tag>表情</tag><tag>emoji</tag></tags><content type="html"> Emoji 可以通过多种方式在 Hugo 项目中启用。
+emojify
+方法可以直接在模板中调用, 或者使用
+行内 Shortcodes
+.
+要全局使用 emoji, 需要在你的
+网站配置
+中设置 enableEmoji 为 true， 然后你就可以直接在文章中输入 emoji 的代码。
+它们以冒号开头和结尾，并且包含 emoji 的 代码：
+去露营啦! {:}tent: 很快就回来. 真开心! {:}joy: 呈现的输出效果如下:
+去露营啦! ⛺ 很快就回来。
+真开心! 😂
+以下符号清单是 emoji 代码的非常有用的参考。
+表情与情感
+笑脸表情
+图标 代码 图标 代码 😀 grinning 😃 smiley 😄 smile 😁 grin 😆 laughing satisfied 😅 sweat_smile 🤣 rofl 😂 joy 🙂 slightly_smiling_face 🙃 upside_down_face 😉 wink 😊 blush 😇 innocent 爱意表情
+图标 代码 图标 代码 😍 heart_eyes 😘 kissing_heart 😗 kissing ☺️ relaxed 😚 kissing_closed_eyes 😙 kissing_smiling_eyes 吐舌头表情
+图标 代码 图标 代码 😋 yum 😛 stuck_out_tongue 😜 stuck_out_tongue_winking_eye 😝 stuck_out_tongue_closed_eyes 🤑 money_mouth_face 国家和地区旗帜
+图标 代码 图标 代码 🇦🇩 andorra 🇦🇪 united_arab_emirates 🇦🇫 afghanistan 🇦🇬 antigua_barbuda 🇦🇮 anguilla 🇦🇱 albania 🇦🇲 armenia 🇦🇴 angola 🇦🇶 antarctica 🇦🇷 argentina 🇦🇸 american_samoa 🇦🇹 austria 🇦🇺 australia 🇦🇼 aruba 🇦🇽 aland_islands 🇦🇿 azerbaijan 🇧🇦 bosnia_herzegovina 🇧🇧 barbados 🇧🇩 bangladesh 🇧🇪 belgium 🇧🇫 burkina_faso 🇧🇬 …</content></entry><entry><title>Markdown 语法支持</title><url>/post/markdown-syntax.html</url><categories><category>示例</category></categories><tags><tag>Markdown</tag><tag>语法</tag></tags><content type="html"><![CDATA[  仅以此篇文章来测试下在 NexT 主题中在通过 Hugo 引擎来建站时，是否支持 Markdown 文件内容中所写的各种语法，并展示下实际的效果。
+1.标题样式让我们从所有可能的标题开始，在 HTML 中 &lt;h1&gt;-&lt;h6&gt;元素分别表示六个不同级别的标题样式，其中 &lt;h1&gt; 为最大标题，&lt;h6&gt;为最小标题，效果如下：
+标题 1标题 2标题 3标题 4标题 5标题 63.段落格式根据W3C 定义的HTML5 规范，HTML 文档由元素和文本组成。每个元素的组成都由一个开始标记表示，例如： &lt;body&gt; ，和结束标记表示，例如： &lt;/body&gt; 。（某些开始标记和结束标记在某些情况下可以省略，并由其他标记暗示。） 元素可以具有属性，这些属性控制元素的工作方式。例如：超链接是使用 a 元素及其 href 属性形成的。
+Markdown 语法![图像说明](图像地址) HTML IMG 标签&lt;img src=&#34;图像地址&#34; width=&#34;宽度&#34; height=&#34;高度&#34; /&gt; SVG 格式&lt;svg&gt;xxxxxx&lt;/svg&gt; 列表类型有序列表第一个元素 第二个元素 第三个元素 无序列表列表元素 另一个元素 和其它元素 嵌套列表借助 HTML 的 ul 元素来实现。
+第一项第二项第二项第一个子项目第二项第二个子项目第二项第二分项第一分项第二项第二分项第二分项第二项第二分项第三分项第二项第三个子项目第二项第三分项第一分项第二项第三分项第二分项第二项第三分项第三分项第三项自定义列表通过 HTML 的 dl 元素还支持自定义列表（表格列表）。
+Hugo 目录结构assetsconfig.tomlcontentdatathemestaticHugo 模板基础模板列表模板单页模板块引用blockquote 元素表示从另一个源引用的内容，可以选择引用必须在 footer 或 cite 元素中，也可以选择使用注释和缩写等行内更改。
+引用文本 这一行也是同样的引用 同样你也在 blockquote 中使用 Markdown 语法书写
+带有引文的 Blockquote 元素效果。
+我的目标不是赚大钱,是为了制造好的电脑。当我意识到我可以永远当工程师时，我才创办了这家公司。
+— 史蒂夫·沃兹尼亚克根据 Mozilla 的网站记录，Firefox 1.0 于 2004 年发布，并取得了巨大成功。
+表格表格并不算是 Markdown 的核心要素，但 Hugo 同样支持它。
+ID 创建者 模型 年份 1 Honda Accord 2009 2 Toyota Camry 2012 3 Hyundai Elantra 2010 可以使用 : （英文格式冒号）来对表格内容进行对齐。
+表格 可以是 很酷 左对齐 居中 右对齐 左对齐 居中 右对齐 左对齐 居中 右对齐 同样也可以在表格中使用 Markdown 语法。
+表格 中 使用 Markdown 语法 斜体 粗体 中划线 代码块 Code&lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34;&gt; &lt;title&gt;Example HTML5 Document&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;p&gt;Test&lt;/p&gt; &lt;/body&gt; &lt;/html&gt; &lt;!DOCTYPE html&gt; &lt;html lang=&#34;en&#34;&gt; &lt;head&gt; &lt;meta charset=&#34;UTF-8&#34;&gt; &lt;title&gt;Example HTML5 Document&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;p&gt;Test&lt;/p&gt; &lt;/body&gt; &lt;/html&gt; 其它元素： abbr、sub、sup、kbd等等GIF 是位图图像格式。
+H2O
+C6H12O6
+Xn + Yn = Zn
+按X获胜。或按CTRL+ALT+F显示 FPS 计数器。
+比特作为信息论中的信息单位，也被称为 shannon ，以信息论领域的创始人 Claude shannon 的名字命名。
+参考：
+来自 Mainroad 主题的 Basic Elements内容   ]]></content></entry><entry><title>2020年最新前端工程师学习路线</title><url>/post/frontend-learning-path.html</url><categories><category>前端</category><category>HTML</category></categories><tags><tag>前端</tag><tag>HTML</tag></tags><content type="html"><![CDATA[  这段日子在收到小伙伴最多的要求就是出一个前端学习路线，我能够充分的感受到大家抓耳挠腮加挠墙的迷茫~所以在这里给大家总结了一套前端学习路线。先从初级前端工程师所需的技能开始，然后一路升级到高级工程师该掌握的技能，层层相扣，让大家在工作中能游刃有余。最后附上我自己是如何从一个后端工程师转成了前端工程师^^。希望我的经历能对大家有帮助。
+俗话说知己知彼百战不殆，要成为一名前端大神，首先知道它是做什么的。单纯从工作角度看，无非就是写写前端样式，连接下后台 api，解析解析数据，然后显示给用户，核心逻辑是这样没错，只是这中间掺杂着无数个边边角角的问题，比如框架选择、性能优化、兼容性调整、工程化等等。不过呢，这些并不需要一次性掌握，随着一次一次完成工作任务，解决 bug，这些自然而然就学会了~
+在正式开始之前，咱们先把心态放平，就像玩游戏，游戏满级也不是一天两天的事，满级之后也才是一个新的开始。。。无尽的追求完美~。时间上，掌握前端工程师的基本技能大概需要 4 个月到 1 年的时间（看自己的意志力和上进心），之后就是在工作实践中不断的提升自己，时刻关注业界新闻，保持在科技的最前沿。工作是一个长期的事情，咱们静下心来慢慢学。
+完整技能大图先来看 github 上一大神制作的路线图：
+https://roadmap.sh/frontend核心技能好了，相信你已经开始下定决心要成为前端大神了，那咱们第一步就是把前端的核心装备拿下，它们分别是 html, css 和 JavaScript。前端的初衷是开发网页来让其他人看的，可以向全世界分享信息，直到最近几年才诞生了利用这些核心知识去开发移动 APP、小程序等多终端前端应用的工具，学好核心是前端工程师必备的素养。下边就是核心技能的简介：
+HTMLHTML 是用来编写网页代码结构的，它有一系列的标签用于显示不同的页面元素，比如用 &amp;lt;a/&amp;gt; 显示一个超链接，&amp;lt;img/&amp;gt; 显示一张图片，就跟写一个 word 文档一样，只是单纯用 html 只能写内容，不能进行排版和美化样式，如果让网页变得漂亮，需要 CSS。
+学习 HTML ：指南与教程书籍：Web 开发经典丛书：HTML &amp;amp; CSS 设计与构建网站
+CSSCSS 是用来美化 HTML 编写的页面的，通过一些语法选择特定的 html 标签，然后用一 …  ]]></content></entry><entry><title>世界，你好！</title><url>/post/hello-world.html</url><categories><category>博客</category></categories><tags><tag>Hugo</tag><tag>开始</tag></tags><content type="html"> “使用 weight 关键字置顶文章。”
+Hugo
+是现今世界上最快的网站建设框架，也是最流行的开源静态站点生成器之一。 凭借其惊人的速度和灵活性，Hugo 让建设网站再次变得有趣起来。
+快速开始
+发表新文章
+$ hugo new hello-world.md 更多信息：
+内容格式
+启动服务
+$ hugo server 更多信息：
+Hugo 服务命令行
+生成静态文件
+$ hugo 更多信息：
+Hugo 建站
+部署到服务器
+$ hugo deploy 更多信息：
+Hugo 发布
+祝你好运，相信你会喜欢上 Hugo 建站的旅程！</content></entry><entry><title>友情链接</title><url>/flinks.html</url><categories/><tags/><content type="html"> 如想交换本站友情链接，请在评论区留下你的站点信息，格式参考如下：
+- name: 爸比娃娃的自留地 desc: 我是一个吃苦耐劳的享乐主义者。 avatar: https://blog.jiandan.cf/imgs/logo.png link: https://blog.jiandan.cf</content></entry></search>
