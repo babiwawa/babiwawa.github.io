@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>emoji on 爸比娃娃的自留地</title><link>https://www.babiwawa.com/blog/tags/emoji/</link><description>Recent content in emoji on 爸比娃娃的自留地</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 04 Aug 2022 19:46:45 +0800</lastBuildDate><atom:link href="https://www.babiwawa.com/blog/tags/emoji/rss.xml" rel="self" type="application/rss+xml"/><item><title>Emoji 表情</title><link>https://www.babiwawa.com/blog/post/emoji.html</link><pubDate>Thu, 04 Aug 2022 19:46:45 +0800</pubDate><guid>https://www.babiwawa.com/blog/post/emoji.html</guid><description>Emoji表情 将对应emoji表情的符号码复制后输入你的markdown文本即可显示emoji表情。 如😊，显示为😊 人物 syntax preview syntax preview syntax preview :bowtie: :bowtie: 😄 😄 😆</description></item><item><title>支持 Emoji 表情</title><link>https://www.babiwawa.com/blog/post/emoji-support.html</link><pubDate>Sat, 04 Jun 2022 19:46:45 +0800</pubDate><guid>https://www.babiwawa.com/blog/post/emoji-support.html</guid><description>&lt;p>Emoji 可以通过多种方式在 Hugo 项目中启用。&lt;/p>
+&lt;p>
+&lt;a href="https://gohugo.io/functions/emojify/" title="&amp;lt;code&amp;gt;emojify&amp;lt;/code&amp;gt;" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+&lt;code>emojify&lt;/code>
+&lt;i class="fa fa-external-link-alt">&lt;/i>
+&lt;/a> 方法可以直接在模板中调用, 或者使用
+&lt;a href="https://gohugo.io/templates/shortcode-templates#inline-shortcodes" title="行内 Shortcodes" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+行内 Shortcodes
+&lt;i class="fa fa-external-link-alt">&lt;/i>
+&lt;/a>.&lt;/p>
+&lt;p>要全局使用 emoji, 需要在你的
+&lt;a href="https://gohugo.io/getting-started/configuration/" title="网站配置" rel="noopener external nofollow noreferrer" target="_blank" class=" exturl">
+网站配置
+&lt;i class="fa fa-external-link-alt">&lt;/i>
+&lt;/a>中设置 &lt;code>enableEmoji&lt;/code> 为 &lt;code>true&lt;/code>，
+然后你就可以直接在文章中输入 emoji 的代码。&lt;/p></description></item></channel></rss>
