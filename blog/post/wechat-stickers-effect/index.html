@@ -1,0 +1,427 @@
+<!doctype html><html lang=zh-CN data-theme=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width"><meta name=theme-color content="#222" media="(prefers-color-scheme: dark)"><meta name=generator content="Hugo 0.116.1"><link rel="shortcut icon" type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/png sizes=16x16 href=/imgs/icons/favicon_16x16.png><link rel=icon type=image/png sizes=32x32 href=/imgs/icons/favicon_32_32.png><link rel=apple-touch-icon sizes=180x180 href=/imgs/icons/apple-touch-icon.png><meta itemprop=name content="从 0 仿微信 8.0 动态表情实现过程"><meta itemprop=description content="微信 8.0 更新的一大特色就是支持动画表情，如果发送的消息只有一个内置的表情图标，这个表情会有一段简单的动画，一些特殊的表情还有全屏特效，例如烟花表情有全屏放烟花的特效，炸弹表情有爆炸动画并且消息和头像也会随之震动。本着作为前端工程师的职业精神，我就想看看能不能实现一个类似的特效。折腾许久之后，做出来的效果如下："><meta itemprop=image content="https://blog.jiandan.cf/imgs/babiwawa.png"><meta itemprop=keywords content="前端,React"><meta property="og:type" content="article"><meta property="og:title" content="从 0 仿微信 8.0 动态表情实现过程"><meta property="og:description" content="微信 8.0 更新的一大特色就是支持动画表情，如果发送的消息只有一个内置的表情图标，这个表情会有一段简单的动画，一些特殊的表情还有全屏特效，例如烟花表情有全屏放烟花的特效，炸弹表情有爆炸动画并且消息和头像也会随之震动。本着作为前端工程师的职业精神，我就想看看能不能实现一个类似的特效。折腾许久之后，做出来的效果如下："><meta property="og:image" content="/imgs/babiwawa.png"><meta property="og:image:width" content="312"><meta property="og:image:height" content="312"><meta property="og:image:type" content="image/jpeg/png/svg/jpg"><meta property="og:url" content="https://blog.jiandan.cf/post/wechat-stickers-effect/"><meta property="og:site_name" content="爸比娃娃的博客"><meta property="og:locale" content="zh-CN"><meta property="article:author" content="峰华"><meta property="article:published_time" content="0001-01-01 00:00:00 +0000 UTC"><meta property="article:modified_time" content="0001-01-01 00:00:00 +0000 UTC"><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/font-awesome/6.1.2/css/all.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/animate.css/3.1.1/animate.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.css><link rel=stylesheet href=/css/main.min.ad1ea33a63f63e6a94f5de191c205129577cfd392e2e10dec0f173ca5bdf0b7b.css><style type=text/css>.post-footer,.flinks-list-footer hr:after{content:"~ 我可是有底线的哟 ~"}</style><script type=text/javascript>(function(){localDB={set:function(e,t,n){if(n===0)return;const s=new Date,o=n*864e5,i={value:t,expiry:s.getTime()+o};localStorage.setItem(e,JSON.stringify(i))},get:function(e){const t=localStorage.getItem(e);if(!t)return void 0;const n=JSON.parse(t),s=new Date;return s.getTime()>n.expiry?(localStorage.removeItem(e),void 0):n.value}},theme={active:function(){const e=localDB.get("theme");if(e==null)return;theme.toggle(e),window.matchMedia("(prefers-color-scheme: dark)").addListener(function(e){theme.toggle(e.matches?"dark":"light")})},toggle:function(e){document.documentElement.setAttribute("data-theme",e),localDB.set("theme",e,2);const t=document.querySelector("iframe.giscus-frame");if(t){const n={setConfig:{theme:e}};t.contentWindow.postMessage({giscus:n},"https://giscus.app")}}},theme.active()})(window)</script><script class=next-config data-name=page type=application/json>{"comments":true,"isHome":false,"isPage":true,"path":"wechat-stickers-effect","permalink":"https://blog.jiandan.cf/post/wechat-stickers-effect/","title":"从 0 仿微信 8.0 动态表情实现过程","waline":{"js":[{"alias":"waline","alias_name":"@waline/client","file":"dist/pageview.js","name":"pageview","version":"2.13.0"},{"alias":"waline","alias_name":"@waline/client","file":"dist/comment.js","name":"comment","version":"2.13.0"}]}}</script><script type=text/javascript>document.addEventListener("DOMContentLoaded",()=>{var e=document.createElement("script");e.charset="UTF-8",e.src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",e.async=!1,e.defer=!0,document.head.appendChild(e),e.onload=function(){NexT.utils.fmtBusuanzi()}})</script><title>从 0 仿微信 8.0 动态表情实现过程 - 爸比娃娃的博客</title><noscript><link rel=stylesheet href=/css/noscript.css></noscript></head><body itemscope itemtype=http://schema.org/WebPage class=use-motion><div class=headband></div><main class=main><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=header-inner><div class=site-brand-container><div class=site-nav-toggle><div class=toggle aria-label role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div></div><div class=site-meta><a href=/ class=brand rel=start><i class=logo-line></i><h1 class=site-title>爸比娃娃的博客</h1><i class=logo-line></i></a><p class=site-subtitle itemprop=description>爸比娃娃的博客</p></div><div class=site-nav-right><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class=site-nav><ul class="main-menu menu"><li class="menu-item menu-item-home"><a href=/ class=hvr-icon-pulse rel=section><i class="fa fa-home hvr-icon"></i>首页</a></li><li class="menu-item menu-item-about"><a href=/about.html class=hvr-icon-pulse rel=section><i class="fa fa-user hvr-icon"></i>关于</a></li><li class="menu-item menu-item-flinks"><a href=/flinks.html class=hvr-icon-pulse rel=section><i class="fa fa-thumbs-up hvr-icon"></i>友情链接</a></li><li class="menu-item menu-item-archives"><a href=/archives/ class=hvr-icon-pulse rel=section><i class="fa fa-archive hvr-icon"></i>归档
+<span class=badge>125</span></a></li><li class="menu-item menu-item-commonweal"><a href=/404.html class=hvr-icon-pulse rel=section><i class="fa fa-heartbeat hvr-icon"></i>公益 404</a></li><li class="menu-item menu-item-search"><a role=button class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索</a></li></ul></nav><div class=search-pop-overlay><div class="popup search-popup"><div class=search-header><span class=search-icon><i class="fa fa-search"></i></span><div class=search-input-container><input autocomplete=off autocapitalize=off maxlength=80 placeholder=搜索... spellcheck=false type=search class=search-input></div><span class=popup-btn-close role=button><i class="fa fa-times-circle"></i></span></div><div class="search-result-container no-result"><div class=search-result-icon><i class="fa fa-spinner fa-pulse fa-5x"></i></div></div></div></div></div><div class="toggle sidebar-toggle" role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div><aside class=sidebar><div class="sidebar-inner sidebar-overview-active"><ul class=sidebar-nav><li class=sidebar-nav-toc>文章目录</li><li class=sidebar-nav-overview>站点概览</li></ul><div class=sidebar-panel-container><div class="post-toc-wrap sidebar-panel"><div class="post-toc animated"><nav id=TableOfContents><ul><li><a href=#一编写界面>一、编写界面</a><ul><li><a href=#1-html-部分>1. HTML 部分</a></li><li><a href=#2-css-部分>2. CSS 部分</a><ul><li><a href=#1全局样式>1）全局样式</a></li><li><a href=#2main-容器>2）Main 容器</a></li><li><a href=#3聊天应用容器>3）聊天应用容器</a></li><li><a href=#4标题栏>4）标题栏</a></li><li><a href=#5聊天面板>5）聊天面板</a></li><li><a href=#6消息>6）消息</a></li><li><a href=#7底部操作栏>7）底部操作栏</a></li></ul></li><li><a href=#3-js-部分>3. JS 部分</a></li></ul></li><li><a href=#二发送普通消息>二、发送普通消息</a></li><li><a href=#三发送动画表情>三、发送动画表情</a></li><li><a href=#四发送带全屏特效的表情>四、发送带全屏特效的表情</a></li><li><a href=#总结>总结</a></li></ul></nav></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author site-overview-item animated" itemprop=author itemscope itemtype=http://schema.org/Person><img class=site-author-image itemprop=image alt=爸比娃娃 src=/imgs/img-lazy-loading.gif data-src=/imgs/babiwawa.png><p class=site-author-name itemprop=name>爸比娃娃</p><div class=site-description itemprop=description>有钱说什么都是硬道理，没钱说什么都是吹牛逼。</div></div><div class="site-state-wrap site-overview-item animated"><nav class=site-state><div class="site-state-item site-state-posts"><a href=/archives/><span class=site-state-item-count>125</span>
+<span class=site-state-item-name>日志</span></a></div><div class="site-state-item site-state-categories"><a href=/categories/><span class=site-state-item-count>4</span>
+<span class=site-state-item-name>分类</span></a></div><div class="site-state-item site-state-tags"><a href=/tags/><span class=site-state-item-count>117</span>
+<span class=site-state-item-name>标签</span></a></div></nav></div><div class="links-of-social site-overview-item animated"><span class=links-of-social-item><a href=https://github.com/babiwawa title="Github → https://github.com/babiwawa" rel=noopener class=hvr-icon-pulse target=_blank><i class="fab fa-github fa-fw hvr-icon"></i>
+Github</a></span>
+<span class=links-of-social-item><a href=mailto:1223112302@qq.com title="E-Mail → mailto:1223112302@qq.com" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-envelope fa-fw hvr-icon"></i>
+E-Mail</a></span>
+<span class=links-of-social-item><a href=https://www.zhihu.com/people/hbalnw title="知乎 → https://www.zhihu.com/people/hbalnw" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-book fa-fw hvr-icon"></i>
+知乎</a></span></div><div class="cc-license animated" itemprop=license><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh class=cc-opacity rel=noopener target=_blank title=共享知识><img src=/imgs/img-lazy-loading.gif data-src=/imgs/cc/big/by_nc_sa.svg alt=共享知识></a></div><div class="links-of-blogroll site-overview-item animated"><div class=links-of-blogroll-title><i class="fa fa-globe fa-fw"></i>
+友情链接</div><ul class=links-of-blogroll-list><li class=links-of-blogroll-item><a href=https://jiandan.cf title=https://jiandan.cf target=_blank>简单导航</a></li><li class=links-of-blogroll-item><a href=https://lisenhui.cn title=https://lisenhui.cn target=_blank>凡梦星尘空间站</a></li></ul></div></div></div></div><div id=siteinfo-card-widget class=sidebar-card-widget><div class=item-headline><i class="fas fa-chart-line"></i>
+<span>网站资讯</span></div><div class=siteinfo><div class=siteinfo-item><div class=item-name><i class="fa-solid fa-calendar-check"></i>已运行：</div><div class=item-count id=runTimes data-publishdate=0001-01-01T00:00:00+00:00></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-user"></i>总访客数：</div><div class=item-count id=busuanzi_value_site_uv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-eye"></i>页面浏览：</div><div class=item-count id=busuanzi_value_site_pv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-font"></i>总字数：</div><div class=item-count id=wordsCount data-count=287557></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-mug-hot"></i>阅读约：</div><div class=item-count id=readTimes data-times=640></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-clock-rotate-left"></i>最后更新于：</div><div class=item-count id=last-push-date data-lastpushdate=2023-01-04T00:00:00+00:00></div></div></div></div></aside><div class=sidebar-dimmer></div></header><div class=tool-buttons><div id=goto-comments class="button goto-comments" title=直达评论><i class="fas fa-comments"></i></div><div id=goto-gtranslate class=button title=直达底部><i class="fas fa-arrow-down"></i></div><div id=toggle-theme class=button title=深浅模式切换><i class="fas fa-adjust"></i></div><div class=back-to-top role=button title=返回顶部><i class="fa fa-arrow-up"></i>
+<span>0%</span></div></div><div class=reading-progress-bar></div><a role=button class="book-mark-link book-mark-link-fixed"></a>
+<a href=https://github.com/babiwawa rel="noopener external nofollow noreferrer" target=_blank title="Follow me on GitHub" class="exturl github-corner"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><script type=text/javascript src=//sidecar.gitter.im/dist/sidecar.v1.js async></script>
+<script type=text/javascript>((window.gitter={}).chat={}).options={room:"hugo-next/community"}</script><noscript><div class=noscript-warning>Theme NexT works best with JavaScript enabled</div></noscript><div class="main-inner post posts-expand"><div class=post-block><article itemscope itemtype=http://schema.org/Article class=post-content lang><link itemprop=mainEntityOfPage href=https://blog.jiandan.cf/post/wechat-stickers-effect/><span hidden itemprop=author itemscope itemtype=http://schema.org/Person><meta itemprop=image content="/imgs/babiwawa.png"><meta itemprop=name content="峰华"></span><span hidden itemprop=publisher itemscope itemtype=http://schema.org/Organization><meta itemprop=name content="爸比娃娃"><meta itemprop=description content="有钱说什么都是硬道理，没钱说什么都是吹牛逼。"></span><span hidden itemprop=post itemscope itemtype=http://schema.org/CreativeWork><meta itemprop=name content="从 0 仿微信 8.0 动态表情实现过程"><meta itemprop=description content="微信 8.0 更新的一大特色就是支持动画表情，如果发送的消息只有一个内置的表情图标，这个表情会有一段简单的动画，一些特殊的表情还有全屏特效，例如烟花表情有全屏放烟花的特效，炸弹表情有爆炸动画并且消息和头像也会随之震动。本着作为前端工程师的职业精神，我就想看看能不能实现一个类似的特效。折腾许久之后，做出来的效果如下："></span><header class=post-header><h1 class=post-title itemprop="name headline">从 0 仿微信 8.0 动态表情实现过程</h1><div class=post-meta-container><div class=post-meta-items><span class=post-meta-item><span class=post-meta-item-icon><i class="far fa-calendar"></i></span>
+<span class=post-meta-item-text title=发表于>发表于：</span>
+<time title="创建时间：0001-01-01 00:00:00 +0000 UTC" itemprop="dateCreated datePublished" datetime="0001-01-01 00:00:00 +0000 UTC">0001-01-01</time></span></div><div class=post-meta-items><span class=post-meta-item title=字数><span class=post-meta-item-icon><i class="far fa-file-word"></i></span>
+<span class=post-meta-item-text>字数：</span>
+<span>6563</span></span>
+<span class=post-meta-item title=阅读><span class=post-meta-item-icon><i class="far fa-clock"></i></span>
+<span class=post-meta-item-text>阅读：&ap;</span>
+<span>14分钟</span></span>
+<span class=post-meta-item title=浏览><span class=post-meta-item-icon><i class="far fa-eye"></i></span>
+<span class=post-meta-item-text>浏览：</span>
+<span id=busuanzi_value_page_pv data-path=/post/wechat-stickers-effect/><i class="fa fa-sync fa-spin"></i></span></span></div></div></header><div class=post-body itemprop=articleBody><p>微信 8.0 更新的一大特色就是支持动画表情，如果发送的消息只有一个内置的表情图标，这个表情会有一段简单的动画，一些特殊的表情还有全屏特效，例如烟花表情有全屏放烟花的特效，炸弹表情有爆炸动画并且消息和头像也会随之震动。本着作为前端工程师的职业精神，我就想看看能不能实现一个类似的特效。折腾许久之后，做出来的效果如下：</p><p>&lt;Video src={require("./img/2021-01-24-wechat-stickers-demo.mp4").default} width={300} /></p><p>集中贴出需要的链接：</p><ul><li>示例地址：https://zxuqian.github.io/html-css-examples/31-05-wechat-emoji-effect/</li><li>代码地址：https://github.com/zxuqian/html-css-examples/tree/master/31-05-wechat-emoji-effect</li><li>lottie:
+<a href=https://cdnjs.com/libraries/bodymovin title=https://cdnjs.com/libraries/bodymovin rel="noopener external nofollow noreferrer" target=_blank class=exturl>https://cdnjs.com/libraries/bodymovin
+<i class="fa fa-external-link-alt"></i></a> ，下载 lottie.min.js</li><li>南瓜表情：https://lottiefiles.com/43215-pumpkins-sticker-4</li><li>炸弹表情：https://lottiefiles.com/3145-bomb</li><li>爆炸动画：https://lottiefiles.com/9990-explosion</li></ul><p>项目的核心是使用到了 lottie 动画库。Lottie 是 Airbnb 出品的、全平台（Web、Android、IOS、React Native）的动画库，它的特点在于能够直接播放使用 Adobe After Effects 制作的动画。设计师在 After Effects 中，利用 Bodymovin 插件把动画导出为 JSON 格式之后，开发者就能够通过相应平台的 SDK 进行播放。</p><ul><li>Lottie 官网：
+<a href=https://airbnb.io/lottie/#/ title=https://airbnb.io/lottie rel="noopener external nofollow noreferrer" target=_blank class=exturl>https://airbnb.io/lottie
+<i class="fa fa-external-link-alt"></i></a></li></ul><p>在做完这个项目之后我感觉到自己的前端储备又丰富了一层，在以后应对复杂特效时又有了新的思路，如果你也想进一步提升前端开发技能，可以跟着这篇文章实践一下。本篇文章除了使用 lottie 库之外，全部都是使用原生 HTML/CSS/JavaScript 实现的，这样无论你是 React、Vue 还是其它工程师，都可以快速掌握。</p><h2 id=一编写界面>一、编写界面
+<a class=header-anchor href=#%e4%b8%80%e7%bc%96%e5%86%99%e7%95%8c%e9%9d%a2></a></h2><p>本来想跳过 HTML/CSS 部分，但是想到 CSS 可能是大部分人的弱项，所以我决定还是把实现界面的思路写一下，想看核心部分的可以直接跳到：<strong>二、发送普通消息</strong>部分。</p><h3 id=1-html-部分>1. HTML 部分
+<a class=header-anchor href=#1-html-%e9%83%a8%e5%88%86></a></h3><p>首先看 HTML 部分，从效果图来看：</p><ul><li>上边有一个标题栏，显示与 XXX 聊天。</li><li>中间是聊天信息面板，包含着双方发送的消息，每条消息由发送者头像和消息内容组成，我发送的在右侧，对方发送的在左侧。</li><li>下方是底部信息，有表情选择按钮、编辑消息文本框和发送按钮。</li></ul><p>那么根据这个结构编写的 HTML 代码如下所示：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>main</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;chat&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;titleBar&#34;</span>&gt;与 XXX 聊天&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;panel&#34;</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message mine&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;./me.png&#34;</span> <span style=color:#a6e22e>alt</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span> /&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>p</span>&gt;&lt;<span style=color:#f92672>span</span>&gt;你好&lt;/<span style=color:#f92672>span</span>&gt;&lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>      &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;message yours&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;avatar&#34;</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;./you.png&#34;</span> <span style=color:#a6e22e>alt</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span> /&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>p</span>&gt;&lt;<span style=color:#f92672>span</span>&gt;Hi&lt;/<span style=color:#f92672>span</span>&gt;&lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>      &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>      <span style=color:#75715e>&lt;!-- 省略其它消息 --&gt;</span>
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>footer</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;chooseSticker&#34;</span>&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>img</span> <span style=color:#a6e22e>src</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;./emoji.svg&#34;</span> <span style=color:#a6e22e>alt</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span> /&gt;
+</span></span><span style=display:flex><span>        &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;stickers&#34;</span>&gt;&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>      &lt;/<span style=color:#f92672>button</span>&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>input</span>
+</span></span><span style=display:flex><span>             <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;messageInput&#34;</span>
+</span></span><span style=display:flex><span>             <span style=color:#a6e22e>type</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;text&#34;</span>
+</span></span><span style=display:flex><span>             <span style=color:#a6e22e>name</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>             <span style=color:#a6e22e>id</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>             <span style=color:#a6e22e>placeholder</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;请输入聊天信息&#34;</span>
+</span></span><span style=display:flex><span>             /&gt;
+</span></span><span style=display:flex><span>      &lt;<span style=color:#f92672>button</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;send&#34;</span>&gt;发送&lt;/<span style=color:#f92672>button</span>&gt;
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>footer</span>&gt;
+</span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>main</span>&gt;
+</span></span></code></pre></div><p>各个元素所对应的界面部分为：</p><ul><li><p><code>&lt;main /></code> 元素是一个整体的容器，用于把聊天窗口居中对齐</p></li><li><p><code>&lt;div class="chat"></code> 是聊天应用的容器，用于布局标题栏、聊天面板和底部发送框。</p></li><li><p><code>&lt;div class="titleBar"></code> 用于显示标题栏。</p></li><li><p><code>&lt;div class="panel"></code> 是消息面板，用于布局其中的消息。</p></li><li><p><code>&lt;div class="message"></code> 为消息容器，使用不同的 class 来区分发送方， <code>mine</code> 代表我发送的， <code>yours</code> 代表对方发送的。每条消息里边使用 <code>&lt;img class="avatar" ></code> 来展示头像，使用 <code>&lt;p></code> 元素来显示文本， <code>&lt;p></code> 元素里边的 <code>&lt;span></code> 元素将会作为 lottie 的容器来播放表情动画。</p></li><li><p><code>&lt;footer></code> 用于布局底部操作按钮和消息发送框。其中：</p><ul><li><code>&lt;button class="chooseSticker"></code> 是表情选择按钮，使用一个笑脸 svg 图片表示，里边的 <code>&lt;div class="stickers"></code> 是表情选择框弹出层，里边的表情将在 JS 中动态加载，目的是为了实现动画预览。</li><li><code>&lt;input class="messageInput" /></code> 是聊天消息输入框，没什么特别的。</li><li><code>&lt;button class="send"></code> 是发送按钮</li></ul></li></ul><p>这个是 HTML 的基本结构，接下来看一下 CSS 样式。</p><h3 id=2-css-部分>2. CSS 部分
+<a class=header-anchor href=#2-css-%e9%83%a8%e5%88%86></a></h3><p>在项目根目录下创建一个 style.css 文件并在 index.html 的 <code>&lt;head></code> 标签中引入：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;link rel=&#34;stylesheet&#34; href=&#34;style.css&#34; /&gt;
+</span></span></code></pre></div><h4 id=1全局样式>1）全局样式
+<a class=header-anchor href=#1%e5%85%a8%e5%b1%80%e6%a0%b7%e5%bc%8f></a></h4><p>首先定义一些 CSS 变量，CSS 变量是为了方便我们引用同一属性值的，后边如果更新样式时，可以避免多次修改：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>:root {
+</span></span><span style=display:flex><span>  --primary-color: hsl(200, 100%, 48%);
+</span></span><span style=display:flex><span>  --inverse-color: hsl(310, 90%, 60%);
+</span></span><span style=display:flex><span>  --shadow-large: 0 0px 24px hsl(0, 0%, 0%, 0.2);
+</span></span><span style=display:flex><span>  --shadow-medium: 0 0 12px hsl(0, 0%, 0%, 0.1);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这些变量的含义分别是：</p><ul><li><code>--primary-color: hsl(200, 100%, 48%)</code> ，主色调，例如我发送的消息的蓝色背景。</li><li><code>--inverse-color: hsl(310, 90%, 60%)</code> ，反色调，或强调色调，与主色调形成鲜明对比，例如发送按钮的背景色。</li><li><code>--shadow-large: 0 0px 24px hsl(0, 0%, 0%, 0.2)</code> ，大阴影，例如标题栏、底部栏的阴影。</li><li><code>--shadow-medium: 0 0 12px hsl(0, 0%, 0%, 0.1)</code> ，小阴影，例如输入框和表情选择弹出层。</li></ul><p>接下来是一些重置样式：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>* {
+</span></span><span style=display:flex><span>  box-sizing: border-box;
+</span></span><span style=display:flex><span>  padding: 0;
+</span></span><span style=display:flex><span>  margin: 0;
+</span></span><span style=display:flex><span>  font-family: Helvetica, &#34;PingFang SC&#34;, &#34;Microsoft Yahei&#34;, sans-serif;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这些样式对所有元素都有效，设置盒子模型为 <code>border-box</code> ，这样内边距、边框都算在宽高之内，设置内间距和外间距为 0，最后设置默认字体。</p><h4 id=2main-容器>2）Main 容器
+<a class=header-anchor href=#2main-%e5%ae%b9%e5%99%a8></a></h4><p>Main 容器用于定位聊天应用容器到浏览器中间，使用 grid 布局，宽高分别设置为浏览器可视区域的 100%，并把背景色设置为黑灰色：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>main {
+</span></span><span style=display:flex><span>  display: grid;
+</span></span><span style=display:flex><span>  place-items: center;
+</span></span><span style=display:flex><span>  width: 100vw;
+</span></span><span style=display:flex><span>  height: 100vh;
+</span></span><span style=display:flex><span>  background-color: hsl(0, 0%, 10%);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=3聊天应用容器>3）聊天应用容器
+<a class=header-anchor href=#3%e8%81%8a%e5%a4%a9%e5%ba%94%e7%94%a8%e5%ae%b9%e5%99%a8></a></h4><p>聊天应用容器设置了固定宽高，模拟手机屏幕，并使用 grid 布局来控制标题栏、聊天面板和底部操作栏的位置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.chat {
+</span></span><span style=display:flex><span>  width: 375px;
+</span></span><span style=display:flex><span>  height: 700px;
+</span></span><span style=display:flex><span>  background: hsl(0, 0%, 100%);
+</span></span><span style=display:flex><span>  border-radius: 8px;
+</span></span><span style=display:flex><span>  display: grid;
+</span></span><span style=display:flex><span>  grid-template-rows: max-content 1fr max-content;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里使用了 <code>grid-template-rows</code> 把聊天应用分成了 3 行，第一行的标题栏和最后一行的标底部操作栏的高度分别为内容的最大高度，中间的聊天面板则是浮动高度。</p><h4 id=4标题栏>4）标题栏
+<a class=header-anchor href=#4%e6%a0%87%e9%a2%98%e6%a0%8f></a></h4><p>标题栏简单的设置了一个内间距、文字居中方式和阴影：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.titleBar {
+</span></span><span style=display:flex><span>  padding: 24px 0;
+</span></span><span style=display:flex><span>  text-align: center;
+</span></span><span style=display:flex><span>  box-shadow: var(--shadow-large);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>:::tip
+界面优化提示：内间距用来增加留白，在视觉上引起放松，阴影则为了和下边的聊天面板区分开
+:::</p><h4 id=5聊天面板>5）聊天面板
+<a class=header-anchor href=#5%e8%81%8a%e5%a4%a9%e9%9d%a2%e6%9d%bf></a></h4><p>聊天面板使用 flex 布局对其中的消息进行排列，并设置方向为按列排布，然后设置 overflow 为 auto，在消息整体高度超出面板高度时，出现滚动条：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.panel {
+</span></span><span style=display:flex><span>  display: flex;
+</span></span><span style=display:flex><span>  flex-direction: column;
+</span></span><span style=display:flex><span>  padding: 24px 12px;
+</span></span><span style=display:flex><span>  overflow: auto;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>:::tip
+界面优化提示：这里的 padding 同样是为了留出足够多的空白，来与其它元素隔开一段距离，以避免拥挤感。
+:::</p><h4 id=6消息>6）消息
+<a class=header-anchor href=#6%e6%b6%88%e6%81%af></a></h4><p>消息分为消息容器、头像和消息体 3 个部分。其中消息体和头像包含在消息容器中，先来看消息容器的样式。消息容器使用 flex 布局来把消息体和头像放在一行，宽度最大为面板宽度的 80%，并设置字体和外边距：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message {
+</span></span><span style=display:flex><span>  display: flex;
+</span></span><span style=display:flex><span>  max-width: 80%;
+</span></span><span style=display:flex><span>  font-size: 14px;
+</span></span><span style=display:flex><span>  margin: 8px 0;
+</span></span><span style=display:flex><span>  position: relative;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里的 <code>position</code> 设置为 relative 是为了定位后边的全屏特效动画。</p><p>头像简单设置了宽高、圆角和距离消息体的间距：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message img {
+</span></span><span style=display:flex><span>  width: 40px;
+</span></span><span style=display:flex><span>  height: 40px;
+</span></span><span style=display:flex><span>  border-radius: 12px;
+</span></span><span style=display:flex><span>  margin-right: 12px;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>:::tip
+界面优化提示：这里不得不再提一下间距的重要性，一定不要把各个元素安排的太过紧凑，否则十分影响视觉效果，最直接的影响就是引起视觉上的拥挤感，造成视觉疲劳。
+:::</p><p>消息体同样的设置了间距和圆角，这里的圆角和头像的保持一致，以增加和谐感。它还设置了阴影，并使用 flex 布局，把里边的文字或表情消息居中对齐：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message p {
+</span></span><span style=display:flex><span>  padding: 8px 12px;
+</span></span><span style=display:flex><span>  border-radius: 12px;
+</span></span><span style=display:flex><span>  box-shadow: var(--shadow-large);
+</span></span><span style=display:flex><span>  display: flex;
+</span></span><span style=display:flex><span>  align-items: center;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这些样式默认都是基于对方的消息的，如果是我发送的消息需要放到右边，并作一些调整。首先对于我发送的消息，把 flex-flow 改为 row-reverse 这样头像和消息体的位置就互换了，然后使用 align-self 对齐到面板的右边：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message.mine {
+</span></span><span style=display:flex><span>  flex-flow: row-reverse;
+</span></span><span style=display:flex><span>  align-self: flex-end;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>调整头像的外边距，现在应该是距离<strong>左边</strong>的消息体的边距了：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message.mine img {
+</span></span><span style=display:flex><span>  margin-right: 0;
+</span></span><span style=display:flex><span>  margin-left: 12px;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>设置消息体的背景色为蓝色，文字为白色：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message.mine p {
+</span></span><span style=display:flex><span>  background-color: var(--primary-color);
+</span></span><span style=display:flex><span>  color: white;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=7底部操作栏>7）底部操作栏
+<a class=header-anchor href=#7%e5%ba%95%e9%83%a8%e6%93%8d%e4%bd%9c%e6%a0%8f></a></h4><p>先看底部操作栏容器的整体布局，使用 grid 布局把表情选择按钮、消息发送框和发送按钮分成 3 列，其中除消息发送框为浮动宽度外，其它的两个按钮为固定宽度，默认居中对齐，最后设置阴影和间距：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>footer {
+</span></span><span style=display:flex><span>  display: grid;
+</span></span><span style=display:flex><span>  grid-template-columns: 48px 1fr 75px;
+</span></span><span style=display:flex><span>  justify-items: center;
+</span></span><span style=display:flex><span>  padding: 12px;
+</span></span><span style=display:flex><span>  box-shadow: var(--shadow-large);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>表情选择按钮把自己进行了靠左对齐，并设置相对定位，用于定位表情选择弹出层，然后设置按钮图标的大小：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.chooseSticker {
+</span></span><span style=display:flex><span>  justify-self: start;
+</span></span><span style=display:flex><span>  position: relative;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.chooseSticker img {
+</span></span><span style=display:flex><span>  width: 36px;
+</span></span><span style=display:flex><span>  height: 36px;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>表情选择弹出层的 CSS 代码比较多但都很简单，先看一下代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.stickers {
+</span></span><span style=display:flex><span>  display: grid;
+</span></span><span style=display:flex><span>  grid-template-columns: repeat(auto-fill, 24px);
+</span></span><span style=display:flex><span>  column-gap: 18px;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  border-radius: 8px;
+</span></span><span style=display:flex><span>  background-color: white;
+</span></span><span style=display:flex><span>  box-shadow: var(--shadow-medium);
+</span></span><span style=display:flex><span>  padding: 6px 12px;
+</span></span><span style=display:flex><span>  font-size: 24px;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  position: absolute;
+</span></span><span style=display:flex><span>  top: calc(-100% - 18px);
+</span></span><span style=display:flex><span>  width: 300px;
+</span></span><span style=display:flex><span>  opacity: 0;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这段代码的含义是：</p><ul><li>弹出层使用 grid 布局，repeat(auto-fill, 24px) 指的是在宽度允许的条件下，在一行中尽可能放置最多的列元素，每列的宽度固定为 24px。然后设置列间距为 18px。</li><li>设置圆角、背景色、阴影、内间距和字体大小。</li><li>定位设置为绝对定位，把它向上移动<strong>包含元素高度</strong>（也就是 .chooseSticker 的高度）的 100% 并减去 18px，调整到合适的位置。宽度设置为 300px，透明度设置为 0 把它隐藏。</li></ul><p>消息输入框和按钮的样式比较简单，消息输入框的宽度占满整列，发送按钮使用 <code>justify-self: end</code> 把自己进行靠右对齐。这里把代码一次性贴出来：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.messageInput {
+</span></span><span style=display:flex><span>  box-shadow: var(--shadow-medium);
+</span></span><span style=display:flex><span>  padding: 0px 12px;
+</span></span><span style=display:flex><span>  border-radius: 8px;
+</span></span><span style=display:flex><span>  width: 100%;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.send {
+</span></span><span style=display:flex><span>  height: 100%;
+</span></span><span style=display:flex><span>  width: 90%;
+</span></span><span style=display:flex><span>  border-radius: 8px;
+</span></span><span style=display:flex><span>  justify-self: end;
+</span></span><span style=display:flex><span>  color: white;
+</span></span><span style=display:flex><span>  background-color: var(--inverse-color);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>最后再添加一个 <code>.show</code> 样式，用于在点击发送表情按钮时，给表情弹出层添加该样式以显示出来：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.show {
+</span></span><span style=display:flex><span>  opacity: 1;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=3-js-部分>3. JS 部分
+<a class=header-anchor href=#3-js-%e9%83%a8%e5%88%86></a></h3><p>在给聊天界面加上功能之前，先编写一些基础的 JS 代码。在项目根目录创建一个 index.js 文件，并在 index.html 中引用，注意放到 <code>&lt;/body></code> 关闭标签的上方，这样当 HTML DOM 加载完成之后才会执行 js 中的代码，防止找不到元素：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span> &lt;body&gt;
+</span></span><span style=display:flex><span>   &lt;!-- 其它代码省略 --&gt;
+</span></span><span style=display:flex><span>   &lt;script src=&#34;index.js&#34;&gt;&lt;/script&gt;
+</span></span><span style=display:flex><span> &lt;/body&gt;
+</span></span></code></pre></div><p>在 index.js 中，先获取要操作的 DOM 元素：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>const panelEle = document.querySelector(&#34;.panel&#34;);
+</span></span><span style=display:flex><span>const chooseStickerBtn = document.querySelector(&#34;.chooseSticker&#34;);
+</span></span><span style=display:flex><span>const stickersEle = document.querySelector(&#34;.stickers&#34;);
+</span></span><span style=display:flex><span>const msgInputEle = document.querySelector(&#34;.messageInput&#34;);
+</span></span><span style=display:flex><span>const sendBtn = document.querySelector(&#34;.send&#34;);
+</span></span></code></pre></div><p>其中：</p><ul><li><code>panelEle</code> 是消息面板元素，用于追加新消息。</li><li><code>chooseStickerBtn</code> 是选择表情按钮，点击它会弹出表情选择框。</li><li><code>stickersEle</code> 就是弹出的表情选择框。</li><li><code>msgInputEle</code> 是消息输入框。</li><li><code>sendBtn</code> 为发送按钮。</li></ul><p>然后引入 lottie 的 js 库，可以到示例代码仓库中下载，也可以在
+<a href=https://cdnjs.com/libraries/bodymovin title=https://cdnjs.com/libraries/bodymovin rel="noopener external nofollow noreferrer" target=_blank class=exturl>https://cdnjs.com/libraries/bodymovin
+<i class="fa fa-external-link-alt"></i></a> 中下载 lottie.min.js，下载完成之后放到项目根目录，然后在 index.html 中，在引入 index.js 的上方引入它：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>&lt;script src=&#34;lottie.min.js&#34;&gt;&lt;/script&gt;
+</span></span></code></pre></div><p>下载表情动画资源文件，它们都是 json 格式的文件，下载完成之后直接放到项目根目录即可：</p><ul><li>南瓜表情：https://lottiefiles.com/43215-pumpkins-sticker-4</li><li>炸弹表情：https://lottiefiles.com/3145-bomb</li><li>爆炸动画：https://lottiefiles.com/9990-explosion</li></ul><p>接下来看一下各部分功能是怎么实现的。</p><h2 id=二发送普通消息>二、发送普通消息
+<a class=header-anchor href=#%e4%ba%8c%e5%8f%91%e9%80%81%e6%99%ae%e9%80%9a%e6%b6%88%e6%81%af></a></h2><p>发送普通消息时，用户在输入框输入完消息之后，点击发送，就会把该条消息追加到消息列表中，并清空输入框中的内容。那么这里先给发送按钮添加点击事件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>sendBtn.addEventListener(&#34;click&#34;, () =&gt; {
+</span></span><span style=display:flex><span>  const msg = msgInputEle.value;
+</span></span><span style=display:flex><span>  if (msg) {
+</span></span><span style=display:flex><span>    appendMsg(msg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>在事件处理函数中：</p><ul><li>判断用户是否输入了消息。</li><li>如果输入了就追加到消息列表中。</li></ul><p>来看一下 <code>appendMsg()</code> 函数的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function appendMsg(msg, type) {
+</span></span><span style=display:flex><span>  // 创建消息元素
+</span></span><span style=display:flex><span>  const msgEle = panelEle.appendChild(document.createElement(&#34;div&#34;));
+</span></span><span style=display:flex><span>  msgEle.classList.add(&#34;message&#34;, &#34;mine&#34;); // 设置为“我“发送的样式
+</span></span><span style=display:flex><span>  msgEle.innerHTML = `
+</span></span><span style=display:flex><span>    &lt;img class=&#34;avatar&#34; src=&#34;./me.png&#34; alt=&#34;&#34; /&gt;
+</span></span><span style=display:flex><span>    &lt;p&gt;&lt;span&gt;${msg}&lt;/span&gt;&lt;/p&gt;
+</span></span><span style=display:flex><span>  `;
+</span></span><span style=display:flex><span>  // 滚动到最新消息
+</span></span><span style=display:flex><span>  panelEle.scrollTop = panelEle.scrollHeight;
+</span></span><span style=display:flex><span>  msgInputEle.value = &#34;&#34;;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>函数接收两个参数，msg 和 type，分别是要追加的消息内容和类型，type 为可选的，不传则认为是普通文本消息，如果传递了 &ldquo;stickers&rdquo; 则为表情消息，现在还用不到它。在这个函数中主要做了下面几件事情：</p><ul><li>按照消息的 HTML 结构创建一个新的消息元素 msgEle，并追加到消息列表中。</li><li>把消息的样式设置为我发送的。</li><li>内部的元素分别为头像和文本消息，使用模板字符串的形式赋值给 msgEle 的 innerHTML 属性中，并在 <code>&lt;p></code> 中使用 msg 变量的值。</li><li>最后把滚动条滚动到最新的消息处，并清空输入框中的消息。</li></ul><p>这样就可以发送普通的文本消息了。</p><h2 id=三发送动画表情>三、发送动画表情
+<a class=header-anchor href=#%e4%b8%89%e5%8f%91%e9%80%81%e5%8a%a8%e7%94%bb%e8%a1%a8%e6%83%85></a></h2><p>在发送动画表情之前，需要先加载动画表情。在 index.js 的最上方先定义表情名称和表情动画文件路径的键值对信息：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>const stickers = {
+</span></span><span style=display:flex><span>  bomb: {
+</span></span><span style=display:flex><span>    path: &#34;./3145-bomb.json&#34;,
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  pumpkin: {
+</span></span><span style=display:flex><span>    path: &#34;./43215-pumpkins-sticker-4.json&#34;,
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>我们会根据 <code>bomb</code> 、 <code>pumkin</code> 这样的 key 来找到对应的动画路径。接着初始化弹出层中的表情以供用户选择：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>// 初始化表情面板，也可以在表情选择窗弹出时再初始化
+</span></span><span style=display:flex><span>Object.keys(stickers).forEach((key) =&gt; {
+</span></span><span style=display:flex><span>  const lottieEle = stickersEle.appendChild(document.createElement(&#34;span&#34;));
+</span></span><span style=display:flex><span>  // 对每个表情创建 lottie 播放器
+</span></span><span style=display:flex><span>  const player = lottie.loadAnimation({
+</span></span><span style=display:flex><span>    container: lottieEle,
+</span></span><span style=display:flex><span>    renderer: &#34;svg&#34;,
+</span></span><span style=display:flex><span>    loop: true,
+</span></span><span style=display:flex><span>    autoplay: false,
+</span></span><span style=display:flex><span>    path: stickers[key].path,
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  // 当选择表情时，发送消息，并设置类型为 sticker 表情消息
+</span></span><span style=display:flex><span>  lottieEle.addEventListener(&#34;click&#34;, () =&gt; {
+</span></span><span style=display:flex><span>    appendMsg(key, &#34;sticker&#34;);
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  // 当鼠标划过时，播放动画预览
+</span></span><span style=display:flex><span>  lottieEle.addEventListener(&#34;mouseover&#34;, () =&gt; {
+</span></span><span style=display:flex><span>    player.play();
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>  // 当鼠标划过时，停止动画预览
+</span></span><span style=display:flex><span>  lottieEle.addEventListener(&#34;mouseleave&#34;, () =&gt; {
+</span></span><span style=display:flex><span>    player.stop();
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>这里的代码分别作了下边这些操作：</p><ul><li><p>遍历存储表情信息的对象。</p></li><li><p>创建一个 lottie 的容器，使用 span 元素，因为 lottie 动画的播放器需要挂载到一个具体的 html 元素中。</p></li><li><p>调用 lottie 的 loadAnimation() 加载动画，它需要传递这样几个参数：</p><ul><li>container: 播放器要挂载到的容器。</li><li>renderer：可以选择是使用 svg 还是 canvas 渲染动画。</li><li>loop: 是否循环播放，由于此处是在表情选择弹出层中预览动画，所以支持循环播放。</li><li>autoplay：是否自动播放，这里设置为了否，后边让它在鼠标划过时再播放动画。</li><li>path：动画 json 文件路径，直接从对象中获取。</li></ul></li><li><p>loadAnimation() 会返回 lottie 的实例，把它保存在 player 中。</p></li></ul><p>然后后边则注册了几个事件：</p><ul><li>当 lottieEle 也就是表情被点击时，发送表情消息，给 appendMsg() 的 msg 参数设置为表情的 key，type 参数设置为 &ldquo;sticker&rdquo;。</li><li>当鼠标划过表情时，开始播放动画。</li><li>当鼠标划出表情时，停止动画。</li></ul><p>接着给发送表情按钮添加事件，点击时，切换表情弹出层的显示状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>chooseStickerBtn.addEventListener(&#34;click&#34;, () =&gt; {
+</span></span><span style=display:flex><span>  stickersEle.classList.toggle(&#34;show&#34;);
+</span></span><span style=display:flex><span>});
+</span></span></code></pre></div><p>这时点击发送表情按钮就可以看到表情选择弹出层了。现在还不能发送表情，因为还没在 appendMsg() 函数中处理，现在来修改一下它里边的代码。首先判断：如果是表情消息，则不在消息中的 <code>&lt;p></code> 元素里添加任何信息：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function appendMsg(msg, type) {
+</span></span><span style=display:flex><span> // ... 
+</span></span><span style=display:flex><span>  msgEle.innerHTML = `
+</span></span><span style=display:flex><span>    &lt;img class=&#34;avatar&#34; src=&#34;./me.png&#34; alt=&#34;&#34; /&gt;
+</span></span><span style=display:flex><span>    &lt;p&gt;&lt;span&gt;${type === &#34;sticker&#34; ? &#34;&#34; : msg}&lt;/span&gt;&lt;/p&gt;
+</span></span><span style=display:flex><span>  `;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>然后在它的下方，调用 playSticker() 函数来播放动画：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>// 处理表情消息，播放相关动画
+</span></span><span style=display:flex><span>if (type === &#34;sticker&#34;) {
+</span></span><span style=display:flex><span>  playSticker(msg, msgEle);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>playSticker() 函数接收两个参数，一个是表情的 key，一个是消息元素。此时的 msg 变量的内容就是在 lottieEle 点击事件中传递过来的表情 key。函数中的代码如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function playSticker(key, msgEle) {
+</span></span><span style=display:flex><span>  // 表情消息，创建 lottie 动画
+</span></span><span style=display:flex><span>  const lottieEle = msgEle.querySelector(&#34;span&#34;);
+</span></span><span style=display:flex><span>  lottieEle.style.width = &#34;40px&#34;;
+</span></span><span style=display:flex><span>  lottieEle.style.height = &#34;40px&#34;;
+</span></span><span style=display:flex><span>  lottie.loadAnimation({
+</span></span><span style=display:flex><span>    container: lottieEle,
+</span></span><span style=display:flex><span>    renderer: &#34;svg&#34;,
+</span></span><span style=display:flex><span>    loop: false,
+</span></span><span style=display:flex><span>    autoplay: true,
+</span></span><span style=display:flex><span>    path: stickers[key].path,
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在这个函数里主要做了下边几项操作：</p><ul><li>获取消息中的 span 元素，它将作为 lottie 的动画容器。</li><li>设置表情动画的宽高为 40px。</li><li>使用 lottie 加载动画，并设置循环播放为 false，自动播放为 true，来让表情发送时自动播放动画，且只播放一次。</li></ul><p>现在可以发送表情消息了，相关的动画也会自动播放，接下来看一下怎么实现炸弹的全屏动画和对消息元素的晃动效果。</p><h2 id=四发送带全屏特效的表情>四、发送带全屏特效的表情
+<a class=header-anchor href=#%e5%9b%9b%e5%8f%91%e9%80%81%e5%b8%a6%e5%85%a8%e5%b1%8f%e7%89%b9%e6%95%88%e7%9a%84%e8%a1%a8%e6%83%85></a></h2><p>对于这种带全屏特效的表情可以单独进行判断，也可以在保存表情的对象中定义相关的操作，这里为了简单起见，我们单独判断用户是否发送了炸弹表情，然后施加相应特效。</p><p>首先在 appendMsg() 函数里，进行判断，如果发送的消息是表情消息，且表情为炸弹，则播放全屏动画并晃动消息：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function appendMsg(msg, type) {
+</span></span><span style=display:flex><span>  if (type === &#34;sticker&#34;) {
+</span></span><span style=display:flex><span>    playSticker(msg, msgEle);
+</span></span><span style=display:flex><span>    if (msg === &#34;bomb&#34;) {
+</span></span><span style=display:flex><span>      // 播放爆炸动画
+</span></span><span style=display:flex><span>      setTimeout(() =&gt; {
+</span></span><span style=display:flex><span>        playExplosion(msgEle);
+</span></span><span style=display:flex><span>      }, 800);
+</span></span><span style=display:flex><span>      // 晃动消息列表
+</span></span><span style=display:flex><span>      shakeMessages();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里爆炸全屏动画延迟了 800 毫秒之后再执行，目的是在炸弹表情播放到合适的时间时，再播放全屏动画，播放动画使用了 playExplosion() 函数，并传递了消息元素进去。在爆炸全屏动画结束之后，调用 shakeMessages() 来晃动消息。这里先看一下 playExplosion() 函数的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function playExplosion(anchor) {
+</span></span><span style=display:flex><span>  const explosionAnimeEle = anchor.appendChild(document.createElement(&#34;div&#34;));
+</span></span><span style=display:flex><span>  explosionAnimeEle.style.position = &#34;absolute&#34;;
+</span></span><span style=display:flex><span>  explosionAnimeEle.style.width = &#34;200px&#34;;
+</span></span><span style=display:flex><span>  explosionAnimeEle.style.height = &#34;100px&#34;;
+</span></span><span style=display:flex><span>  explosionAnimeEle.style.right = 0;
+</span></span><span style=display:flex><span>  explosionAnimeEle.style.bottom = 0;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  const explosionPlayer = lottie.loadAnimation({
+</span></span><span style=display:flex><span>    container: explosionAnimeEle,
+</span></span><span style=display:flex><span>    renderer: &#34;svg&#34;,
+</span></span><span style=display:flex><span>    loop: false,
+</span></span><span style=display:flex><span>    autoplay: true,
+</span></span><span style=display:flex><span>    path: &#34;./9990-explosion.json&#34;,
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>  explosionPlayer.setSpeed(0.3);
+</span></span><span style=display:flex><span>  // 播放完成后，销毁爆炸相关的动画和元素
+</span></span><span style=display:flex><span>  explosionPlayer.addEventListener(&#34;complete&#34;, () =&gt; {
+</span></span><span style=display:flex><span>    explosionPlayer.destroy();
+</span></span><span style=display:flex><span>    explosionAnimeEle.remove();
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>playExplosion() 函数接收一个 anchor 锚点，就是说基于哪个位置开始播放全屏动画，由于示例中的动画画幅比较小，所以把它固定在了最新发送的消息的下方，这里爆炸动画的 anchor 就是消息元素，之后函数做了下边的这些操作：</p><ul><li>添加全屏动画元素，设置为绝对定位，宽度 200px，高度 100px，放在最新消息元素的右下角。</li><li>加载 lottie 动画，不循环、自动播放。</li><li>由于原动画速度过快，这里调用 lottie 实例的 setSpeed() 方法，把速度设置为 0.3 倍速。</li><li>之后给 lottie 实例设置事件监听：&ldquo;complete&rdquo;，它会在动画执行完成时触发，里边销毁了 lottie 实例和全屏动画元素。</li></ul><p>这样全屏动画的效果就实现了。接下来看消息晃动的代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>function shakeMessages() {
+</span></span><span style=display:flex><span>  [...panelEle.children]
+</span></span><span style=display:flex><span>    .reverse()
+</span></span><span style=display:flex><span>    .slice(0, 5)
+</span></span><span style=display:flex><span>    .forEach((messageEle) =&gt; {
+</span></span><span style=display:flex><span>      const avatarEle = messageEle.querySelector(&#34;img&#34;);
+</span></span><span style=display:flex><span>      const msgContentEle = messageEle.querySelector(&#34;p&#34;);
+</span></span><span style=display:flex><span>      avatarEle.classList.remove(&#34;shake&#34;);
+</span></span><span style=display:flex><span>      msgContentEle.classList.remove(&#34;shake&#34;);
+</span></span><span style=display:flex><span>      setTimeout(() =&gt; {
+</span></span><span style=display:flex><span>        avatarEle.classList.add(&#34;shake&#34;);
+</span></span><span style=display:flex><span>        msgContentEle.classList.add(&#34;shake&#34;);
+</span></span><span style=display:flex><span>      }, 700);
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这个函数的操作是：</p><ul><li>使用 reverse() 和 slice() 对最新的 5 条消息进行晃动，也可以把 5 改大一点，对更多消息进行晃动。</li><li>然后在循环中，分别给头像和消息添加 shake class 执行晃动动画，这个 class 的内容稍后再介绍。</li><li>要注意的是，在添加 shake class执行动画前，需要先删除 shake，因为有的消息可能在之前已经晃动过了，例如当连续发了多个炸弹表情时。后边在添加 shake class 时，使用 setTimeout() 延迟了 700 毫秒，目的是在全屏动画执行到一定程度时再晃动消息。</li></ul><p>接下来看一下 shake class 的定义，在 style.css 中添加下方代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.shake {
+</span></span><span style=display:flex><span>  animation: shake 0.8s ease-in-out;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@keyframes shake {
+</span></span><span style=display:flex><span>  from {
+</span></span><span style=display:flex><span>    transform: translate3d(0, 0px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  10% {
+</span></span><span style=display:flex><span>    transform: translate3d(6px, -6px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  20% {
+</span></span><span style=display:flex><span>    transform: translate3d(-5px, 5px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  30% {
+</span></span><span style=display:flex><span>    transform: translate3d(4px, -4px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  35% {
+</span></span><span style=display:flex><span>    transform: translate3d(-3px, 3px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  39% {
+</span></span><span style=display:flex><span>    transform: translate3d(2px, -2px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  41% {
+</span></span><span style=display:flex><span>    transform: translate3d(-1px, 1px, 0px);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  42% {
+</span></span><span style=display:flex><span>    transform: translate3d(0px, 0px, 0px) rotate(20deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  52% {
+</span></span><span style=display:flex><span>    transform: rotate(-15deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  60% {
+</span></span><span style=display:flex><span>    transform: rotate(8deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  65% {
+</span></span><span style=display:flex><span>    transform: rotate(-3deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  67% {
+</span></span><span style=display:flex><span>    transform: rotate(1deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  70% {
+</span></span><span style=display:flex><span>    transform: rotate(0deg);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  to {
+</span></span><span style=display:flex><span>    transform: translate3d(0px, 0px, 0px) rotate(0);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>.shake</code> 中使用了 shake keyframes 定义的动画，执行时间为 0.8s，动画执行函数为 ease-in-out。Keyframes 里的代码比较多，但是都是很简单的，就是模拟了爆炸时的效果，移动 x 轴和 y 轴的偏移，每次的偏移幅度越来越小，并且越来越快，可以看到百分比的间隔越来越小。在动画进行到 42% 的时候，加了一些旋转动画，这样就有了落地时的震动效果。由于使用 rotate() 旋转时的轴心在元素中间，我们可以把消息气泡的轴心修改一下来实现更真实的效果：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-fallback data-lang=fallback><span style=display:flex><span>.message p {
+</span></span><span style=display:flex><span>  transform-origin: left bottom;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.message.mine p {
+</span></span><span style=display:flex><span>  transform-origin: right bottom;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里把对方发送的消息的轴心设置在左下角，自己发送的消息则设置在了右下角。</p><h2 id=总结>总结
+<a class=header-anchor href=#%e6%80%bb%e7%bb%93></a></h2><p>现在，这个模拟微信 8.0 动画表情的功能就实现了。主要就是下边几点：</p><ul><li>使用 lottie 库加载并播放动画。</li><li>确定全屏动画的位置和播放时机。</li><li>消息晃动动画的 CSS 实现。</li></ul><p>你学会了吗？如果有问题或建议可以留个评论，喜欢此文章请点个赞或关注我，后边还有更多更精彩的文章，感谢！</p><p>import Video from &ldquo;@site/src/components/Video&rdquo;;</p></div><footer class=post-footer><div class=post-tags><a href=/tags/%e5%89%8d%e7%ab%af>前端</a>
+<a href=/tags/react>React</a></div><div class=addthis_inline_share_toolbox style=text-align:center></div><hr><div class=reward-container><div><i class="fa-solid fa-mug-hot"></i>请我喝杯咖啡吧 ヾ(^▽^*)))</div><button>
+赞赏</button><div class=post-reward><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/ali-pay.png alt="爸比娃娃 - 支付宝">
+<span>支付宝</span></div><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/wechat-pay.png alt="爸比娃娃 - 微信">
+<span>微信</span></div></div></div><div class=post-copyright><img src=/imgs/cc/cc.svg width=75 height=75 align=right alt=共享知识><ul><li class=post-copyright-title><strong>文章标题：</strong>
+从 0 仿微信 8.0 动态表情实现过程</li><li class=post-copyright-author><strong>原文作者：</strong>
+峰华</li><li class=post-copyright-link><strong>本文链接：</strong>
+<a id=post-cr-link href=https://blog.jiandan.cf/post/wechat-stickers-effect/ title="从 0 仿微信 8.0 动态表情实现过程">https://blog.jiandan.cf/post/wechat-stickers-effect/</a></li><li class=post-copyright-license><strong>版权声明：</strong>
+本博客所有文章除特别声明外，均采用 <i class="fab fa-fw fa-creative-commons"></i><a target=_blank href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><div class=followme><span>欢迎关注我的其它发布渠道</span><div class=social-list><div class=social-item><a target=_blank class=social-link href=/images/wechat_channel.jpg><span class=icon><i class="fab fa-weixin"></i></span>
+<span class=label>WeChat</span></a></div><div class=social-item><a target=_blank class=social-link href=/atom.xml><span class=icon><i class="fa fa-rss"></i></span>
+<span class=label>RSS</span></a></div></div></div><div class=post-nav><div class="post-nav-next post-nav-item"><a href=/post/learning-english-for-coders/ rel=next title=程序员如何提升英语水平><i class="fa fa-chevron-left"></i> 程序员如何提升英语水平</a></div><div class="post-nav-prev post-nav-item"><a href=/post/backend-intro/ rel=prev title=给前端工程师看的后端科普>给前端工程师看的后端科普
+<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div id=comments class=post-comments><div class=comment-head><div class=comment-headline><i class="fas fa-comments fa-fw"></i>
+<span>评论交流</span></div></div><div class=comment-wrap><div><div class=comment-loading><i class="fa fa-sync fa-spin"></i></div><div class=waline-container></div></div></div></div></div></main><footer class=footer><div class=footer-inner><div id=gtranslate class=google-translate><i class="fa fa-language"></i><div id=google_translate_element></div></div><div class=copyright>&copy;
+<span itemprop=copyrightYear>2010 - 2023</span>
+<span class=with-love><i class="fa fa-heart"></i></span>
+<span class=author itemprop=copyrightHolder>爸比娃娃</span></div><div class=powered-by>由 <a href=https://gohugo.io title=0.116.1 target=_blank>Hugo</a> & <a href=https://github.com/hugo-next/hugo-theme-next title=4.5.3 target=_blank>Hugo NexT.Gemini</a> 强力驱动</div><div class=beian><a href=https://beian.miit.gov.cn target=_blank>粤ICP备 18047355-1 号</a>
+<img src=/imgs/gongan.png alt=沪公网安备>
+<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402009770" target=_blank>沪公网安备 31011402009770 号</a></div><div class=vendors-list><a target=_blank href=https://vercel.com title=Vercel><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/vercel.svg alt=Vercel></a>
+<a target=_blank href=https://upyun.com title=又拍云><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/upyun.png alt=又拍云></a>
+<a target=_blank href=https://webify.cloudbase.net title=Webify>Webify</a>
+<span>提供CDN/云资源支持</span></div></div></footer><script type=text/javascript src=https://cdn.staticfile.org/animejs/3.2.1/anime.min.js defer></script>
+<script type=text/javascript src=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.js defer></script>
+<script class=next-config data-name=main type=application/json>{"bookmark":{"color":"#222","enable":true,"save":"manual"},"copybtn":true,"darkmode":true,"giscus":{"cfg":{"category":"Comments","categoryid":null,"emit":false,"inputposition":"top","mapping":"title","reactions":false,"repo":"username/repo-name","repoid":null,"theme":"preferred_color_scheme"},"js":"https://giscus.app/client.js"},"hostname":"https://blog.jiandan.cf/","i18n":{"ds_day":" 天前","ds_days":" 天 ","ds_hour":" 小时前","ds_hours":" 小时 ","ds_just":"刚刚","ds_min":" 分钟前","ds_mins":" 分钟","ds_month":" 个月前","ds_years":" 年 ","empty":"没有找到任何搜索结果：${query}","hits":"找到 ${hits} 个搜索结果","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","placeholder":"搜索..."},"lang":"zh-CN","lazyload":false,"localSearch":{"enable":true,"limit":1e3,"path":"/searchindexes.xml","preload":false,"topnperarticle":-1,"trigger":"auto","unescape":false},"motion":{"async":true,"enable":true,"transition":{"collheader":"fadeInLeft","postblock":"fadeIn","postbody":"fadeInDown","postheader":"fadeInDown","sidebar":"fadeInUp"}},"postmeta":{"comments":{"enable":false,"plugin":"waline"},"views":{"enable":true,"plugin":"busuanzi"}},"root":"/","scheme":"Gemini","sidebar":{"display":"post","offset":12,"padding":18,"position":"left","width":256},"vendor":{"plugins":"qiniu","router":"https://cdn.staticfile.org"},"version":"4.5.3","waline":{"cfg":{"emoji":false,"imguploader":false,"placeholder":"请文明发言哟 ヾ(≧▽≦*)o \n\n可用快捷键选取表情符号：😀😄😁🥳👻👽👀🚄\n(Window系统：Win+.，Mac系统：Control+Command+Space)","reaction":true,"reactiontext":["点赞","踩一下","得意","不屑","尴尬","睡觉"],"reactiontitle":"你认为这篇文章怎么样？","requiredmeta":["nick","mail"],"serverurl":"https://walinejs.comment.lithub.cc","sofa":"快来发表你的意见吧 (≧∀≦)ゞ","wordlimit":200},"css":{"alias":"waline","file":"dist/waline.css","name":"@waline/client","version":"2.13.0"},"js":{"alias":"waline","file":"dist/waline.js","name":"@waline/client","version":"2.13.0"}}}</script><script type=text/javascript src=/js/main.min.0fb3547374c917d23a2e5f762b70f3698d20b46a01cc18c38f9c467aeffc99fc.js defer></script></body></html>

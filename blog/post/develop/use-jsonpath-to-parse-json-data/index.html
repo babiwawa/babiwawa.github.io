@@ -1,0 +1,399 @@
+<!doctype html><html lang=zh-CN data-theme=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width"><meta name=theme-color content="#222" media="(prefers-color-scheme: dark)"><meta name=generator content="Hugo 0.116.1"><link rel="shortcut icon" type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/png sizes=16x16 href=/imgs/icons/favicon_16x16.png><link rel=icon type=image/png sizes=32x32 href=/imgs/icons/favicon_32_32.png><link rel=apple-touch-icon sizes=180x180 href=/imgs/icons/apple-touch-icon.png><meta itemprop=name content="使用JSONPath解析json数据"><meta itemprop=description content="jsonpath 能够帮助我们快速的从json数据中提取想要的数据"><meta itemprop=datePublished zgotmplz><meta itemprop=dateModified zgotmplz><meta itemprop=image content="https://blog.jiandan.cf/imgs/babiwawa.png"><meta itemprop=keywords content="javascript,json,node"><meta property="og:type" content="article"><meta property="og:title" content="使用JSONPath解析json数据"><meta property="og:description" content="jsonpath 能够帮助我们快速的从json数据中提取想要的数据"><meta property="og:image" content="/imgs/babiwawa.png"><meta property="og:image:width" content="312"><meta property="og:image:height" content="312"><meta property="og:image:type" content="image/jpeg/png/svg/jpg"><meta property="og:url" content="https://blog.jiandan.cf/post/develop/use-jsonpath-to-parse-json-data/"><meta property="og:site_name" content="爸比娃娃的博客"><meta property="og:locale" content="zh-CN"><meta property="article:author" content="爸比娃娃"><meta property="article:published_time" content="2021-09-20 00:00:00 +0000 UTC"><meta property="article:modified_time" content="2021-09-20 00:00:00 +0000 UTC"><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/font-awesome/6.1.2/css/all.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/animate.css/3.1.1/animate.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.css><link rel=stylesheet href=/css/main.min.ad1ea33a63f63e6a94f5de191c205129577cfd392e2e10dec0f173ca5bdf0b7b.css><style type=text/css>.post-footer,.flinks-list-footer hr:after{content:"~ 我可是有底线的哟 ~"}</style><script type=text/javascript>(function(){localDB={set:function(e,t,n){if(n===0)return;const s=new Date,o=n*864e5,i={value:t,expiry:s.getTime()+o};localStorage.setItem(e,JSON.stringify(i))},get:function(e){const t=localStorage.getItem(e);if(!t)return void 0;const n=JSON.parse(t),s=new Date;return s.getTime()>n.expiry?(localStorage.removeItem(e),void 0):n.value}},theme={active:function(){const e=localDB.get("theme");if(e==null)return;theme.toggle(e),window.matchMedia("(prefers-color-scheme: dark)").addListener(function(e){theme.toggle(e.matches?"dark":"light")})},toggle:function(e){document.documentElement.setAttribute("data-theme",e),localDB.set("theme",e,2);const t=document.querySelector("iframe.giscus-frame");if(t){const n={setConfig:{theme:e}};t.contentWindow.postMessage({giscus:n},"https://giscus.app")}}},theme.active()})(window)</script><script class=next-config data-name=page type=application/json>{"comments":true,"isHome":false,"isPage":true,"path":"use-jsonpath-to-parse-json-data","permalink":"https://blog.jiandan.cf/post/develop/use-jsonpath-to-parse-json-data/","title":"使用JSONPath解析json数据","waline":{"js":[{"alias":"waline","alias_name":"@waline/client","file":"dist/pageview.js","name":"pageview","version":"2.13.0"},{"alias":"waline","alias_name":"@waline/client","file":"dist/comment.js","name":"comment","version":"2.13.0"}]}}</script><script type=text/javascript>document.addEventListener("DOMContentLoaded",()=>{var e=document.createElement("script");e.charset="UTF-8",e.src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",e.async=!1,e.defer=!0,document.head.appendChild(e),e.onload=function(){NexT.utils.fmtBusuanzi()}})</script><title>使用JSONPath解析json数据 - 爸比娃娃的博客</title><noscript><link rel=stylesheet href=/css/noscript.css></noscript></head><body itemscope itemtype=http://schema.org/WebPage class=use-motion><div class=headband></div><main class=main><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=header-inner><div class=site-brand-container><div class=site-nav-toggle><div class=toggle aria-label role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div></div><div class=site-meta><a href=/ class=brand rel=start><i class=logo-line></i><h1 class=site-title>爸比娃娃的博客</h1><i class=logo-line></i></a><p class=site-subtitle itemprop=description>爸比娃娃的博客</p></div><div class=site-nav-right><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class=site-nav><ul class="main-menu menu"><li class="menu-item menu-item-home"><a href=/ class=hvr-icon-pulse rel=section><i class="fa fa-home hvr-icon"></i>首页</a></li><li class="menu-item menu-item-about"><a href=/about.html class=hvr-icon-pulse rel=section><i class="fa fa-user hvr-icon"></i>关于</a></li><li class="menu-item menu-item-flinks"><a href=/flinks.html class=hvr-icon-pulse rel=section><i class="fa fa-thumbs-up hvr-icon"></i>友情链接</a></li><li class="menu-item menu-item-archives"><a href=/archives/ class=hvr-icon-pulse rel=section><i class="fa fa-archive hvr-icon"></i>归档
+<span class=badge>125</span></a></li><li class="menu-item menu-item-commonweal"><a href=/404.html class=hvr-icon-pulse rel=section><i class="fa fa-heartbeat hvr-icon"></i>公益 404</a></li><li class="menu-item menu-item-search"><a role=button class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索</a></li></ul></nav><div class=search-pop-overlay><div class="popup search-popup"><div class=search-header><span class=search-icon><i class="fa fa-search"></i></span><div class=search-input-container><input autocomplete=off autocapitalize=off maxlength=80 placeholder=搜索... spellcheck=false type=search class=search-input></div><span class=popup-btn-close role=button><i class="fa fa-times-circle"></i></span></div><div class="search-result-container no-result"><div class=search-result-icon><i class="fa fa-spinner fa-pulse fa-5x"></i></div></div></div></div></div><div class="toggle sidebar-toggle" role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div><aside class=sidebar><div class="sidebar-inner sidebar-overview-active"><ul class=sidebar-nav><li class=sidebar-nav-toc>文章目录</li><li class=sidebar-nav-overview>站点概览</li></ul><div class=sidebar-panel-container><div class="post-toc-wrap sidebar-panel"><div class="post-toc animated"><nav id=TableOfContents><ul><li><a href=#基本语法>基本语法</a><ul><li><a href=#过滤器表达式>过滤器表达式</a></li></ul></li><li><a href=#代码演示>代码演示</a></li><li><a href=#终极实战>终极实战</a><ul><li><a href=#结构>结构</a></li><li><a href=#数据>数据</a></li><li><a href=#需求>需求</a></li><li><a href=#js-实现遍历>js 实现遍历</a></li><li><a href=#jsonpath-获取>jsonpath 获取</a></li></ul></li><li><a href=#最终思考>最终思考</a></li></ul></nav></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author site-overview-item animated" itemprop=author itemscope itemtype=http://schema.org/Person><img class=site-author-image itemprop=image alt=爸比娃娃 src=/imgs/img-lazy-loading.gif data-src=/imgs/babiwawa.png><p class=site-author-name itemprop=name>爸比娃娃</p><div class=site-description itemprop=description>有钱说什么都是硬道理，没钱说什么都是吹牛逼。</div></div><div class="site-state-wrap site-overview-item animated"><nav class=site-state><div class="site-state-item site-state-posts"><a href=/archives/><span class=site-state-item-count>125</span>
+<span class=site-state-item-name>日志</span></a></div><div class="site-state-item site-state-categories"><a href=/categories/><span class=site-state-item-count>4</span>
+<span class=site-state-item-name>分类</span></a></div><div class="site-state-item site-state-tags"><a href=/tags/><span class=site-state-item-count>117</span>
+<span class=site-state-item-name>标签</span></a></div></nav></div><div class="links-of-social site-overview-item animated"><span class=links-of-social-item><a href=https://github.com/babiwawa title="Github → https://github.com/babiwawa" rel=noopener class=hvr-icon-pulse target=_blank><i class="fab fa-github fa-fw hvr-icon"></i>
+Github</a></span>
+<span class=links-of-social-item><a href=mailto:1223112302@qq.com title="E-Mail → mailto:1223112302@qq.com" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-envelope fa-fw hvr-icon"></i>
+E-Mail</a></span>
+<span class=links-of-social-item><a href=https://www.zhihu.com/people/hbalnw title="知乎 → https://www.zhihu.com/people/hbalnw" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-book fa-fw hvr-icon"></i>
+知乎</a></span></div><div class="cc-license animated" itemprop=license><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh class=cc-opacity rel=noopener target=_blank title=共享知识><img src=/imgs/img-lazy-loading.gif data-src=/imgs/cc/big/by_nc_sa.svg alt=共享知识></a></div><div class="links-of-blogroll site-overview-item animated"><div class=links-of-blogroll-title><i class="fa fa-globe fa-fw"></i>
+友情链接</div><ul class=links-of-blogroll-list><li class=links-of-blogroll-item><a href=https://jiandan.cf title=https://jiandan.cf target=_blank>简单导航</a></li><li class=links-of-blogroll-item><a href=https://lisenhui.cn title=https://lisenhui.cn target=_blank>凡梦星尘空间站</a></li></ul></div></div></div></div><div id=siteinfo-card-widget class=sidebar-card-widget><div class=item-headline><i class="fas fa-chart-line"></i>
+<span>网站资讯</span></div><div class=siteinfo><div class=siteinfo-item><div class=item-name><i class="fa-solid fa-calendar-check"></i>已运行：</div><div class=item-count id=runTimes data-publishdate=0001-01-01T00:00:00+00:00></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-user"></i>总访客数：</div><div class=item-count id=busuanzi_value_site_uv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-eye"></i>页面浏览：</div><div class=item-count id=busuanzi_value_site_pv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-font"></i>总字数：</div><div class=item-count id=wordsCount data-count=287557></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-mug-hot"></i>阅读约：</div><div class=item-count id=readTimes data-times=640></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-clock-rotate-left"></i>最后更新于：</div><div class=item-count id=last-push-date data-lastpushdate=2023-01-04T00:00:00+00:00></div></div></div></div></aside><div class=sidebar-dimmer></div></header><div class=tool-buttons><div id=goto-comments class="button goto-comments" title=直达评论><i class="fas fa-comments"></i></div><div id=goto-gtranslate class=button title=直达底部><i class="fas fa-arrow-down"></i></div><div id=toggle-theme class=button title=深浅模式切换><i class="fas fa-adjust"></i></div><div class=back-to-top role=button title=返回顶部><i class="fa fa-arrow-up"></i>
+<span>0%</span></div></div><div class=reading-progress-bar></div><a role=button class="book-mark-link book-mark-link-fixed"></a>
+<a href=https://github.com/babiwawa rel="noopener external nofollow noreferrer" target=_blank title="Follow me on GitHub" class="exturl github-corner"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><script type=text/javascript src=//sidecar.gitter.im/dist/sidecar.v1.js async></script>
+<script type=text/javascript>((window.gitter={}).chat={}).options={room:"hugo-next/community"}</script><noscript><div class=noscript-warning>Theme NexT works best with JavaScript enabled</div></noscript><div class="main-inner post posts-expand"><div class=post-block><article itemscope itemtype=http://schema.org/Article class=post-content lang><link itemprop=mainEntityOfPage href=https://blog.jiandan.cf/post/develop/use-jsonpath-to-parse-json-data/><span hidden itemprop=author itemscope itemtype=http://schema.org/Person><meta itemprop=image content="/imgs/babiwawa.png"><meta itemprop=name content="爸比娃娃"></span><span hidden itemprop=publisher itemscope itemtype=http://schema.org/Organization><meta itemprop=name content="爸比娃娃"><meta itemprop=description content="有钱说什么都是硬道理，没钱说什么都是吹牛逼。"></span><span hidden itemprop=post itemscope itemtype=http://schema.org/CreativeWork><meta itemprop=name content="使用JSONPath解析json数据"><meta itemprop=description content="jsonpath 能够帮助我们快速的从json数据中提取想要的数据"></span><header class=post-header><h1 class=post-title itemprop="name headline">使用JSONPath解析json数据</h1><div class=post-meta-container><div class=post-meta-items><span class=post-meta-item><span class=post-meta-item-icon><i class="far fa-calendar"></i></span>
+<span class=post-meta-item-text title=发表于>发表于：</span>
+<time title="创建时间：2021-09-20 00:00:00 +0000 UTC" itemprop="dateCreated datePublished" datetime="2021-09-20 00:00:00 +0000 UTC">2021-09-20</time></span></div><div class=post-meta-items><span class=post-meta-item title=字数><span class=post-meta-item-icon><i class="far fa-file-word"></i></span>
+<span class=post-meta-item-text>字数：</span>
+<span>2726</span></span>
+<span class=post-meta-item title=阅读><span class=post-meta-item-icon><i class="far fa-clock"></i></span>
+<span class=post-meta-item-text>阅读：&ap;</span>
+<span>6分钟</span></span>
+<span class=post-meta-item title=浏览><span class=post-meta-item-icon><i class="far fa-eye"></i></span>
+<span class=post-meta-item-text>浏览：</span>
+<span id=busuanzi_value_page_pv data-path=/post/develop/use-jsonpath-to-parse-json-data/><i class="fa fa-sync fa-spin"></i></span></span></div></div></header><div class=post-body itemprop=articleBody><p>之前学习爬虫的时候，如果是 HTML 的数据，通过 xpath 或是 css 选择器，就能很快的获取我们想要的数据，如果是 json 有没有类似 xpath 这种，能够直接根据条件定位数据，而不需要自行 json 解析在遍历获取。答案是有的，也就是 JSONPath。</p><p>在线测试网址
+<a href=https://www.jsonpath.cn/ title="JSONPath 在线验证" rel="noopener external nofollow noreferrer" target=_blank class=exturl>JSONPath 在线验证
+<i class="fa fa-external-link-alt"></i></a></p><p>所选用的环境是 Node + JavaScript，用到 jsonpath 这个包
+<a href=https://www.npmjs.com/package/jsonpath title="jsonpath - npm (npmjs.com)" rel="noopener external nofollow noreferrer" target=_blank class=exturl>jsonpath - npm (npmjs.com)
+<i class="fa fa-external-link-alt"></i></a></p><blockquote><p>参考链接
+<a href=https://www.jianshu.com/p/8c0ade82891b title="JsonPath - 根据表达式路径解析 Json - 简书 (jianshu.com)" rel="noopener external nofollow noreferrer" target=_blank class=exturl>JsonPath - 根据表达式路径解析 Json - 简书 (jianshu.com)
+<i class="fa fa-external-link-alt"></i></a></p></blockquote><h2 id=基本语法>基本语法
+<a class=header-anchor href=#%e5%9f%ba%e6%9c%ac%e8%af%ad%e6%b3%95></a></h2><table><thead><tr><th>JSONPath</th><th>描述</th></tr></thead><tbody><tr><td>$</td><td>根对象或元素.</td></tr><tr><td>@</td><td>当前对象或元素.</td></tr><tr><td>. or []</td><td>子元素操作符.</td></tr><tr><td>..</td><td>递归匹配所有子元素.</td></tr><tr><td>*</td><td>通配符. 匹配所有对象或元素.</td></tr><tr><td>[]</td><td>下标运算符，JsonPath 索引从 0 开始.</td></tr><tr><td>[,]</td><td>连接运算符，将多个结果拼成数组返回，JSONPath 允许使用别名.</td></tr><tr><td>[start:end1:step]</td><td>数组切片运算符.</td></tr><tr><td>?()</td><td>过滤器（脚本）表达式.</td></tr><tr><td>()</td><td>脚本表达式.</td></tr><tr><td>||</td><td>表达式 或</td></tr><tr><td>&&</td><td>表达式 且</td></tr></tbody></table><h3 id=过滤器表达式>过滤器表达式
+<a class=header-anchor href=#%e8%bf%87%e6%bb%a4%e5%99%a8%e8%a1%a8%e8%be%be%e5%bc%8f></a></h3><p>通常的表达式格式为：[?(@.age > 18)] 表示当前节点属性 age 大于 18</p><table><thead><tr><th>操作符</th><th>描述</th></tr></thead><tbody><tr><td>==</td><td>等于符号，但数字 1 不等于字符 1(note that 1 is not equal to ‘1’)</td></tr><tr><td>!=</td><td>不等于符号</td></tr><tr><td>&lt;</td><td>小于符号</td></tr><tr><td>&lt;=</td><td>小于等于符号</td></tr><tr><td>></td><td>大于符号</td></tr><tr><td>>=</td><td>大于等于符号</td></tr><tr><td>=~</td><td>判断是否符合正则表达式，例如[?(@.name =~ /foo.*?/i)]</td></tr><tr><td>in</td><td>所属符号，例如[?(@.size in [‘S’, ‘M’])]</td></tr><tr><td>nin</td><td>排除符号</td></tr><tr><td>size</td><td>size of left (array or string) should match right</td></tr><tr><td>empty</td><td>判空 Null 符号</td></tr></tbody></table><p>语法就这些，不过单单有语法，不实践肯定是不够的。下面就是一些官方简单例子操作，还有一个终极实战</p><h2 id=代码演示>代码演示
+<a class=header-anchor href=#%e4%bb%a3%e7%a0%81%e6%bc%94%e7%a4%ba></a></h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>jp</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;jsonpath&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>cities</span> <span style=color:#f92672>=</span> [
+</span></span><span style=display:flex><span>  { <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;London&#39;</span>, <span style=color:#a6e22e>population</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8615246</span> },
+</span></span><span style=display:flex><span>  { <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;Berlin&#39;</span>, <span style=color:#a6e22e>population</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>3517424</span> },
+</span></span><span style=display:flex><span>  { <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;Madrid&#39;</span>, <span style=color:#a6e22e>population</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>3165235</span> },
+</span></span><span style=display:flex><span>  { <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#39;Rome&#39;</span>, <span style=color:#a6e22e>population</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>2870528</span> },
+</span></span><span style=display:flex><span>]
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>names</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>jp</span>.<span style=color:#a6e22e>query</span>(<span style=color:#a6e22e>cities</span>, <span style=color:#e6db74>&#39;$..name&#39;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// [ &#34;London&#34;, &#34;Berlin&#34;, &#34;Madrid&#34;, &#34;Rome&#34; ]
+</span></span></span></code></pre></div><p>如果使用 js 来遍历的话，也简单</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>names</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>cities</span>.<span style=color:#a6e22e>map</span>((<span style=color:#a6e22e>c</span>) =&gt; <span style=color:#a6e22e>c</span>.<span style=color:#a6e22e>name</span>)
+</span></span></code></pre></div><p>这个数据可能还没那么复杂，在看看下面这个例子，代码来源于https://goessner.net/articles/JsonPath</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;store&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;book&#34;</span>: [
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;reference&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;Nigel Rees&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;Sayings of the Century&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>8.95</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;fiction&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;Evelyn Waugh&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;Sword of Honour&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>12.99</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;fiction&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;Herman Melville&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;Moby Dick&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;isbn&#34;</span>: <span style=color:#e6db74>&#34;0-553-21311-3&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>8.99</span>
+</span></span><span style=display:flex><span>      },
+</span></span><span style=display:flex><span>      {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;fiction&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;J. R. R. Tolkien&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;The Lord of the Rings&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;isbn&#34;</span>: <span style=color:#e6db74>&#34;0-395-19395-8&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>22.99</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    ],
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;bicycle&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;color&#34;</span>: <span style=color:#e6db74>&#34;red&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>19.95</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><table><thead><tr><th>JsonPath</th><th>Result</th></tr></thead><tbody><tr><td><code>$.store.book[*].author</code></td><td>所有 book 的 author 节点</td></tr><tr><td><code>$..author</code></td><td>所有 author 节点</td></tr><tr><td><code>$.store.*</code></td><td>store 下的所有节点，book 数组和 bicycle 节点</td></tr><tr><td><code>$.store..price</code></td><td>store 下的所有 price 节点</td></tr><tr><td><code>$..book[2]</code></td><td>匹配第 3 个 book 节点</td></tr><tr><td><code>$..book[(@.length-1)]</code>，或 <code>$..book[-1:]</code></td><td>匹配倒数第 1 个 book 节点</td></tr><tr><td><code>$..book[0,1]</code>，或 <code>$..book[:2]</code></td><td>匹配前两个 book 节点</td></tr><tr><td><code>$..book[?(@.isbn)]</code></td><td>过滤含 isbn 字段的节点</td></tr><tr><td><code>$..book[?(@.price&lt;10)]</code></td><td>过滤<code>price&lt;10</code>的节点</td></tr><tr><td><code>$..*</code></td><td>递归匹配所有子节点</td></tr></tbody></table><p>对应的语法可直接到在 JSONPath 在线验证网站上进行测试。要提一点的是，jsonpath 是支持使用 || 与 && 进行过滤的，比如上面要获取 category 为 fiction，price 大于 10 的语法为<code>$..book[?(@.price>10 && @.category=="fiction")]</code> 结果如下</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-json data-lang=json><span style=display:flex><span>[
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;fiction&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;Evelyn Waugh&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;Sword of Honour&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>12.99</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;category&#34;</span>: <span style=color:#e6db74>&#34;fiction&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;author&#34;</span>: <span style=color:#e6db74>&#34;J. R. R. Tolkien&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;title&#34;</span>: <span style=color:#e6db74>&#34;The Lord of the Rings&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;isbn&#34;</span>: <span style=color:#e6db74>&#34;0-395-19395-8&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;price&#34;</span>: <span style=color:#ae81ff>22.99</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>]
+</span></span></code></pre></div><h2 id=终极实战>终极实战
+<a class=header-anchor href=#%e7%bb%88%e6%9e%81%e5%ae%9e%e6%88%98></a></h2><p>也许你会觉得上面的例子太过简单了，可能没达到你预期所想要的效果，甚至还不如使用 json 遍历呢，下面我列举一个是我实战中遇到的例子（实际上这样的例子特别多），我先把部分数据展示出来（删除部分没用到的参数，实际参数远比这多），然后通过 js 遍历，以及 jsonpath 来获取我想要的数据。</p><h3 id=结构>结构
+<a class=header-anchor href=#%e7%bb%93%e6%9e%84></a></h3><p><img src=/imgs/img-lazy-loading.gif data-src=https://img.kuizuo.cn/image-20210919194116296.png alt=image-20210919194116296></p><h3 id=数据>数据
+<a class=header-anchor href=#%e6%95%b0%e6%8d%ae></a></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;unit&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;section&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;summary&#34;</span>: <span style=color:#e6db74>&#34;{\&#34;indexMap\&#34;: {}, \&#34;questionsList\&#34;: []}&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;text&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Learning objectives&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g2&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g2&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>          ],
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;suggestedDuration&#34;</span>: <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;1-1 Learning objectives&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;90ed499f91084e2aa1b7032d2e4ecd76&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g1&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>      ],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Learning objectives&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;section&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Practice-1&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g6&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g6&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Practice-2&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g7&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g7&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Practice-3&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g544&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g544&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Practice-4&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g9&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g9&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Practice&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;f6768dc9474746b9ba071e7f211534d9&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g5&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>          ],
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;suggestedDuration&#34;</span>: <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;1-2 Sharing&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;1c97a87a9feb4a8aa7d6ed39482d866d&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g3&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;video&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Get the skills&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g16&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g16&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            },
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Use the skills-1&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g615&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g615&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Use the skills-2&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g18&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g18&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Use the skills-3&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g19&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g19&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Use the skills&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;2d8a81799bcc44ccab2646b613557b2b&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g17&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            },
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Think and speak&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g21&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g21&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Think and speak&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;5833925c8c5e4ddab7a114b15d610983&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g20&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>          ],
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;suggestedDuration&#34;</span>: <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;1-3 Listening&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;681817aaf75845468e464e1a8d82f2c8&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g14&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>        },
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Get a clue&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g25&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g25&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Get a clue&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;b332335ab3554dffb92afcae5f815b5a&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g24&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            },
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;View it-1&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g27&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g27&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;View it-2&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g545&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g545&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                },
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;View it-3&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g29&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g29&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;View it&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;a2ecf6464d5f480e98242ebe4431a73b&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g26&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            },
+</span></span><span style=display:flex><span>            {
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;node&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;children&#34;</span>: [
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;group&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tab_type&#34;</span>: <span style=color:#e6db74>&#34;task&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Think and speak&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;scoreDetail&#34;</span>: [<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#e6db74>&#34;u1g31&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g31&#34;</span>,
+</span></span><span style=display:flex><span>                  <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>                }
+</span></span><span style=display:flex><span>              ],
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Think and speak&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;120d0784e63c414793f5e648c416144b&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g30&#34;</span>,
+</span></span><span style=display:flex><span>              <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>          ],
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;suggestedDuration&#34;</span>: <span style=color:#e6db74>&#34;0&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;1-4 Viewing&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;block_id&#34;</span>: <span style=color:#e6db74>&#34;765a1be83ac5437aaca8fa150ad5af2e&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;url&#34;</span>: <span style=color:#e6db74>&#34;u1g22&#34;</span>,
+</span></span><span style=display:flex><span>          <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>      ],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Listening to the world&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;tags&#34;</span>: []
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  ]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=需求>需求
+<a class=header-anchor href=#%e9%9c%80%e6%b1%82></a></h3><p>可以看到数据比一开始的例子复杂了可不是一点，不过先别管这些数据是干啥的，说说需求，从结构上也能看出来，是有很多<code>children</code>嵌套的，而需求就是<strong>获取<code>role</code>为<code>group</code>的<code>children</code>节点数据</strong></p><h3 id=js-实现遍历>js 实现遍历
+<a class=header-anchor href=#js-%e5%ae%9e%e7%8e%b0%e9%81%8d%e5%8e%86></a></h3><p>先说说 js 如何实现的，我贴一下对应的代码（当时项目的代码，稍微修改的一点），可自己粘贴运行一下。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-js data-lang=js><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>groupList</span> <span style=color:#f92672>=</span> []
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>node</span> <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>json</span>.<span style=color:#a6e22e>children</span> <span style=color:#f92672>??</span> []) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>node</span>.<span style=color:#a6e22e>role</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;group&#39;</span>) <span style=color:#a6e22e>groupList</span>.<span style=color:#a6e22e>push</span>({ ...<span style=color:#a6e22e>node</span> })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>group</span> <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>node</span>.<span style=color:#a6e22e>children</span> <span style=color:#f92672>??</span> []) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>group</span>.<span style=color:#a6e22e>role</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;group&#39;</span>) <span style=color:#a6e22e>groupList</span>.<span style=color:#a6e22e>push</span>({ ...<span style=color:#a6e22e>group</span> })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>child</span> <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>group</span>.<span style=color:#a6e22e>children</span> <span style=color:#f92672>??</span> []) {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>child</span>.<span style=color:#a6e22e>role</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;group&#39;</span>) <span style=color:#a6e22e>groupList</span>.<span style=color:#a6e22e>push</span>({ ...<span style=color:#a6e22e>child</span> })
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>children4</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>child</span>.<span style=color:#a6e22e>children</span> <span style=color:#f92672>??</span> []
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>const</span> <span style=color:#a6e22e>child</span> <span style=color:#66d9ef>of</span> <span style=color:#a6e22e>children4</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>child</span>.<span style=color:#a6e22e>role</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;group&#39;</span>) <span style=color:#a6e22e>groupList</span>.<span style=color:#a6e22e>push</span>({ ...<span style=color:#a6e22e>child</span> })
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>groupList</span>)
+</span></span></code></pre></div><p>因为这些数据中，是存在不确定性的，也就是在当前节点下，二级节点可能有<code>children</code>，而其他节点下的二级很可能没有 <code>children</code>，所以我在这边就加上 <code>?? []</code> （Typescript 中的<code>??</code>语法，你可以把 <code>??</code> 当做 <code>||</code> ）来判断是否有<code>children</code>节点，有些读者可能会思考，为啥不用递归呢。说的是挺轻松的，但是递归是很容易出问题的，万一爬取到后台数据进行了一些修改，很有可能对于的递归算法将失效，甚至导致堆栈溢出，所以我这边值循环 4 级<code>chilren</code>节点（实际遇到的貌似也只有 4 级，谁又能保证爬取到数据就一定只有 4 级呢）。</p><h3 id=jsonpath-获取>jsonpath 获取
+<a class=header-anchor href=#jsonpath-%e8%8e%b7%e5%8f%96></a></h3><p>于是了解到 jsonpath 后，我第一个时间就开始分析这样的数据，果不其然，得到了我想要的结果 ⬇️</p><p><img src=/imgs/img-lazy-loading.gif data-src=https://img.kuizuo.cn/image-20210919200826079.png alt=image-20210919200826079></p><p>语法：<code>$..children[?(@.role=="group")]</code></p><p>语法意思很明确，根节点下遍历所有<code>children</code>节点，同时<code>role</code>等于<code>group</code>，呈现的效果如上图。</p><p>而回到需求，<strong>就是获取<code>role</code>为<code>group</code>的<code>children</code>节点数据</strong>，而 jsonpath 就帮我轻松实现我想要的效果。</p><h2 id=最终思考>最终思考
+<a class=header-anchor href=#%e6%9c%80%e7%bb%88%e6%80%9d%e8%80%83></a></h2><p>实际上这样的需求我已经不止遇到一次，二次了，然而我寻求百度与群友的时候，给我的结果都不尽人意。但都没有提及到 jsonpath 来进行获取。也许是我的搜索方式有问题，但千篇一律都是 js 如何解析多层 json，以及遍历所有的子元素，虽然这些办法确实能解决我的问题，但每次遇到这种数据，都需要花上长时间去编写对应的逻辑。</p><p>在回想起当时爬取 HTML 页面数据的时候（数据与上面展示的差不多，都是树结构多层），而我只接触到了正则表达式，没了解过 CSS 选择器与 xpath。怎么办，为了实现目的，只好用现有的技术去实现，于是编写一个正则表达式就花费了近一个下午的时间，而使用 CSS 选择器 10 分钟不到就达到目的。没想到竟然有这么好用的方法，早知道多去了解点技术了。可能现在的心情和当时一样，只不过 HTML 换成了 JSON，编辑器还是那个编辑器，而我依旧还是我</p><p>也许这就是编程，也许这就是人生。</p></div><footer class=post-footer><div class=post-tags><a href=/tags/javascript>javascript</a>
+<a href=/tags/json>json</a>
+<a href=/tags/node>node</a></div><div class=addthis_inline_share_toolbox style=text-align:center></div><hr><div class=reward-container><div><i class="fa-solid fa-mug-hot"></i>请我喝杯咖啡吧 ヾ(^▽^*)))</div><button>
+赞赏</button><div class=post-reward><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/ali-pay.png alt="爸比娃娃 - 支付宝">
+<span>支付宝</span></div><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/wechat-pay.png alt="爸比娃娃 - 微信">
+<span>微信</span></div></div></div><div class=post-copyright><img src=/imgs/cc/cc.svg width=75 height=75 align=right alt=共享知识><ul><li class=post-copyright-title><strong>文章标题：</strong>
+使用JSONPath解析json数据</li><li class=post-copyright-author><strong>本文作者：</strong>
+爸比娃娃</li><li class=post-copyright-link><strong>本文链接：</strong>
+<a id=post-cr-link href=https://blog.jiandan.cf/post/develop/use-jsonpath-to-parse-json-data/ title=使用JSONPath解析json数据>https://blog.jiandan.cf/post/develop/use-jsonpath-to-parse-json-data/</a></li><li class=post-copyright-license><strong>版权声明：</strong>
+本博客所有文章除特别声明外，均采用 <i class="fab fa-fw fa-creative-commons"></i><a target=_blank href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><div class=followme><span>欢迎关注我的其它发布渠道</span><div class=social-list><div class=social-item><a target=_blank class=social-link href=/images/wechat_channel.jpg><span class=icon><i class="fab fa-weixin"></i></span>
+<span class=label>WeChat</span></a></div><div class=social-item><a target=_blank class=social-link href=/atom.xml><span class=icon><i class="fa fa-rss"></i></span>
+<span class=label>RSS</span></a></div></div></div><div class=post-nav><div class="post-nav-next post-nav-item"><a href=/post/program/thinkphp-deploy/ rel=next title="记 ThinkPHP 项目部署"><i class="fa fa-chevron-left"></i> 记 ThinkPHP 项目部署</a></div><div class="post-nav-prev post-nav-item"><a href=/post/program/vue-chrome-extension/ rel=prev title=使用Vue开发Chrome插件>使用Vue开发Chrome插件
+<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div id=comments class=post-comments><div class=comment-head><div class=comment-headline><i class="fas fa-comments fa-fw"></i>
+<span>评论交流</span></div></div><div class=comment-wrap><div><div class=comment-loading><i class="fa fa-sync fa-spin"></i></div><div class=waline-container></div></div></div></div></div></main><footer class=footer><div class=footer-inner><div id=gtranslate class=google-translate><i class="fa fa-language"></i><div id=google_translate_element></div></div><div class=copyright>&copy;
+<span itemprop=copyrightYear>2010 - 2023</span>
+<span class=with-love><i class="fa fa-heart"></i></span>
+<span class=author itemprop=copyrightHolder>爸比娃娃</span></div><div class=powered-by>由 <a href=https://gohugo.io title=0.116.1 target=_blank>Hugo</a> & <a href=https://github.com/hugo-next/hugo-theme-next title=4.5.3 target=_blank>Hugo NexT.Gemini</a> 强力驱动</div><div class=beian><a href=https://beian.miit.gov.cn target=_blank>粤ICP备 18047355-1 号</a>
+<img src=/imgs/gongan.png alt=沪公网安备>
+<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402009770" target=_blank>沪公网安备 31011402009770 号</a></div><div class=vendors-list><a target=_blank href=https://vercel.com title=Vercel><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/vercel.svg alt=Vercel></a>
+<a target=_blank href=https://upyun.com title=又拍云><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/upyun.png alt=又拍云></a>
+<a target=_blank href=https://webify.cloudbase.net title=Webify>Webify</a>
+<span>提供CDN/云资源支持</span></div></div></footer><script type=text/javascript src=https://cdn.staticfile.org/animejs/3.2.1/anime.min.js defer></script>
+<script type=text/javascript src=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.js defer></script>
+<script class=next-config data-name=main type=application/json>{"bookmark":{"color":"#222","enable":true,"save":"manual"},"copybtn":true,"darkmode":true,"giscus":{"cfg":{"category":"Comments","categoryid":null,"emit":false,"inputposition":"top","mapping":"title","reactions":false,"repo":"username/repo-name","repoid":null,"theme":"preferred_color_scheme"},"js":"https://giscus.app/client.js"},"hostname":"https://blog.jiandan.cf/","i18n":{"ds_day":" 天前","ds_days":" 天 ","ds_hour":" 小时前","ds_hours":" 小时 ","ds_just":"刚刚","ds_min":" 分钟前","ds_mins":" 分钟","ds_month":" 个月前","ds_years":" 年 ","empty":"没有找到任何搜索结果：${query}","hits":"找到 ${hits} 个搜索结果","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","placeholder":"搜索..."},"lang":"zh-CN","lazyload":false,"localSearch":{"enable":true,"limit":1e3,"path":"/searchindexes.xml","preload":false,"topnperarticle":-1,"trigger":"auto","unescape":false},"motion":{"async":true,"enable":true,"transition":{"collheader":"fadeInLeft","postblock":"fadeIn","postbody":"fadeInDown","postheader":"fadeInDown","sidebar":"fadeInUp"}},"postmeta":{"comments":{"enable":false,"plugin":"waline"},"views":{"enable":true,"plugin":"busuanzi"}},"root":"/","scheme":"Gemini","sidebar":{"display":"post","offset":12,"padding":18,"position":"left","width":256},"vendor":{"plugins":"qiniu","router":"https://cdn.staticfile.org"},"version":"4.5.3","waline":{"cfg":{"emoji":false,"imguploader":false,"placeholder":"请文明发言哟 ヾ(≧▽≦*)o \n\n可用快捷键选取表情符号：😀😄😁🥳👻👽👀🚄\n(Window系统：Win+.，Mac系统：Control+Command+Space)","reaction":true,"reactiontext":["点赞","踩一下","得意","不屑","尴尬","睡觉"],"reactiontitle":"你认为这篇文章怎么样？","requiredmeta":["nick","mail"],"serverurl":"https://walinejs.comment.lithub.cc","sofa":"快来发表你的意见吧 (≧∀≦)ゞ","wordlimit":200},"css":{"alias":"waline","file":"dist/waline.css","name":"@waline/client","version":"2.13.0"},"js":{"alias":"waline","file":"dist/waline.js","name":"@waline/client","version":"2.13.0"}}}</script><script type=text/javascript src=/js/main.min.0fb3547374c917d23a2e5f762b70f3698d20b46a01cc18c38f9c467aeffc99fc.js defer></script></body></html>

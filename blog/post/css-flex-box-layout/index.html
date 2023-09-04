@@ -1,0 +1,272 @@
+<!doctype html><html lang=zh-CN data-theme=dark><head><meta charset=utf-8><meta name=viewport content="width=device-width"><meta name=theme-color content="#222" media="(prefers-color-scheme: dark)"><meta name=generator content="Hugo 0.116.1"><link rel="shortcut icon" type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/x-icon href=/imgs/icons/favicon.ico><link rel=icon type=image/png sizes=16x16 href=/imgs/icons/favicon_16x16.png><link rel=icon type=image/png sizes=32x32 href=/imgs/icons/favicon_32_32.png><link rel=apple-touch-icon sizes=180x180 href=/imgs/icons/apple-touch-icon.png><meta itemprop=name content="CSS Flexbox 布局最容易理解完全教程"><meta itemprop=description content="CSS flexbox 布局十分强大，它可以对元素进行水平和垂直方向上的对齐，也支持自由缩放，方便响应式布局的开发。这个文章就教你认识 flex-box 布局，看完之后你也能熟练的运用它！"><meta itemprop=image content="https://blog.jiandan.cf/imgs/babiwawa.png"><meta itemprop=keywords content="前端,React"><meta property="og:type" content="article"><meta property="og:title" content="CSS Flexbox 布局最容易理解完全教程"><meta property="og:description" content="CSS flexbox 布局十分强大，它可以对元素进行水平和垂直方向上的对齐，也支持自由缩放，方便响应式布局的开发。这个文章就教你认识 flex-box 布局，看完之后你也能熟练的运用它！"><meta property="og:image" content="/imgs/babiwawa.png"><meta property="og:image:width" content="312"><meta property="og:image:height" content="312"><meta property="og:image:type" content="image/jpeg/png/svg/jpg"><meta property="og:url" content="https://blog.jiandan.cf/post/css-flex-box-layout/"><meta property="og:site_name" content="爸比娃娃的博客"><meta property="og:locale" content="zh-CN"><meta property="article:author" content="峰华"><meta property="article:published_time" content="0001-01-01 00:00:00 +0000 UTC"><meta property="article:modified_time" content="0001-01-01 00:00:00 +0000 UTC"><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/font-awesome/6.1.2/css/all.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/animate.css/3.1.1/animate.min.css><link type=text/css rel=stylesheet href=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.css><link rel=stylesheet href=/css/main.min.ad1ea33a63f63e6a94f5de191c205129577cfd392e2e10dec0f173ca5bdf0b7b.css><style type=text/css>.post-footer,.flinks-list-footer hr:after{content:"~ 我可是有底线的哟 ~"}</style><script type=text/javascript>(function(){localDB={set:function(e,t,n){if(n===0)return;const s=new Date,o=n*864e5,i={value:t,expiry:s.getTime()+o};localStorage.setItem(e,JSON.stringify(i))},get:function(e){const t=localStorage.getItem(e);if(!t)return void 0;const n=JSON.parse(t),s=new Date;return s.getTime()>n.expiry?(localStorage.removeItem(e),void 0):n.value}},theme={active:function(){const e=localDB.get("theme");if(e==null)return;theme.toggle(e),window.matchMedia("(prefers-color-scheme: dark)").addListener(function(e){theme.toggle(e.matches?"dark":"light")})},toggle:function(e){document.documentElement.setAttribute("data-theme",e),localDB.set("theme",e,2);const t=document.querySelector("iframe.giscus-frame");if(t){const n={setConfig:{theme:e}};t.contentWindow.postMessage({giscus:n},"https://giscus.app")}}},theme.active()})(window)</script><script class=next-config data-name=page type=application/json>{"comments":true,"isHome":false,"isPage":true,"path":"css-flex-box-layout","permalink":"https://blog.jiandan.cf/post/css-flex-box-layout/","title":"CSS Flexbox 布局最容易理解完全教程","waline":{"js":[{"alias":"waline","alias_name":"@waline/client","file":"dist/pageview.js","name":"pageview","version":"2.13.0"},{"alias":"waline","alias_name":"@waline/client","file":"dist/comment.js","name":"comment","version":"2.13.0"}]}}</script><script type=text/javascript>document.addEventListener("DOMContentLoaded",()=>{var e=document.createElement("script");e.charset="UTF-8",e.src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js",e.async=!1,e.defer=!0,document.head.appendChild(e),e.onload=function(){NexT.utils.fmtBusuanzi()}})</script><title>CSS Flexbox 布局最容易理解完全教程 - 爸比娃娃的博客</title><noscript><link rel=stylesheet href=/css/noscript.css></noscript></head><body itemscope itemtype=http://schema.org/WebPage class=use-motion><div class=headband></div><main class=main><header class=header itemscope itemtype=http://schema.org/WPHeader><div class=header-inner><div class=site-brand-container><div class=site-nav-toggle><div class=toggle aria-label role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div></div><div class=site-meta><a href=/ class=brand rel=start><i class=logo-line></i><h1 class=site-title>爸比娃娃的博客</h1><i class=logo-line></i></a><p class=site-subtitle itemprop=description>爸比娃娃的博客</p></div><div class=site-nav-right><div class="toggle popup-trigger"><i class="fa fa-search fa-fw fa-lg"></i></div></div></div><nav class=site-nav><ul class="main-menu menu"><li class="menu-item menu-item-home"><a href=/ class=hvr-icon-pulse rel=section><i class="fa fa-home hvr-icon"></i>首页</a></li><li class="menu-item menu-item-about"><a href=/about.html class=hvr-icon-pulse rel=section><i class="fa fa-user hvr-icon"></i>关于</a></li><li class="menu-item menu-item-flinks"><a href=/flinks.html class=hvr-icon-pulse rel=section><i class="fa fa-thumbs-up hvr-icon"></i>友情链接</a></li><li class="menu-item menu-item-archives"><a href=/archives/ class=hvr-icon-pulse rel=section><i class="fa fa-archive hvr-icon"></i>归档
+<span class=badge>125</span></a></li><li class="menu-item menu-item-commonweal"><a href=/404.html class=hvr-icon-pulse rel=section><i class="fa fa-heartbeat hvr-icon"></i>公益 404</a></li><li class="menu-item menu-item-search"><a role=button class="popup-trigger hvr-icon-pulse"><i class="fa fa-search fa-fw hvr-icon"></i>搜索</a></li></ul></nav><div class=search-pop-overlay><div class="popup search-popup"><div class=search-header><span class=search-icon><i class="fa fa-search"></i></span><div class=search-input-container><input autocomplete=off autocapitalize=off maxlength=80 placeholder=搜索... spellcheck=false type=search class=search-input></div><span class=popup-btn-close role=button><i class="fa fa-times-circle"></i></span></div><div class="search-result-container no-result"><div class=search-result-icon><i class="fa fa-spinner fa-pulse fa-5x"></i></div></div></div></div></div><div class="toggle sidebar-toggle" role=button><span class=toggle-line></span>
+<span class=toggle-line></span>
+<span class=toggle-line></span></div><aside class=sidebar><div class="sidebar-inner sidebar-overview-active"><ul class=sidebar-nav><li class=sidebar-nav-toc>文章目录</li><li class=sidebar-nav-overview>站点概览</li></ul><div class=sidebar-panel-container><div class="post-toc-wrap sidebar-panel"><div class="post-toc animated"><nav id=TableOfContents><ul><li><a href=#开启-flexbox-布局>开启 Flexbox 布局</a></li><li><a href=#对齐方式>对齐方式</a><ul><li><a href=#justify-content>justify-content</a><ul><li><a href=#flex-start>flex-start</a></li><li><a href=#center>center</a></li><li><a href=#flex-end>flex-end</a></li><li><a href=#space-between>space-between</a></li><li><a href=#space-evenly>space-evenly</a></li><li><a href=#space-around>space-around</a></li></ul></li><li><a href=#align-items>align-items</a><ul><li><a href=#stretch>stretch</a></li><li><a href=#flex-start-1>flex-start</a></li><li><a href=#center-1>center</a></li><li><a href=#flex-end-1>flex-end</a></li><li><a href=#baseline>baseline</a></li></ul></li><li><a href=#align-content>align-content</a></li></ul></li><li><a href=#子元素覆盖对齐方式>子元素覆盖对齐方式</a></li><li><a href=#排列方式>排列方式</a></li><li><a href=#空间占比>空间占比</a></li><li><a href=#flex-basis>Flex-basis</a></li><li><a href=#缩放>缩放</a><ul><li><a href=#flex-grow>flex-grow</a></li><li><a href=#flex-shrink>flex-shrink</a></li></ul></li><li><a href=#再说-flex-属性>再说 flex 属性</a></li><li><a href=#折行>折行</a><ul><li><a href=#align-content-1>align-content</a><ul><li><a href=#center-2>center</a></li><li><a href=#space-between-1>space-between</a></li></ul></li></ul></li><li><a href=#嵌套的-flex-容器的问题>嵌套的 flex 容器的问题</a></li><li><a href=#总结>总结</a></li></ul></nav></div></div><div class="site-overview-wrap sidebar-panel"><div class="site-author site-overview-item animated" itemprop=author itemscope itemtype=http://schema.org/Person><img class=site-author-image itemprop=image alt=爸比娃娃 src=/imgs/img-lazy-loading.gif data-src=/imgs/babiwawa.png><p class=site-author-name itemprop=name>爸比娃娃</p><div class=site-description itemprop=description>有钱说什么都是硬道理，没钱说什么都是吹牛逼。</div></div><div class="site-state-wrap site-overview-item animated"><nav class=site-state><div class="site-state-item site-state-posts"><a href=/archives/><span class=site-state-item-count>125</span>
+<span class=site-state-item-name>日志</span></a></div><div class="site-state-item site-state-categories"><a href=/categories/><span class=site-state-item-count>4</span>
+<span class=site-state-item-name>分类</span></a></div><div class="site-state-item site-state-tags"><a href=/tags/><span class=site-state-item-count>117</span>
+<span class=site-state-item-name>标签</span></a></div></nav></div><div class="links-of-social site-overview-item animated"><span class=links-of-social-item><a href=https://github.com/babiwawa title="Github → https://github.com/babiwawa" rel=noopener class=hvr-icon-pulse target=_blank><i class="fab fa-github fa-fw hvr-icon"></i>
+Github</a></span>
+<span class=links-of-social-item><a href=mailto:1223112302@qq.com title="E-Mail → mailto:1223112302@qq.com" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-envelope fa-fw hvr-icon"></i>
+E-Mail</a></span>
+<span class=links-of-social-item><a href=https://www.zhihu.com/people/hbalnw title="知乎 → https://www.zhihu.com/people/hbalnw" rel=noopener class=hvr-icon-pulse target=_blank><i class="fa fa-book fa-fw hvr-icon"></i>
+知乎</a></span></div><div class="cc-license animated" itemprop=license><a href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh class=cc-opacity rel=noopener target=_blank title=共享知识><img src=/imgs/img-lazy-loading.gif data-src=/imgs/cc/big/by_nc_sa.svg alt=共享知识></a></div><div class="links-of-blogroll site-overview-item animated"><div class=links-of-blogroll-title><i class="fa fa-globe fa-fw"></i>
+友情链接</div><ul class=links-of-blogroll-list><li class=links-of-blogroll-item><a href=https://jiandan.cf title=https://jiandan.cf target=_blank>简单导航</a></li><li class=links-of-blogroll-item><a href=https://lisenhui.cn title=https://lisenhui.cn target=_blank>凡梦星尘空间站</a></li></ul></div></div></div></div><div id=siteinfo-card-widget class=sidebar-card-widget><div class=item-headline><i class="fas fa-chart-line"></i>
+<span>网站资讯</span></div><div class=siteinfo><div class=siteinfo-item><div class=item-name><i class="fa-solid fa-calendar-check"></i>已运行：</div><div class=item-count id=runTimes data-publishdate=0001-01-01T00:00:00+00:00></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-user"></i>总访客数：</div><div class=item-count id=busuanzi_value_site_uv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fas fa fa-eye"></i>页面浏览：</div><div class=item-count id=busuanzi_value_site_pv><i class="fa fa-sync fa-spin"></i></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-font"></i>总字数：</div><div class=item-count id=wordsCount data-count=287557></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-mug-hot"></i>阅读约：</div><div class=item-count id=readTimes data-times=640></div></div><div class=siteinfo-item><div class=item-name><i class="fa fa-clock-rotate-left"></i>最后更新于：</div><div class=item-count id=last-push-date data-lastpushdate=2023-01-04T00:00:00+00:00></div></div></div></div></aside><div class=sidebar-dimmer></div></header><div class=tool-buttons><div id=goto-comments class="button goto-comments" title=直达评论><i class="fas fa-comments"></i></div><div id=goto-gtranslate class=button title=直达底部><i class="fas fa-arrow-down"></i></div><div id=toggle-theme class=button title=深浅模式切换><i class="fas fa-adjust"></i></div><div class=back-to-top role=button title=返回顶部><i class="fa fa-arrow-up"></i>
+<span>0%</span></div></div><div class=reading-progress-bar></div><a role=button class="book-mark-link book-mark-link-fixed"></a>
+<a href=https://github.com/babiwawa rel="noopener external nofollow noreferrer" target=_blank title="Follow me on GitHub" class="exturl github-corner"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0 0 115 115h15l12 27L250 250V0z"/><path d="M128.3 109C113.8 99.7 119 89.6 119 89.6 122 82.7 120.5 78.6 120.5 78.6 119.2 72 123.4 76.3 123.4 76.3 127.3 80.9 125.5 87.3 125.5 87.3 122.9 97.6 130.6 101.9 134.4 103.2" fill="currentcolor" style="transform-origin:130px 106px" class="octo-arm"/><path d="M115 115C114.9 115.1 118.7 116.5 119.8 115.4l13.9-13.8C136.9 99.2 139.9 98.4 142.2 98.6 133.8 88 127.5 74.4 143.8 58 148.5 53.4 154 51.2 159.7 51 160.3 49.4 163.2 43.6 171.4 40.1 171.4 40.1 176.1 42.5 178.8 56.2 183.1 58.6 187.2 61.8 190.9 65.4 194.5 69 197.7 73.2 200.1 77.6 213.8 80.2 216.3 84.9 216.3 84.9 212.7 93.1 206.9 96 205.4 96.6 205.1 102.4 203 107.8 198.3 112.5 181.9 128.9 168.3 122.5 157.7 114.1 157.9 116.9 156.7 120.9 152.7 124.9L141 136.5C139.8 137.7 141.6 141.9 141.8 141.8z" fill="currentcolor" class="octo-body"/></svg></a><script type=text/javascript src=//sidecar.gitter.im/dist/sidecar.v1.js async></script>
+<script type=text/javascript>((window.gitter={}).chat={}).options={room:"hugo-next/community"}</script><noscript><div class=noscript-warning>Theme NexT works best with JavaScript enabled</div></noscript><div class="main-inner post posts-expand"><div class=post-block><article itemscope itemtype=http://schema.org/Article class=post-content lang><link itemprop=mainEntityOfPage href=https://blog.jiandan.cf/post/css-flex-box-layout/><span hidden itemprop=author itemscope itemtype=http://schema.org/Person><meta itemprop=image content="/imgs/babiwawa.png"><meta itemprop=name content="峰华"></span><span hidden itemprop=publisher itemscope itemtype=http://schema.org/Organization><meta itemprop=name content="爸比娃娃"><meta itemprop=description content="有钱说什么都是硬道理，没钱说什么都是吹牛逼。"></span><span hidden itemprop=post itemscope itemtype=http://schema.org/CreativeWork><meta itemprop=name content="CSS Flexbox 布局最容易理解完全教程"><meta itemprop=description content="CSS flexbox 布局十分强大，它可以对元素进行水平和垂直方向上的对齐，也支持自由缩放，方便响应式布局的开发。这个文章就教你认识 flex-box 布局，看完之后你也能熟练的运用它！"></span><header class=post-header><h1 class=post-title itemprop="name headline">CSS Flexbox 布局最容易理解完全教程</h1><div class=post-meta-container><div class=post-meta-items><span class=post-meta-item><span class=post-meta-item-icon><i class="far fa-calendar"></i></span>
+<span class=post-meta-item-text title=发表于>发表于：</span>
+<time title="创建时间：0001-01-01 00:00:00 +0000 UTC" itemprop="dateCreated datePublished" datetime="0001-01-01 00:00:00 +0000 UTC">0001-01-01</time></span></div><div class=post-meta-items><span class=post-meta-item title=字数><span class=post-meta-item-icon><i class="far fa-file-word"></i></span>
+<span class=post-meta-item-text>字数：</span>
+<span>4496</span></span>
+<span class=post-meta-item title=阅读><span class=post-meta-item-icon><i class="far fa-clock"></i></span>
+<span class=post-meta-item-text>阅读：&ap;</span>
+<span>9分钟</span></span>
+<span class=post-meta-item title=浏览><span class=post-meta-item-icon><i class="far fa-eye"></i></span>
+<span class=post-meta-item-text>浏览：</span>
+<span id=busuanzi_value_page_pv data-path=/post/css-flex-box-layout/><i class="fa fa-sync fa-spin"></i></span></span></div></div></header><div class=post-body itemprop=articleBody><p>import useBaseUrl from &ldquo;@docusaurus/useBaseUrl&rdquo;;
+import styled from &ldquo;styled-components&rdquo;;</p><p>在 CSS flexbox 布局出现以前，如果要控制 HTML 元素的布局，要用到很多种奇葩的方式。在水平方向上得用<code>float</code>控制左右对齐，稍一不注意，就会有浮动的元素飞来飞去~。在垂直方向上就更是百家争鸣了：要么手动计算高度然后算出中心点，要么用 <code>line-height</code> 和 <code>height</code> 的结合，要么用十之八九不生效的 <code>vertical-align</code> 属性等等等等。自从 flex-box 出现以后，一切似乎就豁然开朗了，水平垂直各种花式对齐，空间分配由你做主。当然，要用好它，用对它也不是一件容易的事，今天就给你说说 flex-box 布局，看完之后你也能熟练的运用它！（博客中的示例都是真实的 HTML 代码，可以使用 chrome 开发者工具查看属性。(此文为了演示某些 flex 示例，在小屏幕下会有横向滚动条)</p><p>2 分钟视频入门版：
+<a href=https://www.bilibili.com/video/BV1P7411m7Nu/ title="2 分钟掌握 CSS Grid 布局" rel="noopener external nofollow noreferrer" target=_blank class=exturl>2 分钟掌握 CSS Grid 布局
+<i class="fa fa-external-link-alt"></i></a></p><h2 id=开启-flexbox-布局>开启 Flexbox 布局
+<a class=header-anchor href=#%e5%bc%80%e5%90%af-flexbox-%e5%b8%83%e5%b1%80></a></h2><p>假设有下边这么一个 html 结构：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex&#34;</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex1&#34;</span>&gt;Flex 1&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex2&#34;</span>&gt;Flex 2&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex3&#34;</span>&gt;Flex 3&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span></code></pre></div><p>一个<code>div</code> 容器包含了三个 <code>div</code> 子元素，按照默认的布局方式进行排列。因为 <code>div</code> 是块级元素，每个 <code>div</code> 占了整个一行的空间：</p><flexbox><p>如果要开启容器的 flex 布局，只需要在 css 里边给 <code>.flex</code> 设置 <code>display: flex</code> 属性，同时为了演示效果，我给它加上了 100px 的高度：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#f92672>display</span><span style=color:#f92672>:</span> <span style=color:#f92672>flex</span><span style=color:#f92672>;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>height</span><span style=color:#f92672>:</span> <span style=color:#f92672>100px</span><span style=color:#f92672>;</span>
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex;</code>}
+/></p><p>可以看到里边的三个元素自动变成了一行，因为 flex 默认是按行进行排列的。Flexbox 布局是一维布局方式，要么按行排列，要么按列排列。</p><h2 id=对齐方式>对齐方式
+<a class=header-anchor href=#%e5%af%b9%e9%bd%90%e6%96%b9%e5%bc%8f></a></h2><p>Flex 布局有一个隐式的坐标空间，水平方向有一条主轴(main-axis)，垂直方向上有一条交叉轴(cross-axis)：</p><p>&lt;img
+alt=""
+src={useBaseUrl(&ldquo;img/2020-04-05-css-flex-box-layout/2020-04-05-19-02-36.png&rdquo;)}
+/></p><h3 id=justify-content>justify-content
+<a class=header-anchor href=#justify-content></a></h3><p>控制主轴（即水平方向）对齐方式使用<code>justify-content</code>属性，它有下边几种对齐方式：</p><h4 id=flex-start>flex-start
+<a class=header-anchor href=#flex-start></a></h4><p><code>flex-start</code> 是默认值，如果是从左到右的文字阅读习惯(LTR)，就是靠左对齐。因为默认的对齐方式，所以跟上边的例子没有什么区别：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#f92672>justify-content</span><span style=color:#f92672>:</span> <span style=color:#f92672>flex-start</span><span style=color:#f92672>;</span>
+</span></span></code></pre></div><p>export const JustifyAlign = ({ align = &ldquo;flex-start&rdquo;, css, &mldr;rest }) => (
+&lt;FlexBox
+css={<code>display: flex; justify-content: ${align}; ${css}</code>}
+/>
+);</p><justifyalign align=flex-start><h4 id=center>center
+<a class=header-anchor href=#center></a></h4><p>居中对齐，此时整个 flex 容器被居中到了页面中间：</p><justifyalign align=center><h4 id=flex-end>flex-end
+<a class=header-anchor href=#flex-end></a></h4><p>靠右对齐：</p><justifyalign align=flex-end><h4 id=space-between>space-between
+<a class=header-anchor href=#space-between></a></h4><p>两端对齐，这种对齐方式是第一个和最后一个元素贴边，中间的元素平分剩余的空间：</p><justifyalign align=space-between><h4 id=space-evenly>space-evenly
+<a class=header-anchor href=#space-evenly></a></h4><p>分散对齐，所有的元素都平分空间：</p><justifyalign align=space-evenly><h4 id=space-around>space-around
+<a class=header-anchor href=#space-around></a></h4><p>跟<code>space-evenly</code>类似，但是左右两边的留白为平分空间的 1/2.</p><justifyalign align=space-around><h3 id=align-items>align-items
+<a class=header-anchor href=#align-items></a></h3><p>控制交叉轴方向（即垂直方向）上的对齐方式使用<code>align-items</code>属性，有下边几种对齐方式：</p><h4 id=stretch>stretch
+<a class=header-anchor href=#stretch></a></h4><p><code>stretch</code> 是 <code>align-items</code> 的默认值，它会自动把子元素拉伸成容器的高度，所以之前的例子里子元素在垂直方向上都占满了容器，只要改变容器的<code>align-items</code>的值，它就会变成内容的高度。<code>stretch</code> 对齐效果如下：</p><p>export const AlignItems = ({ align = &ldquo;stretch&rdquo;, css, &mldr;rest }) => (
+&lt;FlexBox
+css={<code>display: flex; align-items: ${align}; ${css}</code>}
+/>
+);</p><alignitems><h4 id=flex-start-1>flex-start
+<a class=header-anchor href=#flex-start-1></a></h4><p>靠上对齐，在交叉轴开始的最上方，可以看到子元素不再占满容器高度：</p><alignitems align=flex-start><h4 id=center-1>center
+<a class=header-anchor href=#center-1></a></h4><p>居中对齐：</p><alignitems align=center><h4 id=flex-end-1>flex-end
+<a class=header-anchor href=#flex-end-1></a></h4><p>靠下对齐：</p><alignitems align=flex-end><h4 id=baseline>baseline
+<a class=header-anchor href=#baseline></a></h4><p>基线对齐，如果子元素文字尺寸和行高不同，则子元素会按照文字的基线进行对齐：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex2</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>font-size</span>: <span style=color:#ae81ff>24</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;AlignItems
+align=&ldquo;baseline&rdquo;
+css={<code>.flex2 { font-size: 24px; }</code>}
+/></p><p>如果是 <code>flex-start</code> 对齐方式：</p><p>&lt;AlignItems
+align=&ldquo;flex-start&rdquo;
+css={<code>.flex2 { font-size: 24px; }</code>}
+/></p><h3 id=align-content>align-content
+<a class=header-anchor href=#align-content></a></h3><p>本小节在下边讲到折行时再介绍</p><h2 id=子元素覆盖对齐方式>子元素覆盖对齐方式
+<a class=header-anchor href=#%e5%ad%90%e5%85%83%e7%b4%a0%e8%a6%86%e7%9b%96%e5%af%b9%e9%bd%90%e6%96%b9%e5%bc%8f></a></h2><p>子元素可以通过设置 <code>align-self</code> 来控制自己在交叉轴上的对齐方式，例如把 <code>.flex3</code> 子元素在垂直方向上靠下对齐：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>align-items</span>: <span style=color:#66d9ef>flex-start</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex3</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>align-self</span>: <span style=color:#66d9ef>flex-end</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;AlignItems
+align=&ldquo;flex-start&rdquo;
+css={<code>.flex3 { align-self: flex-end; }</code>}
+/></p><p>在水平方向上控制子元素对齐并没有<code>justify-self</code>属性，而是使用<code>margin</code>属性，通过把左或右边距设置为<code>auto</code>来控制水平对齐，比如把 <code>flex3</code> 放到最右边：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex3</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>margin-left</span>: <span style=color:#66d9ef>auto</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;JustifyAlign
+css={<code>.flex3 { margin-left: auto; }</code>}
+/></p><h2 id=排列方式>排列方式
+<a class=header-anchor href=#%e6%8e%92%e5%88%97%e6%96%b9%e5%bc%8f></a></h2><p>flex 支持按行排布，也支持按列排布。按列排布时，主轴和交叉轴换了方向，但是 align-items 和 justify-content 控制的轴线不变，即 <code>align-items</code> 还是控制交叉轴，<code>justify-content</code> 控制主轴：</p><p>&lt;img
+alt=""
+src={useBaseUrl(&ldquo;img/2020-04-05-css-flex-box-layout/2020-04-05-21-05-00.png&rdquo;)}
+/></p><p>所以说，在水平方向上对齐变成了使用<code>align-items</code>，垂直方向则用<code>justify-content</code>。</p><p>要使 flex 按列排布，只需要设置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span><span style=color:#f92672>flex-direction</span><span style=color:#f92672>:</span> <span style=color:#f92672>column</span><span style=color:#f92672>;</span>
+</span></span></code></pre></div><p>来看几个例子：</p><p><strong>水平居中对齐</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-direction</span>: <span style=color:#66d9ef>column</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>align-items</span>: <span style=color:#66d9ef>center</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-direction: column; align-items: center;</code>}
+/></p><p><strong>垂直居中对齐</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-direction</span>: <span style=color:#66d9ef>column</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>justify-content</span>: <span style=color:#66d9ef>center</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-direction: column; justify-content: center;</code>}
+/></p><p>另外 flex 布局也可以支持反向按行和列布局，相当于按容器中心线进行 180 度翻转：</p><p><strong>row-reverse</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-direction</span>: <span style=color:#66d9ef>row-reverse</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-direction: row-reverse;</code>}
+/></p><p><strong>column-reverse</strong></p><p>列模式下会垂直翻转：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-direction</span>: <span style=color:#66d9ef>column-reverse</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-direction: column-reverse;</code>}
+/></p><h2 id=空间占比>空间占比
+<a class=header-anchor href=#%e7%a9%ba%e9%97%b4%e5%8d%a0%e6%af%94></a></h2><p>子元素可以通过设置<code>flex</code>属性来调整空间的占比，例如让 <code>flex2</code> 在水平方向上占据其他子元素的 2 倍大小，可以设置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex1</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex3</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex2</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex</span>: <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; .flex1, .flex3 { flex: 1; } .flex2 { flex: 2; }</code>}
+/></p><h2 id=flex-basis>Flex-basis
+<a class=header-anchor href=#flex-basis></a></h2><p>在介绍 flex-basis 之前，先讲一个概念 <code>main size</code>，即主轴方向的尺寸，那么，在行排布模式下，也就是水平方向的尺寸，其实就是子元素的宽度，而在列模式下，它是子元素的高度，相对应的也有<code>cross size</code>，即行模式下是子元素的高度，列模式下是宽度。
+而<code>flex-basis</code>是用来设置<code>main size</code>的，它的优先级会高于<code>width</code>。<strong>它的默认值是<code>auto</code></strong>，即在行模式下，如果子元素设置了宽度，它就取自这个宽度值，没有设置的话，就是内容的宽度。使用 <code>flex-basis</code>，可以同时管理行模式下的宽度和列模式下的高度。</p><p>来看一个例子，把之前的子元素改成固定宽度，比如 <code>200px</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>200</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这样每个子元素宽度变为了 200px：</p><p>&lt;FlexBox
+css={<code>display: flex; > * { flex-basis: 200px; }</code>}</p><blockquote></flexbox></blockquote><p>如果再添加 <code>width</code> 属性，发现并不会生效：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>200</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>width</span>: <span style=color:#ae81ff>250</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; > * { flex-basis: 200px; }</code>}</p><blockquote></flexbox></blockquote><p>但是，可以通过设置 <code>min-width</code>来强制设置最小宽度：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>200</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>min-width</span>: <span style=color:#ae81ff>250</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; > * { flex-basis: 200px; min-width: 250px; }</code>}</p><blockquote></flexbox></blockquote><p>同理的，在列模式下，<code>flex-basis</code>变成了高度，因为容器高度为 <code>100px</code>，这里把子元素高度设置成了 <code>30px</code> 总计 <code>90px</code> 来效果：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-direction</span>: <span style=color:#66d9ef>column</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>30</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-direction: column; > * { flex-basis: 30px; }</code>}</p><blockquote></flexbox></blockquote><p>同样的，也可以用<code>min-height</code>来控制最小高度。</p><h2 id=缩放>缩放
+<a class=header-anchor href=#%e7%bc%a9%e6%94%be></a></h2><p>（后续例子都假设是行模式）之前的小节简单说了一下 flex 子元素空间的占比，这里把缩放单独拿出来是为了说明：除了调整 flex 子元素的增长之外，也可以调整收缩，以及<code>flex</code>属性背后的原理（下一小节）。</p><h3 id=flex-grow>flex-grow
+<a class=header-anchor href=#flex-grow></a></h3><p>先看一下增长，<code>flex-grow</code>，这个属性是说 flex 容器在有剩余空间的时候，子元素占据剩余空间的占比。例如，给<code>.flex2</code>子元素设置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex2</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-grow</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>其它的元素保持默认的宽度（即内容的宽度，flex-basis 为 auto)，那么 <code>.flex2</code> 就会自动增长并占据整个剩余空间：</p><p>&lt;FlexBox
+css={<code>display: flex; .flex2 { flex-grow: 1; }</code>}
+/></p><p>如果把三个元素全部设置成 1，那么所有元素都会自动增长，并各自占据 1/3 的空间：</p><p>&lt;FlexBox
+css={<code>display: flex; .flex1, .flex2, .flex3 { flex-grow: 1; }</code>}
+/></p><p>使用 <code>flex-grow</code> 就能够自由的调整元素的空间占比了，非常适合一些浮动的布局。</p><h3 id=flex-shrink>flex-shrink
+<a class=header-anchor href=#flex-shrink></a></h3><p>子元素的收缩是说：当它们的宽度超过 flex 容器之后，该如何进行收缩。通过 <code>flex-shrink</code> 来设置一个数值，数值越大，收缩程度也越大，比如<code>flex-shrink: 2</code>的元素会比<code>flex-shrink:1</code>收缩的值大 2 倍：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex1</span><span style=color:#f92672>,</span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex3</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>600</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-shrink</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex2</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>600</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-shrink</span>: <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里为了方便演示，我把所有的 flex 子元素的 main size (宽度) 都设置成了 600px。在我的显示器下，flex 容器的宽度是 728px，三个子元素总和 1800px，显然超出了容器的宽度，那么根据上边定义的收缩规则，<code>.flex2</code> 将收缩 2 倍于 <code>.flex</code> 和 <code>.flex3</code> 收缩的空间。下边的例子中，<code>.flex1</code> 和 <code>.flex3</code> 的宽度变成了 <code>332px</code>，相比于 <code>600px</code> 收缩了 <code>268px</code>，那么 <code>.flex2</code> 就要收缩 <code>536px (268px * 2)</code> 的宽度，那么它最后就会剩下 <code>64px (600px - 536px)</code> 的宽度：</p><p>&lt;FlexBox
+css={<code>display: flex; .flex1, .flex3 { flex-basis: 600px; flex-shrink: 1; } .flex2 { flex-basis: 600px; flex-shrink: 2; }</code>}
+/></p><h2 id=再说-flex-属性>再说 flex 属性
+<a class=header-anchor href=#%e5%86%8d%e8%af%b4-flex-%e5%b1%9e%e6%80%a7></a></h2><p>说完<code>flex-grow</code>、<code>flex-shrink</code> 和 <code>flex-basis</code> 之后，再来看一下这个 <code>flex</code> 属性，它其实是前边三个属性的缩写，默认值是 <code>0 1 auto</code>，即不增长，但收缩，收缩比例为 1，flex-basis 为 auto，即取自用户定义的宽度或内容的宽度。</p><p>flex 的值可以是下边几种：</p><ul><li>指定一个数字 - 例如<code>flex: 1</code>，就等同于是<code>flex: 1 1 0</code>，即自动缩放，比例为 1，flex-basis 为 0。</li><li>auto - 等同于<code>flex: 1 1 auto</code>。</li><li>指定两个数字 - 第一个为<code>flex-grow</code>，第二个，如果是数字则认为是 <code>flex-shrink</code>，如果是宽度，则是<code>flex-basis</code>。</li><li>指定三个值 - 分别为<code>flex-grow</code>，<code>flex-shrink</code> 和 <code>flex-basis</code>。</li></ul><p>所以说，通过<code>flex</code>属性可以方便的同时设置<code>flex-grow</code>、<code>flex-shrink</code> 和 <code>flex-basis</code> 这三个值。</p><h2 id=折行>折行
+<a class=header-anchor href=#%e6%8a%98%e8%a1%8c></a></h2><p>如果子元素有固定宽度，并且超出了容器的宽度，还不允许收缩的话，那么可以使用<code>flex-wrap</code>属性来让元素进行折行排列，使得每行的元素都不超过容器的宽度。<strong>这里跟 css grid 布局的主要区别是，它无法控制单独控制行、列的占比，比如跨行、夸列，也不能自由定位元素到特定的位置</strong>。下边的示例新增了 2 个元素，一共 5 个，每个元素的 main size 为 300px，然后超出宽度后折行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-wrap</span>: <span style=color:#66d9ef>wrap</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-shrink</span>: <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>300</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;FlexBox
+css={<code>display: flex; flex-wrap: wrap; > * { flex-shrink: 0; flex-basis: 300px; }</code>}</p><blockquote></blockquote><div classname=flex4>Flex 4</div><div classname=flex5>Flex 5</div></flexbox><h3 id=align-content-1>align-content
+<a class=header-anchor href=#align-content-1></a></h3><p>如果 flex 容器开启了折行，那么两行及以上的内容可以通过<code>align-content</code>属性来控制各行之间在交叉轴上的排列规则，它的取值和 <code>justify-content</code>基本相同，这里演示其中几个，还是使用之前三个元素的 flex 容器，每个容器宽度为 300px，超出后换行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-wrap</span>: <span style=color:#66d9ef>wrap</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex-basis</span>: <span style=color:#ae81ff>300</span><span style=color:#66d9ef>px</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>export const AlignContent = ({ align = &ldquo;flex-start&rdquo;, css, &mldr;rest }) => (
+&lt;FlexBox
+css={<code>display: flex; align-content: ${align}; flex-wrap: wrap; > \* { flex-basis: 300px; } ${css}</code>}
+/>
+);</p><h4 id=center-2>center
+<a class=header-anchor href=#center-2></a></h4><p>垂直居中：</p><aligncontent align=center><h4 id=space-between-1>space-between
+<a class=header-anchor href=#space-between-1></a></h4><p>两端对齐：</p><aligncontent align=space-between><h2 id=嵌套的-flex-容器的问题>嵌套的 flex 容器的问题
+<a class=header-anchor href=#%e5%b5%8c%e5%a5%97%e7%9a%84-flex-%e5%ae%b9%e5%99%a8%e7%9a%84%e9%97%ae%e9%a2%98></a></h2><p>如果 HTML 结构复杂，有嵌套的 flex 容器，很有可能会遇到嵌套的 flex 容器并不能自动收缩的问题，即使设置了<code>flex-shrink</code>。比如有下边一个 html 结构：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-html data-lang=html><span style=display:flex><span>&lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex&#34;</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex1&#34;</span>&gt;Flex 1&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex2&#34;</span>&gt;Flex 2&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex3&#34;</span>&gt;Flex 3&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>  &lt;<span style=color:#f92672>div</span> <span style=color:#a6e22e>class</span><span style=color:#f92672>=</span><span style=color:#e6db74>&#34;flex4&#34;</span>&gt;
+</span></span><span style=display:flex><span>    &lt;<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>      这是一段很长很长很长很长很长很长很长很长很长很长很长很长长很长很长很长很长很长长很长很长很长很长很长的文本
+</span></span><span style=display:flex><span>    &lt;/<span style=color:#f92672>p</span>&gt;
+</span></span><span style=display:flex><span>  &lt;/<span style=color:#f92672>div</span>&gt;
+</span></span><span style=display:flex><span>&lt;/<span style=color:#f92672>div</span>&gt;
+</span></span></code></pre></div><p>这里给之前的 flex 容器添加了一个新的子元素<code>.flex4</code>，这 4 个子元素都设置成<code>flex: 1</code>来平分空间，但是 <code>.flex4</code> 自己本身也是一个<code>flex</code>布局的容器，里边有一长串文本，我想让它超长之后自动显示省略号，它的 CSS 代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex4</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>.<span style=color:#a6e22e>flex4</span> <span style=color:#f92672>&gt;</span> <span style=color:#f92672>p</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>white-space</span>: <span style=color:#66d9ef>nowrap</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>overflow</span>: <span style=color:#66d9ef>hidden</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>text-overflow</span>: <span style=color:#66d9ef>ellipsis</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>export const NestedFlexBox = ({ minWidth }) => (
+&lt;FlexBox
+css={<code>display: flex; > * { flex: 1; } .flex4 { display: flex; flex: 1; ${minWidth}; > p { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } }</code>}</p><blockquote></blockquote><pre><code>&lt;div className=&quot;flex4&quot;&gt;
+  &lt;p&gt;
+    这是一段很长很长很长很长很长很长很长很长很长很长很长很长长很长很长很长很长很长长很长很长很长很长很长的文本
+  &lt;/p&gt;
+&lt;/div&gt;
+</code></pre></flexbox>);
+<nestedflexbox><p>可以看到，最后本应该占 1/4 空间的<code>.flex4</code>，因为文本不能换行，直接把 flex 容器撑开了，并且把其他的三个子元素挤成了最小空间，它本应该把文字截短并显示省略号，这是为什么呢？原来，flex 容器的 <code>min-width</code> 属性值为 auto，是由浏览器自行计算的，在这里它取了<code>&lt;p></code>元素的宽度，使得宽度成为了一整行 <code>&lt;p></code> 的宽度。那么要解决这个问题，可以把<code>.flex4</code> 这个嵌套 flex 容器的 <code>min-width</code> 改为<code>0</code>，即最小宽度是<code>0</code>，那么就可以正常收缩了：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:2;-o-tab-size:2;tab-size:2><code class=language-css data-lang=css><span style=display:flex><span>.<span style=color:#a6e22e>flex4</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>display</span>: <span style=color:#66d9ef>flex</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>flex</span>: <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>min-width</span>: <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>&lt;NestedFlexBox minWidth={<code>min-width: 0</code>} /></p><h2 id=总结>总结
+<a class=header-anchor href=#%e6%80%bb%e7%bb%93></a></h2><p>到这里，整个 flex 布局就介绍完了，还是有不少东西的，但不难。相信通过实例你一定可以掌握它的用法，下边总结一下要点：</p><ul><li>开启 flex 布局使用<code>display: flex</code>属性。</li><li>flex 布局有主轴和交叉轴，分别使用<code>justify-content</code>和<code>align-items</code>控制对齐方式。</li><li>支持按行或列进行排列，使用<code>flex-direction</code>，另外也支持<code>row-reverse</code>和<code>column-reverse</code>反向排列。</li><li>子元素可以通过<code>flex</code>简写形式，或者<code>flex-grow</code>，<code>flex-shrink</code>，<code>flex-basis</code> 来调整元素的空间占比和缩放。</li><li>通过<code>flex-wrap</code>可以设置 flex 子元素折行显示。</li><li>嵌套<code>flex</code>容器的缩放问题。</li></ul><p>你学会了吗？如果有问题，欢迎通过下方链接参与讨论。</p><p>export const StyledWrapper = styled.div<code>margin-bottom: 24px; background: #f1f2f6; .flex > \* { background: #5cf17c; color: #2f3542; } .flex { height: 100px; ${({ css }) => css} } .flex2 { background: #5bd7ea; } .flex3 { background: #f7dc7c; } .flex4 { background: #cf9aff; } .flex5 { background: #ffa4a4; }</code>;</p><p>export const Wrapper = ({ css, children, &mldr;rest }) => (
+&lt;StyledWrapper css={css} {&mldr;rest}>
+{children}</styledwrapper>
+);</p><p>export const FlexBox = ({ css, children, &mldr;rest }) => (
+&lt;Wrapper css={css} {&mldr;rest}><div class=flex><div class=flex1>Flex 1</div><div class=flex2>Flex 2</div><div class=flex3>Flex 3</div>{children}</div></wrapper>);</p></div><footer class=post-footer><div class=post-tags><a href=/tags/%e5%89%8d%e7%ab%af>前端</a>
+<a href=/tags/react>React</a></div><div class=addthis_inline_share_toolbox style=text-align:center></div><hr><div class=reward-container><div><i class="fa-solid fa-mug-hot"></i>请我喝杯咖啡吧 ヾ(^▽^*)))</div><button>
+赞赏</button><div class=post-reward><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/ali-pay.png alt="爸比娃娃 - 支付宝">
+<span>支付宝</span></div><div class=post-reward-item><img src=/imgs/img-lazy-loading.gif data-src=/imgs/wechat-pay.png alt="爸比娃娃 - 微信">
+<span>微信</span></div></div></div><div class=post-copyright><img src=/imgs/cc/cc.svg width=75 height=75 align=right alt=共享知识><ul><li class=post-copyright-title><strong>文章标题：</strong>
+CSS Flexbox 布局最容易理解完全教程</li><li class=post-copyright-author><strong>原文作者：</strong>
+峰华</li><li class=post-copyright-link><strong>本文链接：</strong>
+<a id=post-cr-link href=https://blog.jiandan.cf/post/css-flex-box-layout/ title="CSS Flexbox 布局最容易理解完全教程">https://blog.jiandan.cf/post/css-flex-box-layout/</a></li><li class=post-copyright-license><strong>版权声明：</strong>
+本博客所有文章除特别声明外，均采用 <i class="fab fa-fw fa-creative-commons"></i><a target=_blank href=https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh>BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><div class=followme><span>欢迎关注我的其它发布渠道</span><div class=social-list><div class=social-item><a target=_blank class=social-link href=/images/wechat_channel.jpg><span class=icon><i class="fab fa-weixin"></i></span>
+<span class=label>WeChat</span></a></div><div class=social-item><a target=_blank class=social-link href=/atom.xml><span class=icon><i class="fa fa-rss"></i></span>
+<span class=label>RSS</span></a></div></div></div><div class=post-nav><div class="post-nav-next post-nav-item"><a href=/post/5-tips-to-master-css/ rel=next title="5个技巧助你成为 CSS 大神"><i class="fa fa-chevron-left"></i> 5个技巧助你成为 CSS 大神</a></div><div class="post-nav-prev post-nav-item"><a href=/post/css-selector-specificity/ rel=prev title="CSS 选择器优先级特异性权重详解">CSS 选择器优先级特异性权重详解
+<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div id=comments class=post-comments><div class=comment-head><div class=comment-headline><i class="fas fa-comments fa-fw"></i>
+<span>评论交流</span></div></div><div class=comment-wrap><div><div class=comment-loading><i class="fa fa-sync fa-spin"></i></div><div class=waline-container></div></div></div></div></div></main><footer class=footer><div class=footer-inner><div id=gtranslate class=google-translate><i class="fa fa-language"></i><div id=google_translate_element></div></div><div class=copyright>&copy;
+<span itemprop=copyrightYear>2010 - 2023</span>
+<span class=with-love><i class="fa fa-heart"></i></span>
+<span class=author itemprop=copyrightHolder>爸比娃娃</span></div><div class=powered-by>由 <a href=https://gohugo.io title=0.116.1 target=_blank>Hugo</a> & <a href=https://github.com/hugo-next/hugo-theme-next title=4.5.3 target=_blank>Hugo NexT.Gemini</a> 强力驱动</div><div class=beian><a href=https://beian.miit.gov.cn target=_blank>粤ICP备 18047355-1 号</a>
+<img src=/imgs/gongan.png alt=沪公网安备>
+<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31011402009770" target=_blank>沪公网安备 31011402009770 号</a></div><div class=vendors-list><a target=_blank href=https://vercel.com title=Vercel><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/vercel.svg alt=Vercel></a>
+<a target=_blank href=https://upyun.com title=又拍云><img src=/imgs/img-lazy-loading.gif data-src=/imgs/vendors/upyun.png alt=又拍云></a>
+<a target=_blank href=https://webify.cloudbase.net title=Webify>Webify</a>
+<span>提供CDN/云资源支持</span></div></div></footer><script type=text/javascript src=https://cdn.staticfile.org/animejs/3.2.1/anime.min.js defer></script>
+<script type=text/javascript src=https://cdn.staticfile.org/viewerjs/1.11.0/viewer.min.js defer></script>
+<script class=next-config data-name=main type=application/json>{"bookmark":{"color":"#222","enable":true,"save":"manual"},"copybtn":true,"darkmode":true,"giscus":{"cfg":{"category":"Comments","categoryid":null,"emit":false,"inputposition":"top","mapping":"title","reactions":false,"repo":"username/repo-name","repoid":null,"theme":"preferred_color_scheme"},"js":"https://giscus.app/client.js"},"hostname":"https://blog.jiandan.cf/","i18n":{"ds_day":" 天前","ds_days":" 天 ","ds_hour":" 小时前","ds_hours":" 小时 ","ds_just":"刚刚","ds_min":" 分钟前","ds_mins":" 分钟","ds_month":" 个月前","ds_years":" 年 ","empty":"没有找到任何搜索结果：${query}","hits":"找到 ${hits} 个搜索结果","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","placeholder":"搜索..."},"lang":"zh-CN","lazyload":false,"localSearch":{"enable":true,"limit":1e3,"path":"/searchindexes.xml","preload":false,"topnperarticle":-1,"trigger":"auto","unescape":false},"motion":{"async":true,"enable":true,"transition":{"collheader":"fadeInLeft","postblock":"fadeIn","postbody":"fadeInDown","postheader":"fadeInDown","sidebar":"fadeInUp"}},"postmeta":{"comments":{"enable":false,"plugin":"waline"},"views":{"enable":true,"plugin":"busuanzi"}},"root":"/","scheme":"Gemini","sidebar":{"display":"post","offset":12,"padding":18,"position":"left","width":256},"vendor":{"plugins":"qiniu","router":"https://cdn.staticfile.org"},"version":"4.5.3","waline":{"cfg":{"emoji":false,"imguploader":false,"placeholder":"请文明发言哟 ヾ(≧▽≦*)o \n\n可用快捷键选取表情符号：😀😄😁🥳👻👽👀🚄\n(Window系统：Win+.，Mac系统：Control+Command+Space)","reaction":true,"reactiontext":["点赞","踩一下","得意","不屑","尴尬","睡觉"],"reactiontitle":"你认为这篇文章怎么样？","requiredmeta":["nick","mail"],"serverurl":"https://walinejs.comment.lithub.cc","sofa":"快来发表你的意见吧 (≧∀≦)ゞ","wordlimit":200},"css":{"alias":"waline","file":"dist/waline.css","name":"@waline/client","version":"2.13.0"},"js":{"alias":"waline","file":"dist/waline.js","name":"@waline/client","version":"2.13.0"}}}</script><script type=text/javascript src=/js/main.min.0fb3547374c917d23a2e5f762b70f3698d20b46a01cc18c38f9c467aeffc99fc.js defer></script></body></html>
